@@ -37,11 +37,11 @@ const Post = (props) => {
     <PostWrapper>
       <RatingWrapper>
         <div onClick={() => handleUpvote()}>
-          <Upvote upvoteColor={hasUpvoted ? "blue" : "black"} />
+          <Upvote hasupvoted={hasUpvoted.toString()} />
         </div>
         <Rating rating={rating}>{rating}</Rating>
         <div onClick={() => handleDownvote()}>
-          <Downvote />
+          <Downvote hasdownvoted={hasDownvoted.toString()} />
         </div>
       </RatingWrapper>
       <PostContent {...props} />
@@ -51,6 +51,7 @@ const Post = (props) => {
 
 const PostWrapper = styled.div`
   display: flex;
+  justify-content: center;
   align-items: center;
 `;
 
@@ -61,20 +62,21 @@ const RatingWrapper = styled.div`
 `;
 
 const Rating = styled.strong`
-  /* color: ${({ rating }) =>
+  color: ${({ rating }) =>
     rating === 0
       ? "black"
       : rating > 0
       ? Theme.colors.main
-      : Theme.colors.error}; */
+      : Theme.colors.error};
 `;
 
 const Upvote = styled(FaArrowUp)`
   width: 20px;
   height: 20px;
-  transition: 0.3s;
+  transition: 0.2s;
   cursor: pointer;
-  color: ${({ upvoteColor }) => upvoteColor};
+  color: ${({ hasupvoted }) =>
+    hasupvoted === "true" ? Theme.colors.main : "black"};
   &:hover {
     color: ${({ theme: { colors } }) => colors.main};
   }
@@ -83,8 +85,10 @@ const Upvote = styled(FaArrowUp)`
 const Downvote = styled(FaArrowDown)`
   width: 20px;
   height: 20px;
-  transition: 0.3s;
+  transition: 0.2s;
   cursor: pointer;
+  color: ${({ hasdownvoted }) =>
+    hasdownvoted === "true" ? Theme.colors.error : "black"};
   &:hover {
     color: ${({ theme: { colors } }) => colors.error};
   }

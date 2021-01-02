@@ -6,6 +6,7 @@ import AppRouter from "./router";
 import GlobalStyles from "./GlobalStyles";
 import theme from "./Theme";
 import store from "./store";
+import "./App.css";
 
 const App = () => {
   return (

@@ -22,17 +22,21 @@ const fakePosts = [
 ];
 
 const Home = () => {
+  const renderPosts = () => {
+    return fakePosts.map(({ id, title, body, poster, comments }) => (
+      <Post
+        key={id}
+        title={title}
+        body={body}
+        poster={poster}
+        comments={comments}
+      />
+    ));
+  };
+
   return (
     <PageWrapper>
-      {fakePosts.map(({ id, title, body, poster, comments }) => (
-        <Post
-          key={id}
-          title={title}
-          body={body}
-          poster={poster}
-          comments={comments}
-        />
-      ))}
+      <div>{renderPosts()}</div>
     </PageWrapper>
   );
 };

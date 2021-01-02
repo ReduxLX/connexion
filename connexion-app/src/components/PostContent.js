@@ -15,7 +15,9 @@ const PostContent = (props) => {
   return (
     <PostContentWrapper>
       <div>
-        <h1 style={{ marginBottom: "5px" }}>{title}</h1>
+        <TopicTitle>
+          <h1>{title}</h1>
+        </TopicTitle>
         <Chip />
       </div>
       <p>{body}</p>
@@ -24,7 +26,7 @@ const PostContent = (props) => {
         <FooterLeft>
           <img src="#" />
           <p>
-            Posted By <span>{poster}</span>
+            Posted By <Poster>{poster}</Poster>
           </p>
           <p>{time}</p>
         </FooterLeft>
@@ -43,12 +45,17 @@ const PostContentWrapper = styled.div`
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
   border-radius: 5px;
   text-align: left;
-  p {
-    font-family: "Helvetica";
-    font-weight: 300;
-  }
   & > * {
     margin-bottom: 0.5rem;
+  }
+`;
+
+const TopicTitle = styled.div`
+  margin-bottom: 5px;
+  transition: 0.2s;
+  cursor: pointer;
+  &:hover {
+    color: ${({ theme: { colors } }) => colors.main};
   }
 `;
 
@@ -77,9 +84,17 @@ const CommentCount = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
   & > * {
     margin-left: 0.2rem;
   }
+  &:hover {
+    color: ${({ theme: { colors } }) => colors.main};
+  }
+`;
+
+const Poster = styled.span`
+  cursor: pointer;
 `;
 
 export default React.memo(PostContent);

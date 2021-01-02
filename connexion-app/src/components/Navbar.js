@@ -46,7 +46,6 @@ const Navbar = () => {
 
 const SearchField = styled(TextField)`
   background-color: #edf0f7;
-  font-family: "Helvetica";
   font-weight: 300;
 `;
 const NavTop = styled.div`
@@ -81,7 +80,6 @@ const NavRight = styled.div`
 `;
 
 const NavButton = styled.button`
-  font-family: "Helvetica";
   font-weight: 300;
   color: ${({ theme: { colors } }) => colors.main};
 `;
@@ -90,16 +88,14 @@ const LogoWrapper = styled.div`
   display: flex;
   align-items: center;
   font-family: "Raleway";
-  font-weight: 700;
+  font-weight: 800;
   font-size: 30px;
   color: ${({ theme: { colors } }) => colors.main};
 `;
 
 const NavLink = styled(Link)`
   color: ${({ theme: { colors } }) => colors.main};
-  font-family: "Helvetica";
-  font-weight: 300;
-  transition: 0.3s;
+  transition: 0.2s;
   &:hover {
     color: ${({ theme: { colors } }) => colors.main_dark};
   }

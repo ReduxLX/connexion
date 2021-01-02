@@ -13,9 +13,7 @@ const ChipWrapper = styled.div`
   color: ${(props) => props.chipColor};
   border: ${(props) => `1px solid ${props.chipColor}`};
   border-radius: 20px;
-  font-family: "Helvetica";
-  font-weight: 300;
-  transition: 0.3s;
+  transition: 0.2s;
   &:hover {
     background-color: ${(props) => props.chipColor};
     color: white;

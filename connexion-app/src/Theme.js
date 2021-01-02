@@ -8,6 +8,10 @@ const theme = {
     confirm_dark: "#158467",
     error: "#F85F73",
   },
+  defaultFont: {
+    main: "Helvetica",
+    secondary: "Raleway",
+  },
 };
 
 export default theme;
