@@ -6,8 +6,7 @@ const theme = {
     elevated: "#2B2B2B",
     confirm: "#199a78",
     confirm_dark: "#158467",
-    error: "#e42d12",
-    error_dark: "#b5240e",
+    error: "#F85F73",
   },
 };
 

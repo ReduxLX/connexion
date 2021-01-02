@@ -36,16 +36,16 @@ const GlobalStyle = createGlobalStyle`
   
   h1{
     margin: 0;
-    font-size: 24px;
+    font-size: 20px;
   }
 
   ul {
     list-style-type: none;
   }
 
-  /* a{
+  a{
     color: black
-  } */
+  }
 
   button{
     background: none;

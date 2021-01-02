@@ -4,7 +4,6 @@ import { NavLink as Link } from "react-router-dom";
 import { BiSearch } from "react-icons/bi";
 import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import Theme from "../Theme";
 
 const Navbar = () => {
   return (
@@ -46,7 +45,7 @@ const Navbar = () => {
 };
 
 const SearchField = styled(TextField)`
-  background-color: #e3e9f3;
+  background-color: #edf0f7;
   font-family: "Helvetica";
   font-weight: 300;
 `;
