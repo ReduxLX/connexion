@@ -59,6 +59,9 @@ const RatingWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin-right: 1rem;
+  & > * {
+    margin-bottom: 0.5rem;
+  }
 `;
 
 const Rating = styled.strong`

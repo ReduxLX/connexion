@@ -1,9 +1,11 @@
 import React from "react";
 import styled from "styled-components";
+import { styled as muiStyled } from "@material-ui/styles";
 import { NavLink as Link } from "react-router-dom";
 import { BiSearch } from "react-icons/bi";
 import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import Theme from "../Theme";
 
 const Navbar = () => {
   return (
@@ -44,10 +46,6 @@ const Navbar = () => {
   );
 };
 
-const SearchField = styled(TextField)`
-  background-color: #edf0f7;
-  font-weight: 300;
-`;
 const NavTop = styled.div`
   width: 100vw;
   border-bottom: 2px solid #e1eaf7;
@@ -100,5 +98,10 @@ const NavLink = styled(Link)`
     color: ${({ theme: { colors } }) => colors.main_dark};
   }
 `;
+
+const SearchField = muiStyled(TextField)({
+  backgroundColor: "#edf0f7",
+  color: "#000",
+});
 
 export default Navbar;

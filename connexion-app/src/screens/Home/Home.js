@@ -1,5 +1,7 @@
 import React from "react";
+import styled from "styled-components";
 import { PageWrapper } from "../SharedStyles";
+import DiscussionTab from "../../components/DiscussionTab";
 import Post from "../../components/Post";
 
 const fakePosts = [
@@ -36,9 +38,19 @@ const Home = () => {
 
   return (
     <PageWrapper>
-      <div>{renderPosts()}</div>
+      <HomeWrapper>
+        <DiscussionTab />
+        <div>{renderPosts()}</div>
+      </HomeWrapper>
     </PageWrapper>
   );
 };
+
+const HomeWrapper = styled.div`
+  display: flex;
+  & > * {
+    margin: 0 1rem;
+  }
+`;
 
 export default Home;
