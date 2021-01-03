@@ -4,7 +4,6 @@ import { NavLink as Link } from "react-router-dom";
 import { styled as muiStyled } from "@material-ui/styles";
 import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import Button from "@material-ui/core/Button";
 import Fab from "@material-ui/core/Fab";
 import {
   AiOutlineHome,
@@ -27,20 +26,14 @@ const Navbar = () => {
   const renderTopNavbar = () => {
     return (
       <>
-        <NavLeft>
-          <li>
-            <Link to="/">
-              <LogoWrapper>CONNEXION</LogoWrapper>
-            </Link>
-          </li>
-          <li>
+        <Link to="/">
+          <LogoWrapper>CONNEXION</LogoWrapper>
+        </Link>
+        <NavMiddle>
+          <NavLeft>
             <NavLink to="/">Home</NavLink>
-          </li>
-          <li>
             <NavLink to="/about">About Us</NavLink>
-          </li>
-        </NavLeft>
-        <NavRight>
+          </NavLeft>
           <SearchField
             id="outlined-required"
             size="small"
@@ -54,8 +47,10 @@ const Navbar = () => {
               ),
             }}
           />
-          <NavButton>Sign Up</NavButton>
-          <NavButton>Log In</NavButton>
+        </NavMiddle>
+        <NavRight>
+          <NavLink to="/signup">Sign Up</NavLink>
+          <NavLink to="/signup">Log in</NavLink>
         </NavRight>
       </>
     );
@@ -87,7 +82,7 @@ const Navbar = () => {
   return (
     <NavWrapper>
       {renderBottomNavbar()}
-      {/* {renderTopNavbar()} */}
+      {renderTopNavbar()}
     </NavWrapper>
   );
 };
@@ -110,7 +105,7 @@ const NavLink = styled(Link)`
   }
 `;
 
-// --- Bottom Navbar Styles --- //
+// ------------ Bottom Navbar Styles ------------ //
 // src: https://stackoverflow.com/questions/40515142/how-to-make-a-sticky-footer-in-react
 
 const BottomDrawer = styled.div`
@@ -123,9 +118,10 @@ const BottomDrawer = styled.div`
   bottom: 0;
   height: 50px;
   width: 100%;
-  /* @media (min-width: 550px) {
+  @media (min-width: 768px) {
     display: none;
-  } */
+    font-size: 14px;
+  }
 `;
 
 const BottomNavList = styled.ul`
@@ -151,7 +147,7 @@ const BottomNavLink = styled(NavLink)`
 const AddPostButton = muiStyled(Fab)({
   position: "absolute",
   top: "0",
-  left: `calc(50vw - 40px)`,
+  left: `calc(50vw - 40px)`, // offset by Fab width
   transform: "translate(50%, -50%)",
   background: Theme.colors.main,
   color: "white",
@@ -160,12 +156,23 @@ const AddPostButton = muiStyled(Fab)({
   },
 });
 
-// --- Top Navbar Styles --- //
+// ------------ Top Navbar Styles ------------ //
 
-const NavLeft = styled.ul`
+const NavMiddle = styled.div`
   display: flex;
+  flex: 1;
+  justify-content: space-between;
   align-items: center;
   white-space: nowrap;
+  & > * {
+    margin-left: 1rem;
+  }
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const NavLeft = styled.div`
   & > * {
     margin-left: 1rem;
   }
@@ -178,6 +185,11 @@ const NavRight = styled.div`
   & > * {
     margin-left: 1rem;
   }
+  @media (max-width: 768px) {
+    & > * {
+      font-size: 14px;
+    }
+  }
 `;
 
 const LogoWrapper = styled.div`
@@ -187,16 +199,14 @@ const LogoWrapper = styled.div`
   font-weight: 800;
   font-size: 30px;
   color: ${({ theme: { colors } }) => colors.main};
+  @media (max-width: 768px) {
+    font-size: 24px;
+  }
 `;
 
 const SearchField = muiStyled(TextField)({
   backgroundColor: Theme.colors.form,
   borderRadius: "5px",
 });
-
-const NavButton = styled.button`
-  font-weight: 300;
-  color: ${({ theme: { colors } }) => colors.main};
-`;
 
 export default Navbar;
