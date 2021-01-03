@@ -64,12 +64,22 @@ const PostSection = () => {
   };
 
   return (
-    <div>
+    <SectionWrapper>
       <DropdownWrapper>{renderDropdown()}</DropdownWrapper>
       <div>{renderPosts()}</div>
-    </div>
+    </SectionWrapper>
   );
 };
+
+const SectionWrapper = styled.div`
+  /* min-width: 600px; */
+  /* width: 70%; */
+  flex: 6.5;
+  text-align: left;
+  & > * {
+    margin-bottom: 1rem;
+  }
+`;
 
 const DropdownWrapper = styled.div`
   text-align: left;

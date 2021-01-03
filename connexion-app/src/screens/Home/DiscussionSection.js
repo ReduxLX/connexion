@@ -51,24 +51,28 @@ const DiscussionSection = () => {
   };
 
   return (
-    <div>
-      <DiscussionWrapper>
-        <NewDiscussionButton>Start a New Topic</NewDiscussionButton>
-        <Discussion>
-          <GoCommentDiscussion
-            style={{ color: Theme.colors.main, marginRight: "5px" }}
-          />
-          <p>All Discussions</p>
-        </Discussion>
-        {renderDiscussions()}
-      </DiscussionWrapper>
-    </div>
+    <SectionWrapper>
+      <NewDiscussionButton>Start a New Topic</NewDiscussionButton>
+      <Discussion>
+        <GoCommentDiscussion
+          style={{ color: Theme.colors.main, marginRight: "5px" }}
+        />
+        <p>All Discussions</p>
+      </Discussion>
+      {renderDiscussions()}
+    </SectionWrapper>
   );
 };
 
-const DiscussionWrapper = styled.div`
+const SectionWrapper = styled.div`
+  min-width: 100px;
+  /* width: 10%; */
+  flex: 1.5;
   & > * {
     margin-bottom: 1.5rem;
+  }
+  @media (max-width: 768px) {
+    display: none;
   }
 `;
 
@@ -86,8 +90,7 @@ const Discussion = styled.div`
 const NewDiscussionButton = muiStyled(Button)({
   background: Theme.colors.main,
   color: "white",
-  fontWeight: "bold",
-  fontSize: "16px",
+  fontSize: "14px",
   textTransform: "none",
   padding: "0.6rem 1.2rem",
   marginBottom: "2rem",

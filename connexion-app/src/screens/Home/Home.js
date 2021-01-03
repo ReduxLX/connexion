@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { PageWrapper } from "../SharedStyles";
 import DiscussionSection from "./DiscussionSection";
 import PostSection from "./PostSection";
+import TopUsersSection from "./TopUsersSection";
 
 const Home = () => {
   return (
@@ -10,6 +11,7 @@ const Home = () => {
       <HomeWrapper>
         <DiscussionSection />
         <PostSection />
+        <TopUsersSection />
       </HomeWrapper>
     </PageWrapper>
   );
