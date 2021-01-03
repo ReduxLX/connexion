@@ -26,6 +26,30 @@ const fakePosts = [
     poster: "NaomiEX",
     comments: 5,
   },
+  {
+    id: 3,
+    title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    body:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. A cursus eros congue at tristique et nunc sollicitudin. Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+    poster: "NaomiEX",
+    comments: 5,
+  },
+  {
+    id: 4,
+    title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    body:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. A cursus eros congue at tristique et nunc sollicitudin. Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+    poster: "NaomiEX",
+    comments: 5,
+  },
+  {
+    id: 5,
+    title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    body:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. A cursus eros congue at tristique et nunc sollicitudin. Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+    poster: "NaomiEX",
+    comments: 5,
+  },
 ];
 
 const PostSection = () => {

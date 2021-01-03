@@ -6,19 +6,94 @@ import PostSection from "./PostSection";
 import TopUsersSection from "./TopUsersSection";
 
 const Home = () => {
+  const renderLong = () => {
+    return (
+      <div>
+        <div>Top Content!</div>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <div>Sandwich: Keep Scrolling!</div>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <div>More Sandwich: Yum!</div>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <div>You can scroll and see me!</div>
+      </div>
+    );
+  };
   return (
     <PageWrapper>
       <HomeWrapper>
-        <DiscussionSection />
+        {/* <DiscussionSection />
         <PostSection />
-        <TopUsersSection />
+        <TopUsersSection /> */}
+        {renderLong()}
       </HomeWrapper>
     </PageWrapper>
   );
 };
 
 const HomeWrapper = styled.div`
-  display: flex;
+  /* display: flex; */
   & > * {
     margin: 0 1rem;
   }
