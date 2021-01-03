@@ -2,6 +2,7 @@ import * as types from "../../store/ActionTypes";
 
 const initialState = {
   isLoading: false,
+  sortPostsBy: "Latest",
 };
 
 const HomeReducer = (state = initialState, { type, payload }) => {

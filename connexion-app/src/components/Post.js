@@ -67,7 +67,7 @@ const RatingWrapper = styled.div`
 const Rating = styled.strong`
   color: ${({ rating }) =>
     rating === 0
-      ? "black"
+      ? Theme.colors.disabled
       : rating > 0
       ? Theme.colors.main
       : Theme.colors.error};
@@ -79,7 +79,7 @@ const Upvote = styled(FaArrowUp)`
   transition: 0.2s;
   cursor: pointer;
   color: ${({ hasupvoted }) =>
-    hasupvoted === "true" ? Theme.colors.main : "black"};
+    hasupvoted === "true" ? Theme.colors.main : Theme.colors.disabled};
   &:hover {
     color: ${({ theme: { colors } }) => colors.main};
   }
@@ -91,7 +91,7 @@ const Downvote = styled(FaArrowDown)`
   transition: 0.2s;
   cursor: pointer;
   color: ${({ hasdownvoted }) =>
-    hasdownvoted === "true" ? Theme.colors.error : "black"};
+    hasdownvoted === "true" ? Theme.colors.error : Theme.colors.disabled};
   &:hover {
     color: ${({ theme: { colors } }) => colors.error};
   }

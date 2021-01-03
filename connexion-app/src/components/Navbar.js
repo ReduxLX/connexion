@@ -100,8 +100,8 @@ const NavLink = styled(Link)`
 `;
 
 const SearchField = muiStyled(TextField)({
-  backgroundColor: "#edf0f7",
-  color: "#000",
+  backgroundColor: Theme.colors.form,
+  borderRadius: "5px",
 });
 
 export default Navbar;

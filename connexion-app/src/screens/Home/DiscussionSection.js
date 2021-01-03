@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { GoCommentDiscussion } from "react-icons/go";
 import { styled as muiStyled } from "@material-ui/styles";
-import Theme from "../Theme";
+import Theme from "../../Theme";
 import Button from "@material-ui/core/Button";
 
 const fakeDiscussions = [
@@ -36,7 +36,7 @@ const fakeDiscussions = [
   },
 ];
 
-const DiscussionTab = () => {
+const DiscussionSection = () => {
   const renderDiscussions = () => {
     return fakeDiscussions.map(({ id, title }) => {
       return (
@@ -68,17 +68,16 @@ const DiscussionTab = () => {
 
 const DiscussionWrapper = styled.div`
   & > * {
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
   }
 `;
 
 const Discussion = styled.div`
   display: flex;
+  font-weight: bold;
   color: ${({ theme: { colors } }) => colors.disabled};
   transition: 0.2s;
   cursor: pointer;
-  font-family: "Helvetica";
-  font-weight: bold;
   &:hover {
     color: ${({ theme: { colors } }) => colors.main};
   }
@@ -87,6 +86,7 @@ const Discussion = styled.div`
 const NewDiscussionButton = muiStyled(Button)({
   background: Theme.colors.main,
   color: "white",
+  fontWeight: "bold",
   fontSize: "16px",
   textTransform: "none",
   padding: "0.6rem 1.2rem",
@@ -96,4 +96,4 @@ const NewDiscussionButton = muiStyled(Button)({
   },
 });
 
-export default DiscussionTab;
+export default DiscussionSection;

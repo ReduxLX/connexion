@@ -6,12 +6,19 @@
 }
 
 @font-face {
-  font-family: "HelveticaLight";
-  src: local("HelveticaLight"),
-    url(./res/fonts/Helvetica-Light.ttf) format("opentype");
+  font-family: "Helvetica";
+  src: local("Helvetica"), url(./res/fonts/Helvetica.ttf) format("opentype");
 }
 
 @font-face {
   font-family: "Helvetica";
-  src: local("Helvetica"), url(./res/fonts/Helvetica.ttf) format("opentype");
+  src: local("Helvetica"),
+    url(./res/fonts/Helvetica-Light.ttf) format("opentype");
+  font-weight: lighter;
+}
+@font-face {
+  font-family: "Helvetica";
+  src: local("Helvetica"),
+    url(./res/fonts/Helvetica-Bold.ttf) format("opentype");
+  font-weight: bold;
 }
