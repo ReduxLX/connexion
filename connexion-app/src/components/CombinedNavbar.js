@@ -23,36 +23,44 @@ const bottomLinks = [
 ];
 
 const Navbar = () => {
+  const renderSearchBar = () => {
+    return (
+      <SearchField
+        id="outlined-required"
+        size="small"
+        variant="outlined"
+        placeholder="Search Forum"
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <BiSearch style={{ color: "#0F4C75" }} />
+            </InputAdornment>
+          ),
+        }}
+      />
+    );
+  };
+
   const renderTopNavbar = () => {
     return (
-      <>
-        <Link to="/">
-          <LogoWrapper>CONNEXION</LogoWrapper>
-        </Link>
-        <NavMiddle>
-          <NavLeft>
-            <NavLink to="/">Home</NavLink>
-            <NavLink to="/about">About Us</NavLink>
-          </NavLeft>
-          <SearchField
-            id="outlined-required"
-            size="small"
-            variant="outlined"
-            placeholder="Search Forum"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <BiSearch style={{ color: "#0F4C75" }} />
-                </InputAdornment>
-              ),
-            }}
-          />
-        </NavMiddle>
-        <NavRight>
-          <NavLink to="/signup">Sign Up</NavLink>
-          <NavLink to="/signup">Log in</NavLink>
-        </NavRight>
-      </>
+      <TopNavbar>
+        <TopNavbarContent>
+          <Link to="/">
+            <LogoWrapper>CONNEXION</LogoWrapper>
+          </Link>
+          <NavMiddle>
+            <NavLeft>
+              <NavLink to="/">Home</NavLink>
+              <NavLink to="/about">About Us</NavLink>
+            </NavLeft>
+            {renderSearchBar()}
+          </NavMiddle>
+          <NavRight>
+            <NavLink to="/signup">Sign Up</NavLink>
+            <NavLink to="/signup">Log in</NavLink>
+          </NavRight>
+        </TopNavbarContent>
+      </TopNavbar>
     );
   };
 
@@ -157,6 +165,26 @@ const AddPostButton = muiStyled(Fab)({
 });
 
 // ------------ Top Navbar Styles ------------ //
+const TopNavbar = styled.div`
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  width: 100%;
+  /* background: white; */
+`;
+
+const TopNavbarContent = styled.div`
+  display: flex;
+  width: 100%;
+  background: white;
+  justify-content: space-between;
+  flex: 1;
+  padding: 1rem 1rem 0;
+  max-width: 1200px;
+`;
 
 const NavMiddle = styled.div`
   display: flex;
