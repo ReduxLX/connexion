@@ -63,6 +63,7 @@ const BottomNavbarWrapper = styled.div`
   bottom: 0;
   height: 50px;
   width: 100%;
+  z-index: 999;
   @media (min-width: 768px) {
     display: none;
     font-size: 14px;

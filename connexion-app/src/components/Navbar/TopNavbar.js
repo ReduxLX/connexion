@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { NavLink as Link, useLocation } from "react-router-dom";
 import { styled as muiStyled } from "@material-ui/styles";
@@ -6,29 +6,12 @@ import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { BiSearch } from "react-icons/bi";
 import Theme from "../../Theme";
-import { debounce } from "../../utils";
 
 const TopNavbar = () => {
-  const [prevScrollPos, setPrevScrollPos] = useState(0);
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
   const path = useLocation().pathname;
 
   const displaySearchbar = path === "/" || path === "/discussion";
-
-  const handleScroll = debounce(() => {
-    const currentScrollPos = window.pageYOffset;
-    setVisible(
-      (prevScrollPos > currentScrollPos &&
-        prevScrollPos - currentScrollPos > 70) ||
-        currentScrollPos < 10
-    );
-    setPrevScrollPos(currentScrollPos);
-  }, 100);
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [prevScrollPos, visible, handleScroll]);
 
   const renderSearchBar = (id = "searchbar") => {
     return (
@@ -65,6 +48,14 @@ const TopNavbar = () => {
           {renderSearchBar("searchBarTop")}
         </NavMiddle>
         <NavRight>
+          <SearchButton
+            visible={displaySearchbar}
+            onClick={() => setVisible(!visible)}
+          >
+            <BiSearch
+              style={{ color: "#0F4C75", width: "25px", height: "25px" }}
+            />
+          </SearchButton>
           <NavLink to="/signup">Sign Up</NavLink>
           <NavLink to="/signup">Log in</NavLink>
         </NavRight>
@@ -91,8 +82,6 @@ const TopNavbarWrapper = styled.div`
   top: 0;
   display: flex;
   flex-direction: column;
-  flex: 1;
-  justify-content: center;
   align-items: center;
   width: 100%;
   z-index: 100;
@@ -168,10 +157,19 @@ const LogoWrapper = styled.div`
   align-items: center;
   font-family: "Raleway";
   font-weight: 800;
-  font-size: 24px;
+  font-size: 20px;
   color: ${({ theme: { colors } }) => colors.main};
   @media (min-width: 768px) {
     font-size: 30px;
+  }
+`;
+
+const SearchButton = styled.button`
+  width: 25px;
+  height: 25px;
+  display: ${({ visible }) => (visible ? "flex" : "none")};
+  @media (min-width: 768px) {
+    display: none;
   }
 `;
 

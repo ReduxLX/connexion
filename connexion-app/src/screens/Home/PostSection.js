@@ -78,6 +78,7 @@ const PostSection = () => {
           onChange={(e) =>
             dispatch(actHome.handleState("sortPostsBy", e.target.value))
           }
+          inputProps={{ MenuProps: { disableScrollLock: true } }}
         >
           <MenuItem value="Latest">Latest</MenuItem>
           <MenuItem value="Popular">Popular</MenuItem>
