@@ -2,12 +2,14 @@ import React from "react";
 import styled from "styled-components";
 import { GoComment } from "react-icons/go";
 import Chip from "../components/Chip";
+import Avatar from "@material-ui/core/Avatar";
+import ProfileImg1 from "../res/images/avatar1.jpg";
 
 const PostContent = (props) => {
   const {
     title = "Title",
     body = "Body text",
-    poster = "NaomiEx",
+    poster = "Poster",
     time = "42s ago",
     comments = 0,
   } = props;
@@ -24,7 +26,11 @@ const PostContent = (props) => {
       <hr />
       <Footer>
         <FooterLeft>
-          <img src="#" />
+          <Avatar
+            alt="pic"
+            src={ProfileImg1}
+            style={{ width: "30px", height: "30px" }}
+          />
           <p>
             Posted By <Poster>{poster}</Poster>
           </p>
@@ -40,7 +46,7 @@ const PostContent = (props) => {
 };
 
 const PostContentWrapper = styled.div`
-  width: 600px;
+  min-width: 350px;
   padding: 1rem 1.5rem;
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
   border-radius: 5px;
@@ -62,7 +68,6 @@ const TopicTitle = styled.div`
 const Footer = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-top: 1rem;
   padding-right: 1rem;
   color: #9c9c9c;
   & > * {
@@ -75,8 +80,12 @@ const Footer = styled.div`
 
 const FooterLeft = styled.div`
   display: flex;
+  align-items: center;
   & > * {
-    margin-right: 1rem;
+    margin-right: 0.5rem;
+  }
+  p {
+    font-size: 14px;
   }
 `;
 
@@ -90,6 +99,9 @@ const CommentCount = styled.div`
   }
   &:hover {
     color: ${({ theme: { colors } }) => colors.main};
+  }
+  p {
+    font-size: 14px;
   }
 `;
 

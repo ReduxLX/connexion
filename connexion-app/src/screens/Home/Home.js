@@ -83,10 +83,10 @@ const Home = () => {
   return (
     <PageWrapper>
       <HomeWrapper>
-        {/* <DiscussionSection />
+        <DiscussionSection />
         <PostSection />
-        <TopUsersSection /> */}
-        {renderLong()}
+        <TopUsersSection />
+        {/* {renderLong()} */}
       </HomeWrapper>
     </PageWrapper>
   );
@@ -94,9 +94,6 @@ const Home = () => {
 
 const HomeWrapper = styled.div`
   display: flex;
-  & > * {
-    margin: 0 1rem;
-  }
 `;
 
 export default Home;

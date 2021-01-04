@@ -44,7 +44,7 @@ const DiscussionSection = () => {
           <GoCommentDiscussion
             style={{ color: Theme.colors.main, marginRight: "5px" }}
           />
-          <p>{title}</p>
+          <strong>{title}</strong>
         </Discussion>
       );
     });
@@ -65,9 +65,8 @@ const DiscussionSection = () => {
 };
 
 const SectionWrapper = styled.div`
-  min-width: 100px;
-  /* width: 10%; */
-  flex: 1.5;
+  min-width: 150px;
+  flex: 2;
   & > * {
     margin-bottom: 1.5rem;
   }
@@ -78,12 +77,14 @@ const SectionWrapper = styled.div`
 
 const Discussion = styled.div`
   display: flex;
-  font-weight: bold;
   color: ${({ theme: { colors } }) => colors.disabled};
   transition: 0.2s;
   cursor: pointer;
   &:hover {
     color: ${({ theme: { colors } }) => colors.main};
+  }
+  strong {
+    font-size: 14px;
   }
 `;
 

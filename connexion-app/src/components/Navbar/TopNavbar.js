@@ -183,7 +183,7 @@ const SearchFieldWrapper = styled.div`
   flex: 1;
   max-width: 400px;
   @media (min-width: 768px) {
-    max-width: 300px;
+    max-width: 250px;
   }
 `;
 

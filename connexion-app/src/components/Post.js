@@ -58,6 +58,8 @@ const PostWrapper = styled.div`
 const RatingWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   margin-right: 1rem;
   & > * {
     margin-bottom: 0.5rem;

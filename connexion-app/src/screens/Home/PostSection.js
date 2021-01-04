@@ -97,10 +97,9 @@ const PostSection = () => {
 };
 
 const SectionWrapper = styled.div`
-  /* min-width: 600px; */
-  /* width: 70%; */
-  flex: 6.5;
+  flex: 6;
   text-align: left;
+  margin-right: 1rem;
   & > * {
     margin-bottom: 1rem;
   }
