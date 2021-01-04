@@ -93,7 +93,7 @@ const Home = () => {
 };
 
 const HomeWrapper = styled.div`
-  /* display: flex; */
+  display: flex;
   & > * {
     margin: 0 1rem;
   }

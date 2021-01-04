@@ -8,4 +8,8 @@ export const PageWrapper = styled.div`
   & > * {
     margin: 0 0 2rem;
   }
+  // Gives room for the dropdown search
+  @media (max-width: 768px) {
+    padding: 5rem 2rem 4rem;
+  }
 `;

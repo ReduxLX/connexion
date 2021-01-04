@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { NavLink as Link } from "react-router-dom";
 import { styled as muiStyled } from "@material-ui/styles";
@@ -14,6 +14,7 @@ import {
 import { IoChatboxOutline } from "react-icons/io5";
 import { BiSearch } from "react-icons/bi";
 import Theme from "../Theme";
+import { debounce } from "../utils";
 
 const bottomLinks = [
   { to: "/", label: "Home", icon: <AiOutlineHome /> },
@@ -23,21 +24,42 @@ const bottomLinks = [
 ];
 
 const Navbar = () => {
+  const [prevScrollPos, setPrevScrollPos] = useState(0);
+  const [visible, setVisible] = useState(true);
+
+  const handleScroll = debounce(() => {
+    const currentScrollPos = window.pageYOffset;
+    setVisible(
+      (prevScrollPos > currentScrollPos &&
+        prevScrollPos - currentScrollPos > 70) ||
+        currentScrollPos < 10
+    );
+    setPrevScrollPos(currentScrollPos);
+  }, 100);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [prevScrollPos, visible, handleScroll]);
+
   const renderSearchBar = () => {
     return (
-      <SearchField
-        id="outlined-required"
-        size="small"
-        variant="outlined"
-        placeholder="Search Forum"
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <BiSearch style={{ color: "#0F4C75" }} />
-            </InputAdornment>
-          ),
-        }}
-      />
+      <SearchFieldWrapper>
+        <SearchField
+          id="outlined-required"
+          size="small"
+          variant="outlined"
+          placeholder="Search Forum"
+          fullWidth={true}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <BiSearch style={{ color: "#0F4C75" }} />
+              </InputAdornment>
+            ),
+          }}
+        />
+      </SearchFieldWrapper>
     );
   };
 
@@ -60,20 +82,21 @@ const Navbar = () => {
             <NavLink to="/signup">Log in</NavLink>
           </NavRight>
         </TopNavbarContent>
+        <SearchNavbar visible={visible}>{renderSearchBar()}</SearchNavbar>
       </TopNavbar>
     );
   };
 
   const renderBottomNavbar = () => {
     return (
-      <BottomDrawer>
+      <BottomNavbar>
         <AddPostButton size="small">
           <AiOutlinePlus
             style={{ color: "white", width: "20px", height: "20px" }}
           />
         </AddPostButton>
         <BottomNavList>{renderBottomLinks()}</BottomNavList>
-      </BottomDrawer>
+      </BottomNavbar>
     );
   };
 
@@ -116,7 +139,7 @@ const NavLink = styled(Link)`
 // ------------ Bottom Navbar Styles ------------ //
 // src: https://stackoverflow.com/questions/40515142/how-to-make-a-sticky-footer-in-react
 
-const BottomDrawer = styled.div`
+const BottomNavbar = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -170,10 +193,13 @@ const TopNavbar = styled.div`
   left: 0;
   top: 0;
   display: flex;
+  flex-direction: column;
   flex: 1;
   justify-content: center;
+  align-items: center;
   width: 100%;
-  /* background: white; */
+  z-index: 100;
+  transition: top 0.6s;
 `;
 
 const TopNavbarContent = styled.div`
@@ -182,8 +208,26 @@ const TopNavbarContent = styled.div`
   background: white;
   justify-content: space-between;
   flex: 1;
-  padding: 1rem 1rem 0;
+  padding: 1rem;
   max-width: 1200px;
+  z-index: 150;
+  @media (max-width: 768px) {
+    padding: 0.5rem;
+  }
+`;
+
+const SearchNavbar = styled.div`
+  position: absolute;
+  justify-content: center;
+  width: 100%;
+  max-width: 1200px;
+  top: ${({ visible }) => (visible ? `45px` : `-20px`)};
+  transition: 0.3s;
+  z-index: 200;
+  padding: 0 1rem;
+  @media (min-width: 768px) {
+    display: none;
+  }
 `;
 
 const NavMiddle = styled.div`
@@ -225,16 +269,28 @@ const LogoWrapper = styled.div`
   align-items: center;
   font-family: "Raleway";
   font-weight: 800;
-  font-size: 30px;
+  font-size: 24px;
   color: ${({ theme: { colors } }) => colors.main};
-  @media (max-width: 768px) {
-    font-size: 24px;
+  @media (min-width: 768px) {
+    font-size: 30px;
+  }
+`;
+
+const SearchFieldWrapper = styled.div`
+  flex: 1;
+  max-width: 400px;
+  @media (min-width: 768px) {
+    max-width: 300px;
   }
 `;
 
 const SearchField = muiStyled(TextField)({
   backgroundColor: Theme.colors.form,
   borderRadius: "5px",
+  // border: "4px solid black",
+  "& $notchedOutline": {
+    borderColor: "rgba(0, 0, 0, 0.23)",
+  },
 });
 
 export default Navbar;
