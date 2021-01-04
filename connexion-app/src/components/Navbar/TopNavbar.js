@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { NavLink as Link, useLocation } from "react-router-dom";
 import { styled as muiStyled } from "@material-ui/styles";
@@ -9,7 +9,13 @@ import Theme from "../../Theme";
 
 const TopNavbar = () => {
   const [visible, setVisible] = useState(false);
+  const [height, setHeight] = useState(0);
   const path = useLocation().pathname;
+  const ref = useRef(null);
+
+  useEffect(() => {
+    setHeight(ref.current.clientHeight);
+  }, []);
 
   const displaySearchbar = path === "/" || path === "/discussion";
 
@@ -36,7 +42,7 @@ const TopNavbar = () => {
 
   return (
     <TopNavbarWrapper>
-      <TopNavbarContent>
+      <TopNavbarContent ref={ref}>
         <Link to="/">
           <LogoWrapper>CONNEXION</LogoWrapper>
         </Link>
@@ -60,7 +66,7 @@ const TopNavbar = () => {
           <NavLink to="/signup">Log in</NavLink>
         </NavRight>
       </TopNavbarContent>
-      <SearchNavbar visible={visible && displaySearchbar}>
+      <SearchNavbar visible={visible && displaySearchbar} height={height}>
         {renderSearchBar("searchBarBottom")}
       </SearchNavbar>
     </TopNavbarWrapper>
@@ -109,7 +115,7 @@ const SearchNavbar = styled.div`
   width: 100%;
   background: white;
   max-width: 1200px;
-  top: ${({ visible }) => (visible ? `45px` : `-20px`)};
+  top: ${({ visible, height }) => (visible ? `${height}px` : `-20px`)};
   transition: 0.3s;
   z-index: 125;
   padding: 0 1rem;
