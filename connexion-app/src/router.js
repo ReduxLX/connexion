@@ -1,6 +1,6 @@
 import React from "react";
 import { HashRouter as Router, Route } from "react-router-dom";
-import CombinedNavbar from "./components/CombinedNavbar";
+import Navbar from "./components/Navbar/Navbar";
 import Home from "./screens/Home/Home";
 import Discussion from "./screens/Discussion/Discussion";
 import Leaderboard from "./screens/Leaderboard/Leaderboard";
@@ -18,7 +18,7 @@ const routes = [
 const Routes = () => {
   return (
     <Router>
-      <CombinedNavbar />
+      <Navbar />
       {routes.map(({ path, Component }) => (
         <Route key={path} path={path} exact>
           <Component />
