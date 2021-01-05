@@ -9,13 +9,7 @@ import Theme from "../../Theme";
 
 const TopNavbar = () => {
   const [visible, setVisible] = useState(false);
-  const [height, setHeight] = useState(0);
   const path = useLocation().pathname;
-  const ref = useRef(null);
-
-  useEffect(() => {
-    setHeight(ref.current.clientHeight);
-  }, []);
 
   const displaySearchbar = path === "/" || path === "/discussion";
 
@@ -42,7 +36,7 @@ const TopNavbar = () => {
 
   return (
     <TopNavbarWrapper>
-      <TopNavbarContent ref={ref}>
+      <TopNavbarContent>
         <Link to="/">
           <LogoWrapper>CONNEXION</LogoWrapper>
         </Link>
@@ -66,7 +60,7 @@ const TopNavbar = () => {
           <NavLink to="/signup">Log in</NavLink>
         </NavRight>
       </TopNavbarContent>
-      <SearchNavbar visible={visible && displaySearchbar} height={height}>
+      <SearchNavbar visible={visible && displaySearchbar}>
         {renderSearchBar("searchBarBottom")}
       </SearchNavbar>
     </TopNavbarWrapper>
@@ -115,7 +109,7 @@ const SearchNavbar = styled.div`
   width: 100%;
   background: white;
   max-width: 1200px;
-  top: ${({ visible, height }) => (visible ? `${height}px` : `-20px`)};
+  top: ${({ visible }) => (visible ? `41px` : `-20px`)};
   transition: 0.3s;
   z-index: 125;
   padding: 0 1rem;
