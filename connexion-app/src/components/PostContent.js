@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { GoComment } from "react-icons/go";
 import Chip from "../components/Chip";
 import Avatar from "@material-ui/core/Avatar";
 import ProfileImg1 from "../res/images/avatar1.jpg";
+import TextTruncate from "react-text-truncate";
 
 const PostContent = (props) => {
   const {
@@ -13,16 +14,31 @@ const PostContent = (props) => {
     time = "42s ago",
     comments = 0,
   } = props;
+
+  const [isExpanded, toggleExpand] = useState(false);
   console.log("Render Post Content");
+  const getText = () => body.trim();
   return (
     <PostContentWrapper>
       <PostHeader>
-        <TopicTitle>
-          <h1>{title}</h1>
-        </TopicTitle>
-        <Chip />
+        <TopicTitle>{title}</TopicTitle>
       </PostHeader>
-      <p>{body}</p>
+      <Chip />
+      <PostBody>
+        {!isExpanded ? (
+          <TextTruncate
+            line={3}
+            element="span"
+            truncateText="…"
+            text={getText()}
+            textTruncateChild={
+              <ReadMore onClick={() => toggleExpand(true)}>Read More</ReadMore>
+            }
+          />
+        ) : (
+          body
+        )}
+      </PostBody>
       <hr />
       <Footer>
         <FooterLeft>
@@ -47,22 +63,47 @@ const PostContent = (props) => {
 
 const PostContentWrapper = styled.div`
   min-width: 350px;
-  padding: 1rem 1.5rem;
+  max-width: 700px;
+  padding: 1rem 2rem;
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
   border-radius: 5px;
   text-align: left;
+  word-wrap: break-word;
   & > * {
     margin-bottom: 0.5rem;
   }
 `;
 
 const PostHeader = styled.div`
+  display: table;
+  table-layout: fixed;
   width: 100%;
 `;
 
+const PostBody = styled.div`
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+  word-wrap: break-word;
+`;
+
+const ReadMore = styled.a`
+  cursor: pointer;
+  color: ${({ theme: { colors } }) => colors.disabled};
+  &:hover {
+    color: ${({ theme: { colors } }) => colors.main};
+  }
+`;
+
 const TopicTitle = styled.div`
+  display: table-cell;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
   margin-bottom: 5px;
   transition: 0.2s;
+  font-size: 20px;
+  font-family: "NunitoBold";
   cursor: pointer;
   &:hover {
     color: ${({ theme: { colors } }) => colors.main};

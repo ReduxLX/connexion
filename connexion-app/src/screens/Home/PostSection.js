@@ -15,7 +15,7 @@ const fakePosts = [
     title:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     body:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. A cursus eros congue at tristique et nunc sollicitudin. Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+      "nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword",
     poster: "NaomiEX",
     comments: 5,
   },
@@ -23,7 +23,7 @@ const fakePosts = [
     id: 2,
     title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     body:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. A cursus eros congue at tristique et nunc sollicitudin. Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lacinia, turpis eu euismod venenatis, nulla magna convallis tortor, eu blandit nibh ante non orci. Nunc sed ante volutpat, suscipit libero sit amet, vestibulum ex. Vestibulum in fringilla augue. Integer ligula enim, scelerisque et maximus id, pellentesque id dui. Vestibulum at mattis massa. Fusce viverra iaculis faucibus. Vestibulum molestie sapien vel mauris varius molestie non sed metus. Duis placerat ac ligula porttitor varius. Cras eu vulputate velit, sit amet gravida mauris. Duis non dictum erat, non semper ligula. Phasellus id sem quis eros tempor accumsan ut ac tellus. Ut dignissim accumsan justo vitae porttitor.",
     poster: "NaomiEX",
     comments: 5,
   },
@@ -31,7 +31,7 @@ const fakePosts = [
     id: 3,
     title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     body:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. A cursus eros congue at tristique et nunc sollicitudin. Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+      "I am a moderately short post, not too short and not too long, this should not have a read more as it is only two lines long",
     poster: "NaomiEX",
     comments: 5,
   },
@@ -39,7 +39,7 @@ const fakePosts = [
     id: 4,
     title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     body:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. A cursus eros congue at tristique et nunc sollicitudin. Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+      "This text will fit 2 lines approximately on a desktop monitor, read more should not apply but maybe sometimes it does, well lets find out shall we__________",
     poster: "NaomiEX",
     comments: 5,
   },
@@ -47,7 +47,7 @@ const fakePosts = [
     id: 5,
     title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     body:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. A cursus eros congue at tristique et nunc sollicitudin. Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+      "This text tests the boundary of when text starts to truncate, read more should pop up when removing/adding 1 character making this a nice edge case. From the looks of things, it seems to only truncate after the third line overflows which is allright ?  ?",
     poster: "NaomiEX",
     comments: 5,
   },
