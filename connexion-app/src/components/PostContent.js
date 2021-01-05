@@ -16,12 +16,12 @@ const PostContent = (props) => {
   console.log("Render Post Content");
   return (
     <PostContentWrapper>
-      <div>
+      <PostHeader>
         <TopicTitle>
           <h1>{title}</h1>
         </TopicTitle>
         <Chip />
-      </div>
+      </PostHeader>
       <p>{body}</p>
       <hr />
       <Footer>
@@ -54,6 +54,10 @@ const PostContentWrapper = styled.div`
   & > * {
     margin-bottom: 0.5rem;
   }
+`;
+
+const PostHeader = styled.div`
+  width: 100%;
 `;
 
 const TopicTitle = styled.div`

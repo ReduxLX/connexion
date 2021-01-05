@@ -4,7 +4,7 @@ const GlobalStyle = createGlobalStyle`
   * {
     margin: 0;
     padding: 0;
-    font-family: 'Helvetica', sans-serif;
+    font-family: 'Nunito', sans-serif;
     text-decoration: none;
     box-sizing: border-box;
     font-size: 16px;
@@ -33,6 +33,10 @@ const GlobalStyle = createGlobalStyle`
   input{
     border: none;
     outline: none;
+  }
+
+  hr{
+
   }
 `;
 

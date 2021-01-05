@@ -6,19 +6,21 @@
 }
 
 @font-face {
-  font-family: "Helvetica";
-  src: local("Helvetica"), url(./res/fonts/Helvetica.ttf) format("opentype");
+  font-family: "NunitoBold";
+  src: local("Nunito"), url(./res/fonts/Nunito-Bold.ttf) format("opentype");
 }
 
 @font-face {
-  font-family: "Helvetica";
-  src: local("Helvetica"),
-    url(./res/fonts/Helvetica-Light.ttf) format("opentype");
-  font-weight: lighter;
+  font-family: "NunitoSemiBold";
+  src: local("Nunito"), url(./res/fonts/Nunito-SemiBold.ttf) format("opentype");
 }
+
 @font-face {
-  font-family: "Helvetica";
-  src: local("Helvetica"),
-    url(./res/fonts/Helvetica-Bold.ttf) format("opentype");
-  font-weight: bold;
+  font-family: "NunitoLight";
+  src: local("Nunito"), url(./res/fonts/Nunito-Light.ttf) format("opentype");
+}
+
+@font-face {
+  font-family: "NunitoExtraBold";
+  src: local("Nunito"), url(./res/fonts/Nunito-ExtraBold.ttf) format("opentype");
 }

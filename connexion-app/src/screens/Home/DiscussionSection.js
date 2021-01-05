@@ -12,7 +12,7 @@ const fakeDiscussions = [
   },
   {
     id: 2,
-    title: "Units",
+    title: "Newcomers Ahoy",
   },
   {
     id: 3,
@@ -32,7 +32,7 @@ const fakeDiscussions = [
   },
   {
     id: 7,
-    title: "Category 4",
+    title: "Super Long Category with very important stuff",
   },
 ];
 
@@ -41,9 +41,9 @@ const DiscussionSection = () => {
     return fakeDiscussions.map(({ id, title }) => {
       return (
         <Discussion key={id}>
-          <GoCommentDiscussion
-            style={{ color: Theme.colors.main, marginRight: "5px" }}
-          />
+          <div>
+            <DiscussionLogo />
+          </div>
           <strong>{title}</strong>
         </Discussion>
       );
@@ -54,11 +54,12 @@ const DiscussionSection = () => {
     <SectionWrapper>
       <NewDiscussionButton>Start a New Topic</NewDiscussionButton>
       <Discussion>
-        <GoCommentDiscussion
-          style={{ color: Theme.colors.main, marginRight: "5px" }}
-        />
-        <p>All Discussions</p>
+        <div>
+          <DiscussionLogo />
+        </div>
+        <strong>All Categories</strong>
       </Discussion>
+      <br />
       {renderDiscussions()}
     </SectionWrapper>
   );
@@ -68,7 +69,7 @@ const SectionWrapper = styled.div`
   min-width: 150px;
   flex: 2;
   & > * {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
   }
   @media (max-width: 768px) {
     display: none;
@@ -77,6 +78,7 @@ const SectionWrapper = styled.div`
 
 const Discussion = styled.div`
   display: flex;
+  width: 90%;
   color: ${({ theme: { colors } }) => colors.disabled};
   transition: 0.2s;
   cursor: pointer;
@@ -84,8 +86,19 @@ const Discussion = styled.div`
     color: ${({ theme: { colors } }) => colors.main};
   }
   strong {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-family: "NunitoBold";
     font-size: 14px;
   }
+`;
+
+const DiscussionLogo = styled(GoCommentDiscussion)`
+  &:hover {
+    color: ${({ theme: { colors } }) => colors.main};
+  }
+  margin-right: 10px;
 `;
 
 const NewDiscussionButton = muiStyled(Button)({
@@ -95,6 +108,7 @@ const NewDiscussionButton = muiStyled(Button)({
   textTransform: "none",
   padding: "0.6rem 1.2rem",
   marginBottom: "2rem",
+
   "&:hover": {
     backgroundColor: `${Theme.colors.main_dark}`,
   },

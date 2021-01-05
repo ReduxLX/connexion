@@ -12,7 +12,8 @@ import * as actHome from "./ac-Home";
 const fakePosts = [
   {
     id: 1,
-    title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    title:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     body:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. A cursus eros congue at tristique et nunc sollicitudin. Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
     poster: "NaomiEX",
@@ -71,7 +72,6 @@ const PostSection = () => {
   const renderDropdown = () => {
     return (
       <CustomForm variant="outlined" hiddenLabel={true} size="small">
-        {/* <InputLabel id="demo-simple-select-outlined-label">Sort by</InputLabel> */}
         <CustomSelect
           id="demo-simple-select-outlined"
           value={sortPostsBy}
