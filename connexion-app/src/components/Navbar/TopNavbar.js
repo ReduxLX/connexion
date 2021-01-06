@@ -86,6 +86,7 @@ const TopNavbarWrapper = styled.div`
   width: 100%;
   z-index: 100;
   transition: top 0.6s;
+  border-bottom: 2px solid #e5e5e5;
 `;
 
 const TopNavbarContent = styled.div`

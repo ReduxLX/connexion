@@ -52,7 +52,9 @@ const DiscussionSection = () => {
 
   return (
     <SectionWrapper>
-      <NewDiscussionButton>Start a New Topic</NewDiscussionButton>
+      <div style={{ textAlign: "left" }}>
+        <NewDiscussionButton>Start a New Topic</NewDiscussionButton>
+      </div>
       <Discussion>
         <div>
           <DiscussionLogo />
@@ -106,9 +108,8 @@ const NewDiscussionButton = muiStyled(Button)({
   color: "white",
   fontSize: "14px",
   textTransform: "none",
-  padding: "0.6rem 1.2rem",
+  padding: "0.6rem 0.8rem",
   marginBottom: "2rem",
-
   "&:hover": {
     backgroundColor: `${Theme.colors.main_dark}`,
   },

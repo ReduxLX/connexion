@@ -15,29 +15,21 @@ const PostContent = (props) => {
     comments = 0,
   } = props;
 
-  const [isExpanded, toggleExpand] = useState(false);
   console.log("Render Post Content");
-  const getText = () => body.trim();
+
   return (
     <PostContentWrapper>
       <PostHeader>
-        <TopicTitle>{title}</TopicTitle>
+        <h1>{title.trim()}</h1>
       </PostHeader>
       <Chip />
       <PostBody>
-        {!isExpanded ? (
-          <TextTruncate
-            line={3}
-            element="span"
-            truncateText="…"
-            text={getText()}
-            textTruncateChild={
-              <ReadMore onClick={() => toggleExpand(true)}>Read More</ReadMore>
-            }
-          />
-        ) : (
-          body
-        )}
+        <TextTruncate
+          line={3}
+          element="span"
+          truncateText="…"
+          text={body.trim()}
+        />
       </PostBody>
       <hr />
       <Footer>
@@ -64,7 +56,7 @@ const PostContent = (props) => {
 const PostContentWrapper = styled.div`
   min-width: 350px;
   max-width: 700px;
-  padding: 1rem 2rem;
+  padding: 1rem 2rem 0.5rem;
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
   border-radius: 5px;
   text-align: left;
@@ -74,12 +66,6 @@ const PostContentWrapper = styled.div`
   }
 `;
 
-const PostHeader = styled.div`
-  display: table;
-  table-layout: fixed;
-  width: 100%;
-`;
-
 const PostBody = styled.div`
   display: table;
   table-layout: fixed;
@@ -87,24 +73,20 @@ const PostBody = styled.div`
   word-wrap: break-word;
 `;
 
-const ReadMore = styled.a`
-  cursor: pointer;
-  color: ${({ theme: { colors } }) => colors.disabled};
-  &:hover {
-    color: ${({ theme: { colors } }) => colors.main};
-  }
-`;
-
-const TopicTitle = styled.div`
-  display: table-cell;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
+const PostHeader = styled.div`
   margin-bottom: 5px;
   transition: 0.2s;
   font-size: 20px;
   font-family: "NunitoBold";
   cursor: pointer;
+  &:hover {
+    color: ${({ theme: { colors } }) => colors.main};
+  }
+`;
+
+const ReadMore = styled.a`
+  cursor: pointer;
+  color: ${({ theme: { colors } }) => colors.disabled};
   &:hover {
     color: ${({ theme: { colors } }) => colors.main};
   }

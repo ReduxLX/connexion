@@ -18,7 +18,7 @@ const NavWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   margin: auto;
-  padding: 0.5rem 1rem;
+  padding: 1rem;
   max-width: 1200px;
 `;
 

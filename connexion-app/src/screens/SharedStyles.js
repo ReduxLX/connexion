@@ -10,6 +10,6 @@ export const PageWrapper = styled.div`
   }
   // Gives room for the dropdown search
   @media (max-width: 768px) {
-    padding: 5rem 2rem 4rem;
+    padding: 1.5rem 2rem 4rem;
   }
 `;

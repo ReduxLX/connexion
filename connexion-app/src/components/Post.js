@@ -39,7 +39,10 @@ const Post = (props) => {
         <div onClick={() => handleUpvote()}>
           <Upvote hasupvoted={hasUpvoted.toString()} />
         </div>
-        <Rating rating={rating}>{rating}</Rating>
+
+        <Rating hasUpvoted={hasUpvoted} hasDownvoted={hasDownvoted}>
+          {rating}
+        </Rating>
         <div onClick={() => handleDownvote()}>
           <Downvote hasdownvoted={hasDownvoted.toString()} />
         </div>
@@ -67,12 +70,13 @@ const RatingWrapper = styled.div`
 `;
 
 const Rating = styled.strong`
-  color: ${({ rating }) =>
-    rating === 0
-      ? Theme.colors.disabled
-      : rating > 0
+  align-items: center;
+  color: ${({ hasUpvoted, hasDownvoted }) =>
+    hasUpvoted
       ? Theme.colors.main
-      : Theme.colors.error};
+      : hasDownvoted
+      ? Theme.colors.error
+      : Theme.colors.disabled};
 `;
 
 const Upvote = styled(FaArrowUp)`
