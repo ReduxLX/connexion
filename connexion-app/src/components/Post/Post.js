@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
-import Theme from "../Theme";
+import Theme from "../../Theme";
 import PostContent from "./PostContent";
+import { truncateNum } from "../../utils";
 
 const Post = (props) => {
   const { initialRating = 0 } = props;
@@ -40,14 +41,25 @@ const Post = (props) => {
           <Upvote hasupvoted={hasUpvoted.toString()} />
         </div>
 
-        <Rating hasUpvoted={hasUpvoted} hasDownvoted={hasDownvoted}>
-          {rating}
+        <Rating
+          hasUpvoted={hasUpvoted}
+          hasDownvoted={hasDownvoted}
+          rating={truncateNum(rating)}
+        >
+          {truncateNum(rating)}
         </Rating>
         <div onClick={() => handleDownvote()}>
           <Downvote hasdownvoted={hasDownvoted.toString()} />
         </div>
       </RatingWrapper>
-      <PostContent {...props} />
+      <PostContent
+        rating={rating}
+        hasDownvoted={hasDownvoted}
+        hasUpvoted={hasUpvoted}
+        handleUpvote={handleUpvote}
+        handleDownvote={handleDownvote}
+        {...props}
+      />
     </PostWrapper>
   );
 };
@@ -59,18 +71,23 @@ const PostWrapper = styled.div`
 `;
 
 const RatingWrapper = styled.div`
-  display: flex;
+  display: none;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-right: 1rem;
+  margin-right: 0.4rem;
+  min-width: 40px;
   & > * {
     margin-bottom: 0.5rem;
+  }
+  @media (min-width: 768px) {
+    display: flex;
   }
 `;
 
 const Rating = styled.strong`
   align-items: center;
+  font-size: ${({ rating }) => (rating.length > 2 ? "12px" : "16px")};
   color: ${({ hasUpvoted, hasDownvoted }) =>
     hasUpvoted
       ? Theme.colors.main

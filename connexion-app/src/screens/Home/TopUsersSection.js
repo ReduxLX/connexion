@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Avatar from "@material-ui/core/Avatar";
 import ProfileImg1 from "../../res/images/avatar1.jpg";
+import { truncateNum } from "../../utils";
 
 const fakeTopUsers = [
   {
@@ -53,7 +54,7 @@ const TopUsersSection = () => {
           </TextGroup>
         </UserBody>
         <UserRank>
-          <p>{points < 10000 ? points : `${points % 1000}k`}</p>
+          <p>{truncateNum(points)}</p>
         </UserRank>
       </UserWrapper>
     );

@@ -5,7 +5,7 @@ import { styled as muiStyled } from "@material-ui/styles";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
-import Post from "../../components/Post";
+import Post from "../../components/Post/Post";
 import Theme from "../../Theme";
 import * as actHome from "./ac-Home";
 
@@ -15,18 +15,18 @@ const fakePosts = [
     title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     body:
       "nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword",
-    poster: "NaomiEX",
-    comments: 5,
-    rating: -1,
+    poster: "Arthur Calahan",
+    comments: 100,
+    rating: 100000,
   },
   {
     id: 2,
     title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     body:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lacinia, turpis eu euismod venenatis, nulla magna convallis tortor, eu blandit nibh ante non orci. Nunc sed ante volutpat, suscipit libero sit amet, vestibulum ex. Vestibulum in fringilla augue. Integer ligula enim, scelerisque et maximus id, pellentesque id dui. Vestibulum at mattis massa. Fusce viverra iaculis faucibus. Vestibulum molestie sapien vel mauris varius molestie non sed metus. Duis placerat ac ligula porttitor varius. Cras eu vulputate velit, sit amet gravida mauris. Duis non dictum erat, non semper ligula. Phasellus id sem quis eros tempor accumsan ut ac tellus. Ut dignissim accumsan justo vitae porttitor.",
-    poster: "NaomiEX",
+    poster: "Marius Von Augustus Herr",
     comments: 5,
-    rating: 1,
+    rating: 999,
   },
   {
     id: 3,
@@ -108,10 +108,19 @@ const SectionWrapper = styled.div`
   & > * {
     margin-bottom: 1rem;
   }
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+  }
 `;
 
 const DropdownWrapper = styled.div`
   text-align: left;
+  width: 100%;
   margin-bottom: 1.5rem;
   margin-left: 1.5rem;
 `;

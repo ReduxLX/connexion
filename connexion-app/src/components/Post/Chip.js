@@ -19,6 +19,9 @@ const ChipWrapper = styled.div`
     color: white;
     cursor: pointer;
   }
+  @media (max-width: 768px) {
+    font-size: 12px;
+  }
 `;
 
 export default React.memo(Chip);
