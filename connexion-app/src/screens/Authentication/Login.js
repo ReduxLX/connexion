@@ -6,9 +6,9 @@ import { styled as muiStyled } from "@material-ui/styles";
 import Button from "@material-ui/core/Button";
 import { FcGoogle } from "react-icons/fc";
 import Theme from "../../Theme";
-import SignupBg from "../../res/images/Signup.png";
+import LoginBg from "../../res/images/Login.png";
 
-const Signup = () => {
+const Login = () => {
   const { register, handleSubmit } = useForm();
   return (
     <Wrapper>
@@ -21,7 +21,7 @@ const Signup = () => {
             console.log(formData);
           })}
         >
-          <Title>Create an account</Title>
+          <Title>Sign in</Title>
           <Section>
             <InputLabel htmlFor="username">Username</InputLabel>
             <Input
@@ -53,20 +53,20 @@ const Signup = () => {
             />
           </Section>
           <Section>
-            <SignupButton type="submit">Sign Up</SignupButton>
-            <GoogleSignupButton
+            <LoginButton type="submit">Sign In</LoginButton>
+            <GoogleLoginButton
               type="submit"
               startIcon={<FcGoogle style={{ width: "25px", height: "25px" }} />}
             >
-              Sign up with Google
-            </GoogleSignupButton>
+              Sign in with Google
+            </GoogleLoginButton>
             <p>
-              Already have an account? <Link to="/login">Sign in</Link>
+              Don't have an account yet? <Link to="/signup">Sign up</Link>
             </p>
           </Section>
         </Form>
       </FullpageWrapper>
-      <Background img={SignupBg}></Background>
+      <Background img={LoginBg}></Background>
     </Wrapper>
   );
 };
@@ -79,6 +79,7 @@ const FullpageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
+  background: ${({ theme: { colors } }) => colors.main};
   flex: 1;
   padding: 1.5rem 3rem;
   max-width: 1200px;
@@ -109,12 +110,12 @@ const Section = styled.div`
   }
 
   a {
-    color: ${({ theme: { colors } }) => colors.main};
+    color: white;
   }
 `;
 
 const InputLabel = styled.label`
-  color: ${({ theme: { colors } }) => colors.main};
+  color: white;
   margin-left: 1rem;
   margin-bottom: 0.3rem;
   font-size: 18px;
@@ -122,41 +123,45 @@ const InputLabel = styled.label`
 
 const Input = styled.input`
   padding: 0.5rem;
-  border: ${({ theme: { colors } }) => `1px solid ${colors.disabled}`};
+  border: 1px solid white;
   border-radius: 5px;
-
+  background: ${({ theme: { colors } }) => colors.main};
+  color: white;
   &:hover {
-    border: 1px solid black;
+    border: 1px solid rgb(365, 365, 365, 0.5);
   }
   &:focus {
-    border: ${({ theme: { colors } }) => `2px solid ${colors.main}`};
+    border: 2px solid white;
+  }
+  &::placeholder {
+    color: rgb(365, 365, 365, 0.5);
   }
 `;
 
-const SignupButton = muiStyled(Button)({
-  background: Theme.colors.main,
-  color: "white",
+const LoginButton = muiStyled(Button)({
+  background: "white",
+  color: Theme.colors.main,
   fontSize: "14px",
   textTransform: "none",
   padding: "0.6rem 0.8rem",
   marginBottom: "1rem",
   "&:hover": {
-    backgroundColor: `${Theme.colors.main_dark}`,
+    backgroundColor: "white",
   },
 });
 
-const GoogleSignupButton = muiStyled(SignupButton)({
-  background: "white",
-  color: Theme.colors.main,
-  border: `1px solid ${Theme.colors.disabled}`,
+const GoogleLoginButton = muiStyled(LoginButton)({
+  background: "transparent",
+  color: "white",
+  border: `1px solid white`,
   borderRadius: "5px",
   "&:hover": {
-    backgroundColor: "#ebebeb",
+    backgroundColor: "transparent",
   },
 });
 
 const Title = styled.h1`
-  color: ${({ theme: { colors } }) => colors.main};
+  color: white;
   font-family: "Nunito";
   font-weight: lighter;
   font-size: 36px;
@@ -174,7 +179,7 @@ const LogoWrapper = styled.div`
   font-family: "Raleway";
   font-weight: 800;
   font-size: 20px;
-  color: ${({ theme: { colors } }) => colors.main};
+  color: white;
   @media (min-width: 768px) {
     font-size: 30px;
   }
@@ -191,4 +196,4 @@ const Background = styled.div`
   }
 `;
 
-export default Signup;
+export default Login;
