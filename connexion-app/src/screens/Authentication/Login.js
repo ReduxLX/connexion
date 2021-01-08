@@ -38,6 +38,10 @@ const Login = () => {
                   value: 5,
                   message: "Username must be more than 5 characters",
                 },
+                maxLength: {
+                  value: 20,
+                  message: "Username must not exceed 20 characters",
+                },
               })}
             />
             <ErrorLabel>
@@ -78,6 +82,10 @@ const Login = () => {
                 minLength: {
                   value: 5,
                   message: "Password must be more than 5 characters",
+                },
+                maxLength: {
+                  value: 30,
+                  message: "Password must not exceed 30 characters",
                 },
                 validate: (value) => {
                   return (
