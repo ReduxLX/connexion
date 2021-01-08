@@ -173,10 +173,10 @@ const LogoWrapper = styled.div`
   align-items: center;
   font-family: "Raleway";
   font-weight: 800;
-  font-size: 20px;
+  font-size: 30px;
   color: ${({ theme: { colors } }) => colors.main};
-  @media (min-width: 768px) {
-    font-size: 30px;
+  @media (max-width: 768px) {
+    font-size: 20px;
   }
 `;
 

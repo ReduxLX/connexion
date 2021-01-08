@@ -54,7 +54,7 @@ const NavLink = styled(Link)`
 // src: https://stackoverflow.com/questions/40515142/how-to-make-a-sticky-footer-in-react
 
 const BottomNavbarWrapper = styled.div`
-  display: flex;
+  display: none;
   justify-content: center;
   align-items: center;
   background-color: white;
@@ -64,9 +64,9 @@ const BottomNavbarWrapper = styled.div`
   height: 50px;
   width: 100%;
   z-index: 999;
-  @media (min-width: 768px) {
-    display: none;
-    font-size: 14px;
+  font-size: 14px;
+  @media (max-width: 768px) {
+    display: flex;
   }
 `;
 

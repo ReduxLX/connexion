@@ -104,8 +104,8 @@ const TopNavbarContent = styled.div`
 `;
 
 const SearchNavbar = styled.div`
+  display: none;
   position: absolute;
-  display: flex;
   justify-content: center;
   width: 100%;
   background: white;
@@ -114,8 +114,8 @@ const SearchNavbar = styled.div`
   transition: 0.3s;
   z-index: 125;
   padding: 0 1rem;
-  @media (min-width: 768px) {
-    display: none;
+  @media (max-width: 768px) {
+    display: flex;
   }
 `;
 
@@ -158,27 +158,27 @@ const LogoWrapper = styled.div`
   align-items: center;
   font-family: "Raleway";
   font-weight: 800;
-  font-size: 20px;
+  font-size: 30px;
   color: ${({ theme: { colors } }) => colors.main};
-  @media (min-width: 768px) {
-    font-size: 30px;
+  @media (max-width: 768px) {
+    font-size: 20px;
   }
 `;
 
 const SearchButton = styled.button`
   width: 25px;
   height: 25px;
-  display: ${({ visible }) => (visible ? "flex" : "none")};
-  @media (min-width: 768px) {
-    display: none;
+  display: none;
+  @media (max-width: 768px) {
+    display: ${({ visible }) => (visible ? "flex" : "none")};
   }
 `;
 
 const SearchFieldWrapper = styled.div`
   flex: 1;
-  max-width: 400px;
-  @media (min-width: 768px) {
-    max-width: 250px;
+  max-width: 250px;
+  @media (max-width: 768px) {
+    max-width: 400px;
   }
 `;
 
