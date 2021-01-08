@@ -8,6 +8,7 @@ const theme = {
     disabled: "#9C9C9C",
     confirm: "#199a78",
     error: "#F85F73",
+    warning: "#FFC700",
   },
 };
 

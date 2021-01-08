@@ -7,9 +7,11 @@ import Button from "@material-ui/core/Button";
 import { FcGoogle } from "react-icons/fc";
 import Theme from "../../Theme";
 import SignupBg from "../../res/images/Signup.png";
+import { email_regex } from "../../utils/constants";
 
 const Signup = () => {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, errors } = useForm();
+
   return (
     <Wrapper>
       <FullpageWrapper>
@@ -29,8 +31,18 @@ const Signup = () => {
               type="text"
               name="username"
               placeholder="Enter your username"
-              ref={register()}
+              isErrorActive={errors.username}
+              ref={register({
+                required: "Username is required",
+                minLength: {
+                  value: 5,
+                  message: "Username must be more than 5 characters",
+                },
+              })}
             />
+            <ErrorLabel>
+              {errors.username ? errors.username.message : null}
+            </ErrorLabel>
           </Section>
           <Section>
             <InputLabel htmlFor="email">Email</InputLabel>
@@ -39,8 +51,19 @@ const Signup = () => {
               type="text"
               name="email"
               placeholder="Enter your email address"
-              ref={register()}
+              isErrorActive={errors.email}
+              ref={register({
+                required: "Email address is required",
+                validate: (value) => {
+                  return (
+                    email_regex.test(value) || "Please enter a valid email"
+                  );
+                },
+              })}
             />
+            <ErrorLabel>
+              {errors.email ? errors.email.message : null}
+            </ErrorLabel>
           </Section>
           <Section>
             <InputLabel htmlFor="password">Password</InputLabel>
@@ -49,10 +72,27 @@ const Signup = () => {
               type="password"
               name="password"
               placeholder="Enter your password"
-              ref={register()}
+              isErrorActive={errors.password}
+              ref={register({
+                required: "Password is required",
+                minLength: {
+                  value: 5,
+                  message: "Password must be more than 5 characters",
+                },
+                validate: (value) => {
+                  return (
+                    [/[a-zA-Z]/, /[0-9]/].every((pattern) =>
+                      pattern.test(value)
+                    ) || "Must include a letter and number"
+                  );
+                },
+              })}
             />
+            <ErrorLabel>
+              {errors.password ? errors.password.message : null}
+            </ErrorLabel>
           </Section>
-          <Section>
+          <ButtonSection>
             <SignupButton type="submit">Sign Up</SignupButton>
             <GoogleSignupButton
               type="submit"
@@ -63,7 +103,7 @@ const Signup = () => {
             <p>
               Already have an account? <Link to="/login">Sign in</Link>
             </p>
-          </Section>
+          </ButtonSection>
         </Form>
       </FullpageWrapper>
       <Background img={SignupBg}></Background>
@@ -73,12 +113,13 @@ const Signup = () => {
 
 const Wrapper = styled.div`
   display: flex;
+  height: 100vh;
 `;
 
 const FullpageWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100%;
   flex: 1;
   padding: 1.5rem 3rem;
   max-width: 1200px;
@@ -99,18 +140,20 @@ const Form = styled.form`
 
 const Section = styled.div`
   display: flex;
-  height: 60px;
+  height: 65px;
   flex: 1;
   flex-direction: column;
   text-align: left;
   justify-content: flex-start;
-  p {
-    color: ${({ theme: { colors } }) => colors.disabled};
-  }
 
   a {
     color: ${({ theme: { colors } }) => colors.main};
   }
+`;
+
+const ButtonSection = styled(Section)`
+  height: auto;
+  margin-top: 3rem;
 `;
 
 const InputLabel = styled.label`
@@ -122,14 +165,19 @@ const InputLabel = styled.label`
 
 const Input = styled.input`
   padding: 0.5rem;
-  border: ${({ theme: { colors } }) => `1px solid ${colors.disabled}`};
+  border: ${({ theme: { colors }, isErrorActive }) =>
+    isErrorActive
+      ? `2px solid ${colors.error}`
+      : `1px solid ${colors.disabled}`};
   border-radius: 5px;
 
   &:hover {
-    border: 1px solid black;
+    border: ${({ theme: { colors }, isErrorActive }) =>
+      isErrorActive ? `2px solid ${colors.error}` : `1px solid black`};
   }
   &:focus {
-    border: ${({ theme: { colors } }) => `2px solid ${colors.main}`};
+    border: ${({ theme: { colors }, isErrorActive }) =>
+      isErrorActive ? `2px solid ${colors.error}` : `2px solid ${colors.main}`};
   }
 `;
 
@@ -165,6 +213,7 @@ const Title = styled.h1`
   margin-left: 1rem;
   @media (max-width: 768px) {
     font-size: 24px;
+    margin-top: -0.3rem;
   }
 `;
 
@@ -188,6 +237,13 @@ const Background = styled.div`
   flex: 2;
   @media (max-width: 768px) {
     display: none;
+  }
+`;
+
+const ErrorLabel = styled.p`
+  color: ${({ theme: { colors } }) => colors.error};
+  @media (max-width: 768px) {
+    font-size: 12px;
   }
 `;
 
