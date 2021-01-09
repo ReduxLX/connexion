@@ -10,7 +10,8 @@ import SignupBg from "../../res/images/Signup.png";
 import { email_regex } from "../../utils/constants";
 
 const Signup = () => {
-  const { register, handleSubmit, errors } = useForm();
+  const { register, watch, handleSubmit, errors } = useForm();
+  const watchPassword = watch("password", "");
 
   return (
     <Wrapper>
@@ -100,6 +101,27 @@ const Signup = () => {
               {errors.password ? errors.password.message : null}
             </ErrorLabel>
           </Section>
+          <Section>
+            <InputLabel htmlFor="confirmPassword">Confirm Password</InputLabel>
+            <Input
+              id="confirmPassword"
+              type="confirmPassword"
+              name="confirmPassword"
+              placeholder="Re-enter your password"
+              isErrorActive={errors.confirmPassword}
+              ref={register({
+                required: "Please confirm your password",
+                validate: (value) => {
+                  return (
+                    watchPassword === value || "Passwords are not matching"
+                  );
+                },
+              })}
+            />
+            <ErrorLabel>
+              {errors.confirmPassword ? errors.confirmPassword.message : null}
+            </ErrorLabel>
+          </Section>
           <ButtonSection>
             <SignupButton type="submit">Sign Up</SignupButton>
             <GoogleSignupButton
@@ -121,13 +143,12 @@ const Signup = () => {
 
 const Wrapper = styled.div`
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
 `;
 
 const FullpageWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%;
   flex: 1;
   padding: 1.5rem 3rem;
   max-width: 1200px;
@@ -241,7 +262,6 @@ const Background = styled.div`
   background-image: ${({ img }) => `url(${img})`};
   background-size: cover;
   background-position: left;
-  height: 100vh;
   flex: 2;
   @media (max-width: 768px) {
     display: none;

@@ -121,13 +121,12 @@ const Login = () => {
 
 const Wrapper = styled.div`
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
 `;
 
 const FullpageWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%;
   flex: 1;
   background: ${({ theme: { colors } }) => colors.main};
   padding: 1.5rem 3rem;
@@ -246,7 +245,6 @@ const Background = styled.div`
   background-image: ${({ img }) => `url(${img})`};
   background-size: cover;
   background-position: left;
-  height: 100vh;
   flex: 2;
   @media (max-width: 768px) {
     display: none;
