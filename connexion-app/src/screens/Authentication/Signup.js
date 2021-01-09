@@ -1,17 +1,20 @@
 import React from "react";
 import styled from "styled-components";
+import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { styled as muiStyled } from "@material-ui/styles";
 import Button from "@material-ui/core/Button";
 import { FcGoogle } from "react-icons/fc";
-import Theme from "../../Theme";
-import SignupBg from "../../res/images/Signup.png";
 import { email_regex } from "../../utils/constants";
+import SignupBg from "../../res/images/Signup.png";
+import Theme from "../../Theme";
+import * as actApp from "../../store/App/ac-App";
 
 const Signup = () => {
   const { register, watch, handleSubmit, errors } = useForm();
   const watchPassword = watch("password", "");
+  const dispatch = useDispatch();
 
   return (
     <Wrapper>
@@ -22,6 +25,8 @@ const Signup = () => {
         <Form
           onSubmit={handleSubmit((formData) => {
             console.log(formData);
+            const { email, password } = formData;
+            dispatch(actApp.signup(email, password));
           })}
         >
           <Title>Create an account</Title>
@@ -105,7 +110,7 @@ const Signup = () => {
             <InputLabel htmlFor="confirmPassword">Confirm Password</InputLabel>
             <Input
               id="confirmPassword"
-              type="confirmPassword"
+              type="password"
               name="confirmPassword"
               placeholder="Re-enter your password"
               isErrorActive={errors.confirmPassword}
