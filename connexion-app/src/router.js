@@ -7,6 +7,8 @@ import Leaderboard from "./screens/Leaderboard/Leaderboard";
 import About from "./screens/About/About";
 import Signup from "./screens/Authentication/Signup";
 import Login from "./screens/Authentication/Login";
+import CreateTopic from "./screens/CreateTopic/CreateTopic";
+import PostDetails from "./screens/PostDetails/PostDetails";
 
 const routes = [
   { path: "/", Component: Home },
@@ -15,6 +17,8 @@ const routes = [
   { path: "/about", Component: About },
   { path: "/signup", Component: Signup },
   { path: "/login", Component: Login },
+  { path: "/createtopic", Component: CreateTopic },
+  { path: "/post", Component: PostDetails },
 ];
 
 const Routes = () => {
