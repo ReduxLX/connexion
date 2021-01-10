@@ -9,6 +9,7 @@ const theme = {
     disabled_light: "#C9C9C9",
     confirm: "#199a78",
     error: "#F85F73",
+    warning: "#FFC700",
   },
 };
 

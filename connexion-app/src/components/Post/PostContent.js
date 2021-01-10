@@ -124,14 +124,14 @@ const PostBody = styled.div`
 const PostHeader = styled.h1`
   margin-bottom: 5px;
   transition: 0.2s;
-  font-size: 16px;
+  font-size: 20px;
   font-family: "NunitoBold";
   cursor: pointer;
   &:hover {
     color: ${({ theme: { colors } }) => colors.main};
   }
-  @media (min-width: 768px) {
-    font-size: 20px;
+  @media (max-width: 768px) {
+    font-size: 16px;
   }
 `;
 
@@ -175,18 +175,18 @@ const FooterMiddle = styled.div`
 `;
 
 const Time = styled.div`
-  display: none;
+  display: flex;
   align-items: center;
-  @media (min-width: 768px) {
-    display: flex;
+  @media (max-width: 768px) {
+    display: none;
   }
 `;
 
 const RatingControls = styled.div`
-  display: flex;
+  display: none;
   align-items: center;
-  @media (min-width: 768px) {
-    display: none;
+  @media (max-width: 768px) {
+    display: flex;
   }
   & > * {
     margin-right: 0.5rem;

@@ -71,7 +71,7 @@ const PostWrapper = styled.div`
 `;
 
 const RatingWrapper = styled.div`
-  display: none;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -80,8 +80,8 @@ const RatingWrapper = styled.div`
   & > * {
     margin-bottom: 0.5rem;
   }
-  @media (min-width: 768px) {
-    display: flex;
+  @media (max-width: 768px) {
+    display: none;
   }
 `;
 
