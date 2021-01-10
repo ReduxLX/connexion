@@ -33,7 +33,6 @@ const Post = (props) => {
     }
   };
 
-  console.log("Render Post");
   return (
     <PostWrapper>
       <RatingWrapper>

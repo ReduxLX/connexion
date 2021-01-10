@@ -14,3 +14,8 @@ Problem:
 Solution:
   Added function in utils to check if screen is mobile or desktop and modify both navbar logic to only
   apply the padding shift fix if: 1. Device is desktop && 2. muiModalOpen is true
+
+--- Router's exclusive access ---
+  To implement private routes, we create separate route components such as UnauthorizedRoute
+  which is similar to a normal Route except with custom logic in it's render.
+  For example, UnauthorizedRoute would redirect to "/" if user is signed in.

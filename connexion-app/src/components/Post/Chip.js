@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 
 const Chip = (props) => {
-  console.log("Render Chip");
   const { text = "General", color = "#F85F73" } = props;
   return <ChipWrapper chipColor={color}>{text}</ChipWrapper>;
 };

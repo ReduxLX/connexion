@@ -23,8 +23,6 @@ const PostContent = (props) => {
     handleDownvote = () => {},
   } = props;
 
-  console.log("Render Post Content");
-
   const renderBodyTextMemoized = useMemo(
     () => (
       <TextTruncate
