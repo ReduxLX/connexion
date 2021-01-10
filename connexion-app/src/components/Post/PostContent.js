@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useMemo } from "react";
 import styled from "styled-components";
 import { GoComment } from "react-icons/go";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";

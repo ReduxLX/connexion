@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
@@ -9,13 +9,17 @@ import { FcGoogle } from "react-icons/fc";
 import { email_regex } from "../../utils/constants";
 import SignupBg from "../../res/images/Signup.png";
 import Theme from "../../Theme";
+import { firebaseErrorMsg } from "../../utils";
+import ErrorSnackbar from "../../components/ErrorSnackbar";
 import * as actApp from "../../store/App/ac-App";
 import { useAuth } from "../../AuthContext";
 
 const Signup = () => {
+  const [isErrorVisible, setErrorVisible] = useState(false);
+  const [error, setError] = useState(false);
   const dispatch = useDispatch();
-  const isLoading = useSelector((state) => state.App.isLoading);
   const history = useHistory();
+  const isLoading = useSelector((state) => state.App.isLoading);
 
   const { register, watch, handleSubmit, errors } = useForm();
   const { signup, signinGoogle } = useAuth();
@@ -31,7 +35,9 @@ const Signup = () => {
 
       console.log("Success Sign up");
     } catch (e) {
-      console.log("Failed to sign up =>", e);
+      console.log("Failed email signup ->", e);
+      setError(firebaseErrorMsg(e.code));
+      setErrorVisible(true);
       dispatch(actApp.handleState("isLoading", false));
     }
   };
@@ -43,14 +49,22 @@ const Signup = () => {
       history.push("/");
       console.log("Success Google Login");
       dispatch(actApp.handleState("isLoading", false));
-    } catch {
-      console.log("Failed to login");
+    } catch (e) {
+      console.log("Failed Google signup -> ", e);
+      setError(firebaseErrorMsg(e.code));
+      setErrorVisible(true);
       dispatch(actApp.handleState("isLoading", false));
     }
   };
 
   return (
     <Wrapper>
+      <ErrorSnackbar
+        isErrorVisible={isErrorVisible}
+        handleClose={() => setErrorVisible(false)}
+        message={error}
+        type="fullscreen"
+      />
       <FullpageWrapper>
         <Link to="/">
           <LogoWrapper>CONNEXION</LogoWrapper>

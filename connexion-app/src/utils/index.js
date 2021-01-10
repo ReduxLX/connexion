@@ -39,3 +39,11 @@ export function isMobile() {
   })(navigator.userAgent || navigator.vendor || window.opera);
   return check;
 }
+
+export function firebaseErrorMsg(code) {
+  if (code === "auth/user-not-found") return "Account does not exist";
+  else if (code === "auth/wrong-password") return "Invalid email/password";
+  else if (code === "auth/network-request-failed")
+    return "Network / Connection error";
+  else return "An error has occurred";
+}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
@@ -8,11 +8,16 @@ import Button from "@material-ui/core/Button";
 import { FcGoogle } from "react-icons/fc";
 import Theme from "../../Theme";
 import LoginBg from "../../res/images/Login.png";
+import ErrorSnackbar from "../../components/ErrorSnackbar";
+import { firebaseErrorMsg } from "../../utils";
 import { email_regex } from "../../utils/constants";
 import { useAuth } from "../../AuthContext";
 import * as actApp from "../../store/App/ac-App";
 
 const Login = () => {
+  const [isErrorVisible, setErrorVisible] = useState(false);
+  const [error, setError] = useState(false);
+
   const dispatch = useDispatch();
   const isLoading = useSelector((state) => state.App.isLoading);
   const history = useHistory();
@@ -28,8 +33,10 @@ const Login = () => {
       dispatch(actApp.handleState("isLoading", false));
       console.log("Success Login");
       history.push("/");
-    } catch {
-      console.log("Failed to login");
+    } catch (e) {
+      console.log("Failed email login -> ", e);
+      setError(firebaseErrorMsg(e.code));
+      setErrorVisible(true);
       dispatch(actApp.handleState("isLoading", false));
     }
   };
@@ -41,14 +48,22 @@ const Login = () => {
       history.push("/");
       dispatch(actApp.handleState("isLoading", false));
       console.log("Success Google Login");
-    } catch {
-      console.log("Failed to login");
+    } catch (e) {
+      console.log("Failed Google login -> ", e);
+      setError(firebaseErrorMsg(e.code));
+      setErrorVisible(true);
       dispatch(actApp.handleState("isLoading", false));
     }
   };
 
   return (
     <Wrapper>
+      <ErrorSnackbar
+        isErrorVisible={isErrorVisible}
+        handleClose={() => setErrorVisible(false)}
+        message={error}
+        type="fullscreen"
+      />
       <FullpageWrapper>
         <Link to="/">
           <LogoWrapper>CONNEXION</LogoWrapper>
