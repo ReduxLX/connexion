@@ -1,0 +1,16 @@
+--- TopNavbar && BottomNavbar + Material UI ---
+Problem: 
+  Material UI components that displays pop ups will lock scrolling and set body tag overflow: auto
+  as well as a padding-right to its contents (17px or equivalent). This auto-padding doesn't apply to 
+  fixed components such as navbars which are fixed causing a shift to the right when opening mui popups.
+Solution:
+  Initialized a boolean variable, muiModalOpen, in App reducer which is toggled when any mui components
+  pop-up is open/closed. Make both bottom/top navbars listen to the changes and set padding-right to 17px
+  when any mui modal is opened. This ensures solves the shifting problem.
+
+Problem:
+  The issue is only occurring on desktop screens which means our solution above causes another problem
+  on mobile devices as now we are moving the navbar left by 17px eventhough we don't need to.
+Solution:
+  Added function in utils to check if screen is mobile or desktop and modify both navbar logic to only
+  apply the padding shift fix if: 1. Device is desktop && 2. muiModalOpen is true

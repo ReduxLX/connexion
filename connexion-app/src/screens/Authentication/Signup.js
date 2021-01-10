@@ -1,20 +1,53 @@
 import React from "react";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { styled as muiStyled } from "@material-ui/styles";
-import Button from "@material-ui/core/Button";
+import { Button } from "@material-ui/core";
 import { FcGoogle } from "react-icons/fc";
 import { email_regex } from "../../utils/constants";
 import SignupBg from "../../res/images/Signup.png";
 import Theme from "../../Theme";
 import * as actApp from "../../store/App/ac-App";
+import { useAuth } from "../../AuthContext";
 
 const Signup = () => {
-  const { register, watch, handleSubmit, errors } = useForm();
-  const watchPassword = watch("password", "");
   const dispatch = useDispatch();
+  const isLoading = useSelector((state) => state.App.isLoading);
+  const history = useHistory();
+
+  const { register, watch, handleSubmit, errors } = useForm();
+  const { signup, signinGoogle } = useAuth();
+  const watchPassword = watch("password", "");
+
+  const handleEmailSignup = async (formData) => {
+    const { email, password } = formData;
+    try {
+      dispatch(actApp.handleState("isLoading", true));
+      await signup(email, password);
+      dispatch(actApp.handleState("isLoading", false));
+      history.push("/");
+
+      console.log("Success Sign up");
+    } catch (e) {
+      console.log("Failed to sign up =>", e);
+      dispatch(actApp.handleState("isLoading", false));
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    try {
+      dispatch(actApp.handleState("isLoading", true));
+      await signinGoogle();
+      history.push("/");
+      console.log("Success Google Login");
+      dispatch(actApp.handleState("isLoading", false));
+    } catch {
+      console.log("Failed to login");
+      dispatch(actApp.handleState("isLoading", false));
+    }
+  };
 
   return (
     <Wrapper>
@@ -22,13 +55,7 @@ const Signup = () => {
         <Link to="/">
           <LogoWrapper>CONNEXION</LogoWrapper>
         </Link>
-        <Form
-          onSubmit={handleSubmit((formData) => {
-            console.log(formData);
-            const { email, password } = formData;
-            dispatch(actApp.signup(email, password));
-          })}
-        >
+        <Form onSubmit={handleSubmit(handleEmailSignup)}>
           <Title>Create an account</Title>
           <Section>
             <InputLabel htmlFor="username">Username</InputLabel>
@@ -128,9 +155,12 @@ const Signup = () => {
             </ErrorLabel>
           </Section>
           <ButtonSection>
-            <SignupButton type="submit">Sign Up</SignupButton>
+            <SignupButton type="submit" disabled={isLoading}>
+              Sign Up
+            </SignupButton>
             <GoogleSignupButton
-              type="submit"
+              onClick={handleGoogleLogin}
+              disabled={isLoading}
               startIcon={<FcGoogle style={{ width: "25px", height: "25px" }} />}
             >
               Sign up with Google

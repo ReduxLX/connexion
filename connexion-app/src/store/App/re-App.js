@@ -1,7 +1,9 @@
 import * as types from "../../store/ActionTypes";
 
 const initialState = {
+  isLoading: false,
   isSignedIn: false,
+  muiModalOpen: false,
 };
 
 const AppReducer = (state = initialState, { type, payload }) => {

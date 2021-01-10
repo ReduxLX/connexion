@@ -1,16 +1,51 @@
 import React from "react";
 import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { styled as muiStyled } from "@material-ui/styles";
 import Button from "@material-ui/core/Button";
 import { FcGoogle } from "react-icons/fc";
 import Theme from "../../Theme";
 import LoginBg from "../../res/images/Login.png";
 import { email_regex } from "../../utils/constants";
+import { useAuth } from "../../AuthContext";
+import * as actApp from "../../store/App/ac-App";
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const isLoading = useSelector((state) => state.App.isLoading);
+  const history = useHistory();
+
   const { register, handleSubmit, errors } = useForm();
+  const { login, signinGoogle } = useAuth();
+
+  const handleEmailLogin = async (formData) => {
+    const { email, password } = formData;
+    try {
+      dispatch(actApp.handleState("isLoading", true));
+      await login(email, password);
+      dispatch(actApp.handleState("isLoading", false));
+      console.log("Success Login");
+      history.push("/");
+    } catch {
+      console.log("Failed to login");
+      dispatch(actApp.handleState("isLoading", false));
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    try {
+      dispatch(actApp.handleState("isLoading", true));
+      await signinGoogle();
+      history.push("/");
+      dispatch(actApp.handleState("isLoading", false));
+      console.log("Success Google Login");
+    } catch {
+      console.log("Failed to login");
+      dispatch(actApp.handleState("isLoading", false));
+    }
+  };
 
   return (
     <Wrapper>
@@ -18,36 +53,8 @@ const Login = () => {
         <Link to="/">
           <LogoWrapper>CONNEXION</LogoWrapper>
         </Link>
-        <Form
-          onSubmit={handleSubmit((formData) => {
-            console.log(formData);
-          })}
-        >
+        <Form onSubmit={handleSubmit(handleEmailLogin)}>
           <Title>Sign in</Title>
-          <Section>
-            <InputLabel htmlFor="username">Username</InputLabel>
-            <Input
-              id="username"
-              type="text"
-              name="username"
-              placeholder="Enter your username"
-              isErrorActive={errors.username}
-              ref={register({
-                required: "Username is required",
-                minLength: {
-                  value: 5,
-                  message: "Username must be more than 5 characters",
-                },
-                maxLength: {
-                  value: 20,
-                  message: "Username must not exceed 20 characters",
-                },
-              })}
-            />
-            <ErrorLabel>
-              {errors.username ? errors.username.message : null}
-            </ErrorLabel>
-          </Section>
           <Section>
             <InputLabel htmlFor="email">Email</InputLabel>
             <Input
@@ -101,9 +108,12 @@ const Login = () => {
             </ErrorLabel>
           </Section>
           <ButtonSection>
-            <LoginButton type="submit">Sign In</LoginButton>
+            <LoginButton type="submit" disabled={isLoading}>
+              Sign In
+            </LoginButton>
             <GoogleLoginButton
-              type="submit"
+              onClick={handleGoogleLogin}
+              disabled={isLoading}
               startIcon={<FcGoogle style={{ width: "25px", height: "25px" }} />}
             >
               Sign in with Google

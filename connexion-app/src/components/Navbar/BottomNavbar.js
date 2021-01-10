@@ -1,4 +1,5 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { NavLink as Link } from "react-router-dom";
 import { styled as muiStyled } from "@material-ui/styles";
@@ -11,6 +12,7 @@ import {
 } from "react-icons/ai";
 import { IoChatboxOutline } from "react-icons/io5";
 import Theme from "../../Theme";
+import { isMobile } from "../../utils";
 
 const bottomLinks = [
   { to: "/", label: "Home", icon: <AiOutlineHome /> },
@@ -20,6 +22,8 @@ const bottomLinks = [
 ];
 
 const BottomNavbar = () => {
+  const muiModalOpen = useSelector((state) => state.App.muiModalOpen);
+
   const renderBottomLinks = () => {
     return bottomLinks.map(({ to, label, icon }) => (
       <li key={to}>
@@ -31,7 +35,7 @@ const BottomNavbar = () => {
   };
 
   return (
-    <BottomNavbarWrapper>
+    <BottomNavbarWrapper muiModalOpen={muiModalOpen && !isMobile()}>
       <AddPostButton size="small">
         <AiOutlinePlus
           style={{ color: "white", width: "20px", height: "20px" }}
@@ -65,6 +69,7 @@ const BottomNavbarWrapper = styled.div`
   width: 100%;
   z-index: 999;
   font-size: 14px;
+  padding-right: ${({ muiModalOpen }) => (muiModalOpen ? "17px" : "0px")};
   @media (max-width: 768px) {
     display: flex;
   }

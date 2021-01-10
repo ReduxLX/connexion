@@ -7,6 +7,7 @@ import Leaderboard from "./screens/Leaderboard/Leaderboard";
 import About from "./screens/About/About";
 import Signup from "./screens/Authentication/Signup";
 import Login from "./screens/Authentication/Login";
+import Profile from "./screens/Profile/Profile";
 
 const routes = [
   { path: "/", Component: Home },
@@ -15,6 +16,7 @@ const routes = [
   { path: "/about", Component: About },
   { path: "/signup", Component: Signup },
   { path: "/login", Component: Login },
+  { path: "/profile", Component: Profile },
 ];
 
 const Routes = () => {

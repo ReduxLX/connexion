@@ -3,6 +3,7 @@ import { Provider } from "react-redux";
 import { ThemeProvider } from "styled-components";
 
 import AppRouter from "./router";
+import { AuthProvider } from "./AuthContext";
 import GlobalStyles from "./GlobalStyles";
 import theme from "./Theme";
 import store from "./store";
@@ -13,7 +14,9 @@ const App = () => {
     <div>
       <ThemeProvider theme={theme}>
         <Provider store={store}>
-          <AppRouter />
+          <AuthProvider>
+            <AppRouter />
+          </AuthProvider>
         </Provider>
         <GlobalStyles />
       </ThemeProvider>

@@ -1,17 +1,50 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { NavLink as Link, useLocation } from "react-router-dom";
+import { NavLink as Link, useLocation, useHistory } from "react-router-dom";
+import {
+  Menu,
+  MenuItem,
+  Avatar,
+  TextField,
+  InputAdornment,
+} from "@material-ui/core";
 import { styled as muiStyled } from "@material-ui/styles";
-import TextField from "@material-ui/core/TextField";
-import InputAdornment from "@material-ui/core/InputAdornment";
+import ProfileImg1 from "../../res/images/avatar1.jpg";
 import { BiSearch } from "react-icons/bi";
+import { CgProfile } from "react-icons/cg";
+import { IoLogOutOutline } from "react-icons/io5";
 import Theme from "../../Theme";
+import { useAuth } from "../../AuthContext";
+import * as actApp from "../../store/App/ac-App";
+import { isMobile } from "../../utils";
 
 const TopNavbar = () => {
   const [visible, setVisible] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const muiModalOpen = useSelector((state) => state.App.muiModalOpen);
+
   const path = useLocation().pathname;
+  const { logout, currentUser } = useAuth();
 
   const displaySearchbar = path === "/" || path === "/discussion";
+
+  const handleClose = () => {
+    setAnchorEl(null);
+    dispatch(actApp.handleState("muiModalOpen", false));
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      history.push("/");
+    } catch (e) {
+      console.log("Failed to logout ", e);
+    }
+  };
 
   const renderSearchBar = (id = "searchbar") => {
     return (
@@ -35,7 +68,58 @@ const TopNavbar = () => {
   };
 
   return (
-    <TopNavbarWrapper>
+    <TopNavbarWrapper muiModalOpen={muiModalOpen && !isMobile()}>
+      <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onEnter={() => dispatch(actApp.handleState("muiModalOpen", true))}
+        onClose={handleClose}
+        getContentAnchorEl={null}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+        keepMounted
+        autoFocus={false}
+      >
+        <MenuItem
+          onClick={() => {
+            handleClose();
+            history.push("/profile");
+          }}
+        >
+          <CgProfile
+            style={{
+              color: "#0F4C75",
+              width: "25px",
+              height: "25px",
+              marginRight: "5px",
+            }}
+          />
+          Profile
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            handleClose();
+            handleLogout();
+          }}
+        >
+          <IoLogOutOutline
+            style={{
+              color: "#0F4C75",
+              width: "25px",
+              height: "25px",
+              marginRight: "5px",
+            }}
+          />
+          Log out
+        </MenuItem>
+      </Menu>
       <TopNavbarContent>
         <Link to="/">
           <LogoWrapper>CONNEXION</LogoWrapper>
@@ -56,8 +140,19 @@ const TopNavbar = () => {
               style={{ color: "#0F4C75", width: "25px", height: "25px" }}
             />
           </SearchButton>
-          <NavLink to="/signup">Sign Up</NavLink>
-          <NavLink to="/signup">Log in</NavLink>
+          {currentUser ? (
+            <Avatar
+              alt="pic"
+              src={ProfileImg1}
+              style={{ width: "30px", height: "30px" }}
+              onClick={(e) => setAnchorEl(e.currentTarget)}
+            />
+          ) : (
+            <>
+              <NavLink to="/signup">Sign Up</NavLink>
+              <NavLink to="/login">Log in</NavLink>
+            </>
+          )}
         </NavRight>
       </TopNavbarContent>
       <SearchNavbar visible={visible && displaySearchbar}>
@@ -87,6 +182,8 @@ const TopNavbarWrapper = styled.div`
   z-index: 100;
   transition: top 0.6s;
   border-bottom: 2px solid #e5e5e5;
+  // Offsets material ui shift to prevent fixed navbar from shifting
+  padding-right: ${({ muiModalOpen }) => (muiModalOpen ? "17px" : "0px")};
 `;
 
 const TopNavbarContent = styled.div`
