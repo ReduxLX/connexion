@@ -35,9 +35,6 @@ const GlobalStyle = createGlobalStyle`
     outline: none;
   }
 
-  hr{
-
-  }
 `;
 
 export default GlobalStyle;

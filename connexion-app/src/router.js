@@ -9,6 +9,8 @@ import About from "./screens/About/About";
 import Signup from "./screens/Authentication/Signup";
 import Login from "./screens/Authentication/Login";
 import Profile from "./screens/Profile/Profile";
+import CreateTopic from "./screens/CreateTopic/CreateTopic";
+import PostDetails from "./screens/PostDetails/PostDetails";
 
 const routes = [
   { path: "/", Component: Home },
@@ -18,6 +20,8 @@ const routes = [
   { path: "/signup", Component: Signup, exclusiveAccess: "Unauthorized" },
   { path: "/login", Component: Login, exclusiveAccess: "Unauthorized" },
   { path: "/profile", Component: Profile },
+  { path: "/createtopic", Component: CreateTopic },
+  { path: "/post", Component: PostDetails },
 ];
 
 const Routes = () => {

@@ -4,6 +4,7 @@ import { GoCommentDiscussion } from "react-icons/go";
 import { styled as muiStyled } from "@material-ui/styles";
 import Theme from "../../Theme";
 import Button from "@material-ui/core/Button";
+import { useHistory } from "react-router-dom";
 
 const fakeDiscussions = [
   {
@@ -37,6 +38,8 @@ const fakeDiscussions = [
 ];
 
 const DiscussionSection = () => {
+  let history = useHistory();
+
   const renderDiscussions = () => {
     return fakeDiscussions.map(({ id, title }) => {
       return (
@@ -53,7 +56,13 @@ const DiscussionSection = () => {
   return (
     <SectionWrapper>
       <div style={{ textAlign: "left" }}>
-        <NewDiscussionButton>Start a New Topic</NewDiscussionButton>
+        <NewDiscussionButton
+          onClick={() => {
+            history.push("/createtopic");
+          }}
+        >
+          Start a New Topic
+        </NewDiscussionButton>
       </div>
       <Discussion>
         <div>

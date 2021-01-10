@@ -8,6 +8,7 @@ import ProfileImg1 from "../../res/images/avatar1.jpg";
 import TextTruncate from "react-text-truncate";
 import Theme from "../../Theme";
 import { truncateNum, truncateText } from "../../utils";
+import { useHistory } from "react-router-dom";
 
 const PostContent = (props) => {
   const {
@@ -22,6 +23,10 @@ const PostContent = (props) => {
     handleUpvote = () => {},
     handleDownvote = () => {},
   } = props;
+
+  const history = useHistory();
+
+  console.log("Render Post Content");
 
   const renderBodyTextMemoized = useMemo(
     () => (
@@ -60,7 +65,11 @@ const PostContent = (props) => {
   };
 
   return (
-    <PostContentWrapper>
+    <PostContentWrapper
+      onClick={() => {
+        history.push("./post");
+      }}
+    >
       <PostHeader>{title.trim()}</PostHeader>
       <Chip />
       <PostBody>{renderBodyTextMemoized}</PostBody>
