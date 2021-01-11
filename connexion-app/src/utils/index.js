@@ -47,3 +47,29 @@ export function firebaseErrorMsg(code) {
     return "Network / Connection error";
   else return "An error has occurred";
 }
+
+export function convertSecondsToDate(seconds = 45) {
+  const monthNames = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  let date = new Date(0);
+  date.setSeconds(seconds);
+  return (
+    date.getDate() +
+    "-" +
+    monthNames[date.getMonth()] +
+    "-" +
+    date.getFullYear()
+  );
+}
