@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import firebase from "firebase/app";
-import { auth } from "./firebase";
+import { auth, firestore } from "./firebase";
 
 const AuthContext = React.createContext();
 
@@ -13,7 +13,7 @@ export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
   const [loading, setLoading] = useState(true);
 
-  // Returns a promise which indicates success/failure
+  // Authentication Methods
   const signup = (email, password) =>
     auth.createUserWithEmailAndPassword(email, password);
 
@@ -26,6 +26,11 @@ export function AuthProvider({ children }) {
     auth.signInWithEmailAndPassword(email, password);
 
   const logout = () => auth.signOut();
+
+  // Firestore Methods
+  const addPost = (title, body, university) => {
+    firestore.collection("posts").add({ title, body, university });
+  };
 
   // onAuthStateChanged:
   // Observe changes to user so we can show an error/redirect to page
@@ -48,6 +53,7 @@ export function AuthProvider({ children }) {
     login,
     logout,
     signinGoogle,
+    addPost,
   };
 
   return (
