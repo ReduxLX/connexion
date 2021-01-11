@@ -24,3 +24,15 @@
   font-family: "NunitoExtraBold";
   src: local("Nunito"), url(./res/fonts/Nunito-ExtraBold.ttf) format("opentype");
 }
+
+@font-face {
+  font-family: "RalewayLight";
+  src: local("RalewayLight"),
+    url(./res/fonts/Raleway-Light.ttf) format("opentype");
+}
+
+@font-face {
+  font-family: "RalewayBold";
+  src: local("RalewayBold"),
+    url(./res/fonts/Raleway-Bold.ttf) format("opentype");
+}

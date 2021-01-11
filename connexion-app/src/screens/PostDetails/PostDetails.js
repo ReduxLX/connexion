@@ -255,7 +255,7 @@ const PostHeader = styled.div`
 const PostTitle = styled.h1`
   font-size: 24px;
   font-family: "NunitoBold";
-  color: ${({ theme: { colors } }) => colors.form_input};
+  color: ${({ theme: { colors } }) => colors.secondary};
   text-align: left;
 `;
 
@@ -358,7 +358,7 @@ const CommentsSection = styled.div`
 const NumberOfComments = styled.h1`
   margin-bottom: 2rem;
   font-size: 18px;
-  color: ${({ theme: { colors } }) => colors.form_input};
+  color: ${({ theme: { colors } }) => colors.secondary};
 `;
 
 export default PostDetails;
