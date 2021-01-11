@@ -4,17 +4,14 @@ import { PageWrapper } from "../SharedStyles";
 import ChooseCategory from "../../components/CreateTopic/ChooseCategory";
 import Categories from "../../Categories";
 import Theme from "../../Theme";
+import QuillEditor from "../../components/CreateTopic/QuillEditor";
 
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.bubble.css";
-import "react-quill/dist/quill.snow.css";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import { styled as muiStyled } from "@material-ui/styles";
 import { useForm } from "react-hook-form";
 import Button from "@material-ui/core/Button";
-import "react-quill/dist/quill.bubble.css";
 
 const CreateTopic = () => {
   const { register, handleSubmit, errors } = useForm();
@@ -25,24 +22,8 @@ const CreateTopic = () => {
   const [categoryError, setCategoryError] = useState("");
   const [university, setUniversity] = useState("Global");
   const [categories, setCategories] = useState([]);
+  const [submitPressed, setSubmitPressed] = useState(false);
 
-  const modules = {
-    toolbar: [
-      [{ font: [] }],
-      [{ header: [1, 2, 3, false] }],
-      ["bold", "italic", "blockquote"],
-      [{ color: [] }, { background: [] }],
-      [{ script: "sub" }, { script: "super" }],
-      [
-        { list: "ordered" },
-        { list: "bullet" },
-        { align: [] },
-        { indent: "-1" },
-        { indent: "+1" },
-      ],
-      ["link", "image"],
-    ],
-  };
   // var doc = new DOMParser().parseFromString(body, "text/html");
 
   // const JustTesting = (string) => {
@@ -83,7 +64,7 @@ const CreateTopic = () => {
   };
 
   const onSubmit = (formData) => {
-    console.log(formData);
+    console.log("Submit data to firebase");
     if (checkBodyAndCategory()) {
       console.log("TITLE: " + formData.title);
       console.log("BODY: " + body);
@@ -93,11 +74,18 @@ const CreateTopic = () => {
     }
   };
 
+  const getEditorText = (text, plainText) => {
+    setBody(text);
+    setBodyPlainText(plainText);
+    setSubmitPressed(false);
+    console.log("Get text from Quill Editor");
+  };
+
   const checkBodyAndCategory = () => {
     let valid = true;
-    if (bodyPlainText.length > 100) {
+    if (bodyPlainText.length > 2000) {
       valid = false;
-      setBodyError("Your post body can have a maximum of 100 characters");
+      setBodyError("Your post body can have a maximum of 2000 characters");
     } else {
       setBodyError("");
     }
@@ -150,14 +138,9 @@ const CreateTopic = () => {
               Include all relevant information someone would need to know in
               order to answer your question / participate in the discussion
             </SectionSubtitle>
-            <ReactQuill
-              className="Editor"
-              modules={modules}
-              placeholder={"Enter your topic here"}
-              onChange={(content, delta, source, editor) => {
-                setBodyPlainText(editor.getText().trim());
-                setBody(content);
-              }}
+            <QuillEditor
+              submitPressed={submitPressed}
+              getEditorText={getEditorText}
             />
             <SectionError className="BodyError">{bodyError}</SectionError>
           </SectionWrapper>
@@ -182,7 +165,6 @@ const CreateTopic = () => {
             </CustomForm>
           </div>
           <SectionWrapper>
-            <ReactQuill value={body} readOnly={true} theme="bubble" />
             <SectionTitle>Categories</SectionTitle>
             <SectionSubtitle>
               Choose up to 3 categories that apply to your post
@@ -192,6 +174,7 @@ const CreateTopic = () => {
           <SectionError>{categoryError}</SectionError>
           <CreatePostButton
             onClick={() => {
+              setSubmitPressed(true);
               checkBodyAndCategory();
             }}
             type="submit"
