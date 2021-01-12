@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { PageWrapper } from "../SharedStyles";
-import DiscussionSection from "./DiscussionSection";
+import CategorySection from "./CategorySection";
 import PostSection from "./PostSection";
 import TopUsersSection from "./TopUsersSection";
 
@@ -9,7 +9,7 @@ const Home = () => {
   return (
     <PageWrapper>
       <HomeWrapper>
-        <DiscussionSection />
+        <CategorySection />
         <PostSection />
         <TopUsersSection />
       </HomeWrapper>

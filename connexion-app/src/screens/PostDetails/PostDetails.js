@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { PageWrapper } from "../SharedStyles";
-import DiscussionSection from "../Home/DiscussionSection";
+import CategorySection from "../Home/CategorySection";
 import Chip from "../../components/Post/Chip";
 import Divider from "../../components/Divider";
 import Comment from "../../components/Post/Comment";
@@ -118,7 +118,7 @@ const PostDetails = (props) => {
   return (
     <PageWrapper>
       <PostDetailsWrapper>
-        <DiscussionSection />
+        <CategorySection />
         <PostWrapper>
           <Votes className="postVotes">{renderRating()}</Votes>
           <Post>

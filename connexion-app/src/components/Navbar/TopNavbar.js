@@ -23,8 +23,8 @@ const TopNavbar = () => {
   const [visible, setVisible] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [height, setHeight] = useState(0);
-  const ref = useRef(null)
-  const clientHeight = ref.current ? ref.current.clientHeight : 0
+  const ref = useRef(null);
+  const clientHeight = ref.current ? ref.current.clientHeight : 0;
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -33,12 +33,12 @@ const TopNavbar = () => {
   const path = useLocation().pathname;
   const { logout, currentUser } = useAuth();
 
-  const displaySearchbar = path === "/" || path === "/discussion";
+  const displaySearchbar = path === "/" || path === "/categories";
 
   // Calculate searchbar height offset so it appears directly below the top navbar
   useEffect(() => {
-    setHeight(ref.current.clientHeight)
-  }, [clientHeight])
+    setHeight(ref.current.clientHeight);
+  }, [clientHeight]);
 
   const handleClose = () => {
     setAnchorEl(null);

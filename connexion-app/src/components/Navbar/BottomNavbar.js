@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
+import { useHistory } from "react-router-dom";
 import { NavLink as Link } from "react-router-dom";
 import { styled as muiStyled } from "@material-ui/styles";
 import Fab from "@material-ui/core/Fab";
@@ -16,13 +17,14 @@ import { isMobile } from "../../utils";
 
 const bottomLinks = [
   { to: "/", label: "Home", icon: <AiOutlineHome /> },
-  { to: "/discussion", label: "Discussion", icon: <IoChatboxOutline /> },
+  { to: "/categories", label: "Categories", icon: <IoChatboxOutline /> },
   { to: "/leaderboard", label: "Leaderboard", icon: <AiOutlineTrophy /> },
   { to: "/about", label: "About", icon: <AiOutlineInfoCircle /> },
 ];
 
 const BottomNavbar = () => {
   const muiModalOpen = useSelector((state) => state.App.muiModalOpen);
+  const history = useHistory();
 
   const renderBottomLinks = () => {
     return bottomLinks.map(({ to, label, icon }) => (
@@ -36,7 +38,7 @@ const BottomNavbar = () => {
 
   return (
     <BottomNavbarWrapper muiModalOpen={muiModalOpen && !isMobile()}>
-      <AddPostButton size="small">
+      <AddPostButton size="small" onClick={() => history.push("/createtopic")}>
         <AiOutlinePlus
           style={{ color: "white", width: "20px", height: "20px" }}
         />

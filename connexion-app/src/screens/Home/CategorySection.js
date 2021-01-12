@@ -6,7 +6,7 @@ import Theme from "../../Theme";
 import Button from "@material-ui/core/Button";
 import { useHistory } from "react-router-dom";
 
-const fakeDiscussions = [
+const placeholderCategories = [
   {
     id: 1,
     title: "General",
@@ -37,18 +37,18 @@ const fakeDiscussions = [
   },
 ];
 
-const DiscussionSection = () => {
+const CategorySection = () => {
   let history = useHistory();
 
   const renderDiscussions = () => {
-    return fakeDiscussions.map(({ id, title }) => {
+    return placeholderCategories.map(({ id, title }) => {
       return (
-        <Discussion key={id}>
+        <Category key={id}>
           <div>
-            <DiscussionLogo />
+            <CategoryLogo />
           </div>
           <strong>{title}</strong>
-        </Discussion>
+        </Category>
       );
     });
   };
@@ -56,25 +56,25 @@ const DiscussionSection = () => {
   return (
     <SectionWrapper>
       <div style={{ textAlign: "left" }}>
-        <NewDiscussionButton
+        <NewCategoryButton
           className="CreateTopicButton"
           onClick={() => {
             history.push("/createtopic");
           }}
         >
-          <NewDiscussionButtonText>Start a New Topic</NewDiscussionButtonText>
-        </NewDiscussionButton>
+          <NewCategoryButtonText>Start a New Topic</NewCategoryButtonText>
+        </NewCategoryButton>
       </div>
-      <Discussion
+      <Category
         onClick={() => {
           history.push("/categories");
         }}
       >
         <div>
-          <DiscussionLogo />
+          <CategoryLogo />
         </div>
         <strong>All Categories</strong>
-      </Discussion>
+      </Category>
       <br />
       {renderDiscussions()}
     </SectionWrapper>
@@ -92,7 +92,7 @@ const SectionWrapper = styled.div`
   }
 `;
 
-const Discussion = styled.div`
+const Category = styled.div`
   display: flex;
   width: 90%;
   color: ${({ theme: { colors } }) => colors.disabled};
@@ -110,14 +110,14 @@ const Discussion = styled.div`
   }
 `;
 
-const DiscussionLogo = styled(GoCommentDiscussion)`
+const CategoryLogo = styled(GoCommentDiscussion)`
   &:hover {
     color: ${({ theme: { colors } }) => colors.main};
   }
   margin-right: 10px;
 `;
 
-const NewDiscussionButton = muiStyled(Button)({
+const NewCategoryButton = muiStyled(Button)({
   background: Theme.colors.main,
   color: "white",
   textTransform: "none",
@@ -129,11 +129,11 @@ const NewDiscussionButton = muiStyled(Button)({
   },
 });
 
-const NewDiscussionButtonText = styled.p`
+const NewCategoryButtonText = styled.p`
   font-size: 14px;
   @media (max-width: 970px) {
     font-size: 12px;
   }
 `;
 
-export default DiscussionSection;
+export default CategorySection;

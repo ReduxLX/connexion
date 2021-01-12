@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { PageWrapper } from "../SharedStyles";
-import DiscussionSection from "../Home/DiscussionSection";
+import CategorySection from "../Home/CategorySection";
 import Categories from "../../Categories";
 import ProfileImg1 from "../../res/images/avatar1.jpg";
 import Divider from "../../components/Divider";
@@ -57,7 +57,7 @@ const AllCategories = () => {
   return (
     <PageWrapper>
       <CategoriesWrapper>
-        <DiscussionSection />
+        <CategorySection />
         <CategoriesSection>{CategoriesList()}</CategoriesSection>
       </CategoriesWrapper>
     </PageWrapper>
