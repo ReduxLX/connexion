@@ -64,8 +64,8 @@ const CreateTopic = () => {
   };
 
   const onSubmit = (formData) => {
-    console.log("Submit data to firebase");
     if (checkBodyAndCategory()) {
+      console.log("Everything valid, submit data to firebase");
       console.log("TITLE: " + formData.title);
       console.log("BODY: " + body);
       console.log("BODY PLAIN TEXT: " + bodyPlainText);
@@ -78,18 +78,20 @@ const CreateTopic = () => {
     setBody(text);
     setBodyPlainText(plainText);
     setSubmitPressed(false);
-    console.log("Get text from Quill Editor");
   };
 
   const checkBodyAndCategory = () => {
     let valid = true;
-    if (bodyPlainText.length > 2000) {
+    if (bodyPlainText.length <= 0) {
       valid = false;
-      setBodyError("Your post body can have a maximum of 2000 characters");
+      setBodyError("Your post cannot be empty");
+    } else if (bodyPlainText.length > 2000) {
+      valid = false;
+      setBodyError("Your post can have a maximum of 2000 characters");
     } else {
       setBodyError("");
     }
-    console.log(categories);
+
     if (categories.length <= 0) {
       valid = false;
       setCategoryError("You must choose at least one category");

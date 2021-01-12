@@ -11,6 +11,7 @@ import Login from "./screens/Authentication/Login";
 import Profile from "./screens/Profile/Profile";
 import CreateTopic from "./screens/CreateTopic/CreateTopic";
 import PostDetails from "./screens/PostDetails/PostDetails";
+import AllCategories from "./screens/Categories/AllCategories";
 
 const routes = [
   { path: "/", Component: Home },
@@ -22,6 +23,7 @@ const routes = [
   { path: "/profile", Component: Profile },
   { path: "/createtopic", Component: CreateTopic },
   { path: "/post", Component: PostDetails },
+  { path: "/categories", Component: AllCategories },
 ];
 
 const Routes = () => {
