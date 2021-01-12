@@ -18,6 +18,9 @@ export function AuthProvider({ children }) {
 
   const dispatch = useDispatch();
 
+  // Db ref
+  const storageRef = firebase.storage().ref();
+
   // Authentication Methods
   const signup = (username, email, password) => {
     dispatch(actApp.handleState("isLoading", true));
@@ -81,7 +84,7 @@ export function AuthProvider({ children }) {
 
   // Update User details
   const updateDisplayName = (user, displayName) => {
-    if (!user) return showSnackbar("error", "Failed to update display name");
+    if (!user) return;
     user
       .updateProfile({
         displayName,
@@ -90,6 +93,33 @@ export function AuthProvider({ children }) {
       .catch((e) => {
         console.log("Failed to update display name", e);
       });
+  };
+
+  const updateProfilePicture = (photoURL) => {
+    if (!currentUser)
+      return showSnackbar("error", "Failed to update profile picture");
+    currentUser
+      .updateProfile({
+        photoURL,
+      })
+      .then(() => console.log("Success in updating photo url -> ", photoURL))
+      .catch((e) => {
+        console.log("Failed to update photo url", e);
+      });
+  };
+
+  const uploadImage = (file) => {
+    console.log("Upload file -> ", file);
+
+    const profilePicsRef = storageRef.child("profile.jpg");
+    profilePicsRef
+      .put(file)
+      .then(function (snapshot) {
+        snapshot.ref.getDownloadURL().then(function (downloadURL) {
+          console.log("File available at", downloadURL);
+        });
+      })
+      .catch((e) => console.log("Error in upload image ", e));
   };
 
   // Firestore Refs
@@ -352,6 +382,7 @@ export function AuthProvider({ children }) {
   const value = {
     currentUser,
     updateDisplayName,
+    updateProfilePicture,
     signup,
     login,
     logout,
@@ -365,6 +396,7 @@ export function AuthProvider({ children }) {
     fetchPostComments,
     addPostComment,
     viewPost,
+    uploadImage,
   };
 
   return (

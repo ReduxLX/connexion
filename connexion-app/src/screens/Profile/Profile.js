@@ -5,29 +5,30 @@ import { useAuth } from "../../AuthContext";
 import { Button, Avatar } from "@material-ui/core";
 import { styled as muiStyled } from "@material-ui/styles";
 import Theme from "../../Theme";
-import { firebase, storage } from "../../firebase";
 import { useDropzone } from "react-dropzone";
 
 const Profile = () => {
-  const { currentUser } = useAuth();
+  const { currentUser, uploadImage, updateProfilePicture } = useAuth();
   const { displayName, email, photoURL, uid } = currentUser || {};
   const [username, setUsername] = useState(displayName);
+  const [profileUrl, setProfileUrl] = useState("");
   const [photo, setPhoto] = useState(photoURL);
 
-  const handleProfileUpdate = (e) => {
+  const handleProfileUpdate = async (e) => {
     e.preventDefault();
-    const storageRef = storage.ref();
-    console.log("New username -> ", username);
-    console.log("New photo -> ", photo);
-    const imgReference = storageRef.child(photo);
-    console.log(imgReference);
+    console.log("Upload", photo);
+    await uploadImage(photo);
   };
 
   const onDrop = useCallback((acceptedFiles) => {
     // Do something with the files
-    setPhoto(acceptedFiles[0].path);
-    console.log(acceptedFiles);
+    setPhoto(acceptedFiles[0]);
+    console.log(acceptedFiles[0]);
   }, []);
+
+  const handleImageUpdate = () => {
+    updateProfilePicture(profileUrl);
+  };
 
   const {
     acceptedFiles,
@@ -62,6 +63,14 @@ const Profile = () => {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
+        <Input
+          id="profile"
+          type="text"
+          name="profile"
+          placeholder="Enter Profile image url"
+          value={profileUrl}
+          onChange={(e) => setProfileUrl(e.target.value)}
+        />
         <UploadProfile {...getRootProps()}>
           <input {...getInputProps()} />
           {isDragActive ? (
@@ -72,7 +81,10 @@ const Profile = () => {
         </UploadProfile>
         <h4>Files</h4>
         <ul>{files}</ul>
-        <SubmitFirebase type="submit">Update</SubmitFirebase>
+        <SubmitFirebase type="submit">Upload Image</SubmitFirebase>
+        <SubmitFirebase onClick={handleImageUpdate}>
+          Update Image url
+        </SubmitFirebase>
       </Form>
     </PageWrapper>
   );
