@@ -9,7 +9,7 @@ import { FcGoogle } from "react-icons/fc";
 import { email_regex } from "../../utils/constants";
 import SignupBg from "../../res/images/Signup.png";
 import Theme from "../../Theme";
-import { firebaseErrorMsg } from "../../utils";
+import { fbError } from "../../utils";
 import ErrorSnackbar from "../../components/ErrorSnackbar";
 import * as actApp from "../../store/App/ac-App";
 import { useAuth } from "../../AuthContext";
@@ -36,7 +36,7 @@ const Signup = () => {
       console.log("Success Sign up");
     } catch (e) {
       console.log("Failed email signup ->", e);
-      setError(firebaseErrorMsg(e.code));
+      setError(fbError(e.code));
       setErrorVisible(true);
       dispatch(actApp.handleState("isLoading", false));
     }
@@ -51,7 +51,7 @@ const Signup = () => {
       dispatch(actApp.handleState("isLoading", false));
     } catch (e) {
       console.log("Failed Google signup -> ", e);
-      setError(firebaseErrorMsg(e.code));
+      setError(fbError(e.code));
       setErrorVisible(true);
       dispatch(actApp.handleState("isLoading", false));
     }

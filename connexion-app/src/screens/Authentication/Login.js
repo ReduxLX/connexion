@@ -1,88 +1,38 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { styled as muiStyled } from "@material-ui/styles";
 import Button from "@material-ui/core/Button";
 import { FcGoogle } from "react-icons/fc";
 import Theme from "../../Theme";
 import LoginBg from "../../res/images/Login.png";
-import ErrorSnackbar from "../../components/ErrorSnackbar";
-import { firebaseErrorMsg } from "../../utils";
 import { email_regex } from "../../utils/constants";
 import { useAuth } from "../../AuthContext";
-import * as actApp from "../../store/App/ac-App";
 
 const Login = () => {
-  const [isErrorVisible, setErrorVisible] = useState(false);
-  const [error, setError] = useState(false);
-
-  const dispatch = useDispatch();
   const isLoading = useSelector((state) => state.App.isLoading);
-  const history = useHistory();
 
   const { register, handleSubmit, errors } = useForm();
   const { login, signinGoogle } = useAuth();
 
-  const handleEmailLogin = async (formData) => {
+  const handleEmailPasswordLogin = async (formData) => {
     const { email, password } = formData;
-    try {
-      dispatch(actApp.handleState("isLoading", true));
-      await login(email, password);
-      dispatch(actApp.handleState("isLoading", false));
-      console.log("Success Login");
-      history.push("/");
-      dispatch(
-        actApp.handleStateGlobal({
-          isSnackbarVisible: true,
-          snackbarVariant: "success",
-          snackbarMsg: "Welcome back",
-        })
-      );
-    } catch (e) {
-      console.log("Failed email login -> ", e);
-      setError(firebaseErrorMsg(e.code));
-      setErrorVisible(true);
-      dispatch(actApp.handleState("isLoading", false));
-    }
+    await login(email, password);
   };
 
   const handleGoogleLogin = async () => {
-    try {
-      dispatch(actApp.handleState("isLoading", true));
-      await signinGoogle();
-      history.push("/");
-      dispatch(actApp.handleState("isLoading", false));
-      console.log("Success Google Login");
-      dispatch(
-        actApp.handleStateGlobal({
-          isSnackbarVisible: true,
-          snackbarVariant: "success",
-          snackbarMsg: "Welcome back",
-        })
-      );
-    } catch (e) {
-      console.log("Failed Google login -> ", e);
-      setError(firebaseErrorMsg(e.code));
-      setErrorVisible(true);
-      dispatch(actApp.handleState("isLoading", false));
-    }
+    await signinGoogle();
   };
 
   return (
     <Wrapper>
-      <ErrorSnackbar
-        isErrorVisible={isErrorVisible}
-        handleClose={() => setErrorVisible(false)}
-        message={error}
-        type="fullscreen"
-      />
       <FullpageWrapper>
         <Link to="/">
           <LogoWrapper>CONNEXION</LogoWrapper>
         </Link>
-        <Form onSubmit={handleSubmit(handleEmailLogin)}>
+        <Form onSubmit={handleSubmit(handleEmailPasswordLogin)}>
           <Title>Sign in</Title>
           <Section>
             <InputLabel htmlFor="email">Email</InputLabel>

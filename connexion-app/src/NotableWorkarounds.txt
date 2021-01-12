@@ -36,6 +36,12 @@ Solution:
   Currently the snackbar will not close when clicked away. If multiple snackbars are called then the current one
   will be replaced immediately. Snackbars persist when changing routes (this might be changed)
 
+  UPDATE: Due to the many instances of "opening" snackbars throughot the app, we have decided to create a function in 
+  utils to store the dispatch action. This means instead of dispatching an action we call this function instead:
+  
+  import { openSnackbar } from "../utils"
+  openSnackbar("error", "Failed to login"); <-- Much shorter than the above dispatch code
+
   --- Searchbar dynamic height ---
   Problem: 
     The searchbar for mobile should rest just below the top navbar when expanded but the height of the top
@@ -44,3 +50,11 @@ Solution:
     With useRef, track and store the height of the top navbar as local state and pass this height to the Search bar styled components.
     This may cause infinite looping given: store height -> re-render -> height change after re-render -> re-render
     As such, we might consider hard coding the height of the topnavbar instead (41 not logged in and 46 logged in + avatar)
+
+  --- Handling Firebase Error Messages (fbError in utils.js) ---
+  Problem: 
+    Firebase errors are usually long and cannot be shown on a small snackbar
+  Solution:
+    We intercept and write shortened versions for each error encountered, any unhandled/empty error
+    will be displayed as "An error has occurred" or a default value provided to the function.
+    Additionally, unhandled errors will be printed to the console so they can be documented.

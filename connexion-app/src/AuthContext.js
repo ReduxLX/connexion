@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import firebase from "firebase/app";
 import { auth, firestore } from "./firebase";
 import * as actApp from "./store/App/ac-App";
+import { showSnackbar, fbError } from "./utils";
 
 const AuthContext = React.createContext();
 
@@ -23,36 +24,45 @@ export function AuthProvider({ children }) {
 
   const signinGoogle = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
-    return auth.signInWithPopup(provider);
+    dispatch(actApp.handleState("isLoading", true));
+    return auth
+      .signInWithPopup(provider)
+      .then(() => {
+        showSnackbar("success", "Welcome back");
+        dispatch(actApp.handleState("isLoading", false));
+      })
+      .catch((e) => {
+        const errorMsg = fbError(e.code, "Failed to sign in");
+        showSnackbar("error", errorMsg);
+        dispatch(actApp.handleState("isLoading", false));
+      });
   };
 
-  const login = (email, password) =>{
-    auth.signInWithEmailAndPassword(email, password)
-    .then(() => {
-      dispatch(
-        actApp.handleStateGlobal({
-          isSnackbarVisible: true,
-          snackbarVariant: "error",
-          snackbarMsg: "Successful Sign in",
-        })
-      );
-    })
-    .catch((e) => console.log("Error in signing in", e));
-  }
+  const login = (email, password) => {
+    dispatch(actApp.handleState("isLoading", true));
+    return auth
+      .signInWithEmailAndPassword(email, password)
+      .then(() => {
+        showSnackbar("success", "Welcome back");
+        dispatch(actApp.handleState("isLoading", false));
+      })
+      .catch((e) => {
+        const errorMsg = fbError(e.code, "Failed to sign in");
+        showSnackbar("error", errorMsg);
+        dispatch(actApp.handleState("isLoading", false));
+      });
+  };
 
   const logout = () => {
-    auth
+    return auth
       .signOut()
       .then(() => {
-        dispatch(
-          actApp.handleStateGlobal({
-            isSnackbarVisible: true,
-            snackbarVariant: "error",
-            snackbarMsg: "Successfully Logged out",
-          })
-        );
+        showSnackbar("success", "Logged out");
       })
-      .catch((e) => console.log("Error in logging out", e));
+      .catch((e) => {
+        const errorMsg = fbError(e.code, "Failed to log out");
+        showSnackbar("error", errorMsg);
+      });
   };
 
   // Firestore Refs

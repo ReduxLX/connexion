@@ -5,7 +5,7 @@ import { styled as muiStyled } from "@material-ui/styles";
 import { PageWrapper } from "../SharedStyles";
 import Theme from "../../Theme";
 import { useAuth } from "../../AuthContext";
-import { firebaseErrorMsg } from "../../utils";
+import { fbError } from "../../utils";
 import ErrorSnackbar from "../../components/ErrorSnackbar";
 import { convertSecondsToDate } from "../../utils";
 
@@ -32,7 +32,7 @@ const About = () => {
   } = useAuth();
 
   useEffect(() => {
-    async function fetchData(){
+    async function fetchData() {
       const posts = await fetchAllPosts();
       setPosts(posts);
       const comments = await fetchPostComments(postId);

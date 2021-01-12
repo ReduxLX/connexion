@@ -1,4 +1,6 @@
-/*eslint no-undef: 0*/
+import * as actApp from "../store/App/ac-App";
+import store from "../store";
+
 export function debounce(func, wait, immediate) {
   let timeout;
   return function () {
@@ -31,12 +33,16 @@ export function isMobile() {
   );
 }
 
-export function firebaseErrorMsg(code) {
-  if (code === "auth/user-not-found") return "Account does not exist";
-  else if (code === "auth/wrong-password") return "Invalid email/password";
-  else if (code === "auth/network-request-failed")
-    return "Network / Connection error";
-  else return "An error has occurred";
+export function fbError(code = null, defaultError = "An errror has occurred") {
+  if (code !== null) {
+    if (code === "auth/user-not-found" || code === "auth/wrong-password")
+      return "Invalid username/password";
+    else if (code === "auth/network-request-failed")
+      return "Network / Connection error";
+    else if (code === "auth/popup-closed-by-user") return "Sign in cancelled";
+  }
+  console.log("Unhandled Error -> ", code);
+  return defaultError;
 }
 
 export function convertSecondsToDate(seconds = 45) {
@@ -62,5 +68,15 @@ export function convertSecondsToDate(seconds = 45) {
     monthNames[date.getMonth()] +
     "-" +
     date.getFullYear()
+  );
+}
+
+export function showSnackbar(variant = "success", msg = "") {
+  store.dispatch(
+    actApp.handleStateGlobal({
+      isSnackbarVisible: true,
+      snackbarVariant: variant,
+      snackbarMsg: msg,
+    })
   );
 }
