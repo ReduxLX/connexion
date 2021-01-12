@@ -40,6 +40,8 @@ export function fbError(code = null, defaultError = "An errror has occurred") {
     else if (code === "auth/network-request-failed")
       return "Network / Connection error";
     else if (code === "auth/popup-closed-by-user") return "Sign in cancelled";
+    else if (code === "auth/email-already-in-use")
+      return "Account already exists";
   }
   console.log("Unhandled Error -> ", code);
   return defaultError;

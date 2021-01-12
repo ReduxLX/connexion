@@ -19,16 +19,30 @@ export function AuthProvider({ children }) {
   const dispatch = useDispatch();
 
   // Authentication Methods
-  const signup = (email, password) =>
-    auth.createUserWithEmailAndPassword(email, password);
+  const signup = (username, email, password) => {
+    dispatch(actApp.handleState("isLoading", true));
+    auth
+      .createUserWithEmailAndPassword(email, password)
+      .then((result) => {
+        updateDisplayName(result.user, username);
+        showSnackbar("success", "Welcome to Connexion " + username);
+        dispatch(actApp.handleState("isLoading", false));
+      })
+      .catch((e) => {
+        const errorMsg = fbError(e.code, "Failed to sign up");
+        showSnackbar("error", errorMsg);
+        dispatch(actApp.handleState("isLoading", false));
+      });
+  };
 
   const signinGoogle = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
     dispatch(actApp.handleState("isLoading", true));
     return auth
       .signInWithPopup(provider)
-      .then(() => {
-        showSnackbar("success", "Welcome back");
+      .then((result) => {
+        const username = result ? result.user.displayName : "";
+        showSnackbar("success", "Welcome to Connexion " + username);
         dispatch(actApp.handleState("isLoading", false));
       })
       .catch((e) => {
@@ -63,6 +77,20 @@ export function AuthProvider({ children }) {
         const errorMsg = fbError(e.code, "Failed to log out");
         showSnackbar("error", errorMsg);
       });
+  };
+
+  // Update User details
+  const updateDisplayName = (user, displayName) => {
+    if (user) {
+      user
+        .updateProfile({
+          displayName,
+        })
+        .then(() => console.log("Display name update -> ", displayName))
+        .catch((e) => {
+          console.log("Failed to update display name", e);
+        });
+    }
   };
 
   // Firestore Refs
@@ -201,6 +229,7 @@ export function AuthProvider({ children }) {
 
   const value = {
     currentUser,
+    updateDisplayName,
     signup,
     login,
     logout,

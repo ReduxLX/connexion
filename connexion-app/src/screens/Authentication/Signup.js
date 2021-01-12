@@ -1,75 +1,39 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { styled as muiStyled } from "@material-ui/styles";
 import { Button } from "@material-ui/core";
 import { FcGoogle } from "react-icons/fc";
 import { email_regex } from "../../utils/constants";
 import SignupBg from "../../res/images/Signup.png";
 import Theme from "../../Theme";
-import { fbError } from "../../utils";
-import ErrorSnackbar from "../../components/ErrorSnackbar";
-import * as actApp from "../../store/App/ac-App";
 import { useAuth } from "../../AuthContext";
 
 const Signup = () => {
-  const [isErrorVisible, setErrorVisible] = useState(false);
-  const [error, setError] = useState(false);
-  const dispatch = useDispatch();
-  const history = useHistory();
   const isLoading = useSelector((state) => state.App.isLoading);
 
   const { register, watch, handleSubmit, errors } = useForm();
   const { signup, signinGoogle } = useAuth();
   const watchPassword = watch("password", "");
 
-  const handleEmailSignup = async (formData) => {
-    const { email, password } = formData;
-    try {
-      dispatch(actApp.handleState("isLoading", true));
-      await signup(email, password);
-      dispatch(actApp.handleState("isLoading", false));
-      history.push("/");
-
-      console.log("Success Sign up");
-    } catch (e) {
-      console.log("Failed email signup ->", e);
-      setError(fbError(e.code));
-      setErrorVisible(true);
-      dispatch(actApp.handleState("isLoading", false));
-    }
+  const handleEmailPasswordSignup = async (formData) => {
+    const { username, email, password } = formData;
+    await signup(username, email, password);
   };
 
   const handleGoogleLogin = async () => {
-    try {
-      dispatch(actApp.handleState("isLoading", true));
-      await signinGoogle();
-      history.push("/");
-      console.log("Success Google Login");
-      dispatch(actApp.handleState("isLoading", false));
-    } catch (e) {
-      console.log("Failed Google signup -> ", e);
-      setError(fbError(e.code));
-      setErrorVisible(true);
-      dispatch(actApp.handleState("isLoading", false));
-    }
+    await signinGoogle();
   };
 
   return (
     <Wrapper>
-      <ErrorSnackbar
-        isErrorVisible={isErrorVisible}
-        handleClose={() => setErrorVisible(false)}
-        message={error}
-        type="fullscreen"
-      />
       <FullpageWrapper>
         <Link to="/">
           <LogoWrapper>CONNEXION</LogoWrapper>
         </Link>
-        <Form onSubmit={handleSubmit(handleEmailSignup)}>
+        <Form onSubmit={handleSubmit(handleEmailPasswordSignup)}>
           <Title>Create an account</Title>
           <Section>
             <InputLabel htmlFor="username">Username</InputLabel>
