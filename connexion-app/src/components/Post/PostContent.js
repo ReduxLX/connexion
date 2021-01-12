@@ -65,12 +65,14 @@ const PostContent = (props) => {
   };
 
   return (
-    <PostContentWrapper
-      onClick={() => {
-        history.push("./post");
-      }}
-    >
-      <PostHeader>{title.trim()}</PostHeader>
+    <PostContentWrapper>
+      <PostHeader
+        onClick={() => {
+          history.push("./post");
+        }}
+      >
+        {title.trim()}
+      </PostHeader>
       <Chip />
       <PostBody>{renderBodyTextMemoized}</PostBody>
       <hr />
@@ -83,7 +85,9 @@ const PostContent = (props) => {
           />
           <p className="label">Posted By</p>
           <p>
-            <Poster>{truncateText(poster, 15)}</Poster>
+            <Poster className="PosterUsername">
+              {truncateText(poster, 15)}
+            </Poster>
           </p>
         </FooterLeft>
         <FooterMiddle>
@@ -162,6 +166,11 @@ const FooterLeft = styled.div`
   }
   .label {
     @media (max-width: 768px) {
+      display: none;
+    }
+  }
+  .PosterUsername {
+    @media (max-width: 360px) {
       display: none;
     }
   }

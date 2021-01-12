@@ -57,14 +57,19 @@ const DiscussionSection = () => {
     <SectionWrapper>
       <div style={{ textAlign: "left" }}>
         <NewDiscussionButton
+          className="CreateTopicButton"
           onClick={() => {
             history.push("/createtopic");
           }}
         >
-          Start a New Topic
+          <NewDiscussionButtonText>Start a New Topic</NewDiscussionButtonText>
         </NewDiscussionButton>
       </div>
-      <Discussion>
+      <Discussion
+        onClick={() => {
+          history.push("/categories");
+        }}
+      >
         <div>
           <DiscussionLogo />
         </div>
@@ -115,13 +120,20 @@ const DiscussionLogo = styled(GoCommentDiscussion)`
 const NewDiscussionButton = muiStyled(Button)({
   background: Theme.colors.main,
   color: "white",
-  fontSize: "14px",
   textTransform: "none",
   padding: "0.6rem 0.8rem",
   marginBottom: "2rem",
+  fontSize: "2  px",
   "&:hover": {
     backgroundColor: `${Theme.colors.main_dark}`,
   },
 });
+
+const NewDiscussionButtonText = styled.p`
+  font-size: 14px;
+  @media (max-width: 970px) {
+    font-size: 12px;
+  }
+`;
 
 export default DiscussionSection;
