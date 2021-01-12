@@ -81,37 +81,44 @@ export function AuthProvider({ children }) {
 
   // Update User details
   const updateDisplayName = (user, displayName) => {
-    if (user) {
-      user
-        .updateProfile({
-          displayName,
-        })
-        .then(() => console.log("Display name update -> ", displayName))
-        .catch((e) => {
-          console.log("Failed to update display name", e);
-        });
-    }
+    if (!user) return showSnackbar("error", "Failed to update display name");
+    user
+      .updateProfile({
+        displayName,
+      })
+      .then(() => console.log("Display name update -> ", displayName))
+      .catch((e) => {
+        console.log("Failed to update display name", e);
+      });
   };
 
   // Firestore Refs
   const postRef = firestore.collection("posts");
 
   // Firestore Methods
-  const addPost = (title, body, university, categories) => {
-    if (!currentUser || !title || !body || !university) return;
+  const addPost = (title, body, bodyPlain, university, categories) => {
+    if (!currentUser || !title || !body || !bodyPlain || !university) {
+      return showSnackbar("error", "Some post details are missing");
+    }
     return postRef
       .add({
         uid: currentUser.uid,
         title,
         body,
+        bodyPlain,
         university,
         categories,
         views: 0,
         rating: 0,
+        upvotedUsers: [],
+        downvotedUsers: [],
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       })
-      .then(() => console.log("Post added successfully"))
-      .catch((e) => console.log("Error Adding post", e));
+      .then(() => showSnackbar("success", "Post added successfully"))
+      .catch((e) => {
+        const errorMsg = fbError(e.code, "Failed to add post");
+        showSnackbar("error", errorMsg);
+      });
   };
 
   const addPostComment = (postId, body) => {
@@ -123,53 +130,166 @@ export function AuthProvider({ children }) {
         uid: currentUser.uid,
         body,
         rating: 0,
+        upvotedUsers: [],
+        downvotedUsers: [],
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       })
-      .then(() => console.log("Comment added successfully"))
-      .catch((e) => console.log("Error Adding comment", e));
+      .then(() => showSnackbar("success", "Comment added successfully"))
+      .catch((e) => {
+        const errorMsg = fbError(e.code, "Failed to add comment");
+        showSnackbar("error", errorMsg);
+      });
   };
 
   const increment = firebase.firestore.FieldValue.increment(1);
+  const increment2 = firebase.firestore.FieldValue.increment(2);
   const decrement = firebase.firestore.FieldValue.increment(-1);
+  const decrement2 = firebase.firestore.FieldValue.increment(-2);
 
+  // 3 cases: No up/down vote (+1), undo upvote (-1), undo downvote then upvote(+2)
   const upvotePost = (postId) => {
-    if (!postId) return;
-    return postRef
+    if (!postId || !currentUser) return;
+    postRef
       .doc(postId)
-      .update({ rating: increment })
-      .then(() => console.log("Upvote Success"))
-      .catch((e) => console.log("Error Upvote -> ", e));
+      .get()
+      .then((doc) => {
+        const { upvotedUsers, downvotedUsers } = doc.data();
+        const userHasUpvoted = upvotedUsers.includes(currentUser.uid);
+        const userHasDownvoted = downvotedUsers.includes(currentUser.uid);
+        const updateObject = !userHasDownvoted
+          ? {
+              rating: !userHasUpvoted ? increment : decrement,
+              upvotedUsers: userHasUpvoted
+                ? firebase.firestore.FieldValue.arrayRemove(currentUser.uid)
+                : firebase.firestore.FieldValue.arrayUnion(currentUser.uid),
+            }
+          : {
+              rating: increment2,
+              upvotedUsers: firebase.firestore.FieldValue.arrayUnion(
+                currentUser.uid
+              ),
+              downvotedUsers: firebase.firestore.FieldValue.arrayRemove(
+                currentUser.uid
+              ),
+            };
+        postRef
+          .doc(postId)
+          .update(updateObject)
+          .then(() => console.log("Upvote Success"))
+          .catch((e) => console.log("Error Upvote -> ", e));
+      })
+      .catch((e) => console.log("Error Upvote", e));
   };
 
+  // 3 cases: No up/down vote (-1), undo upvote (+1), undo downvote then upvote(+2)
   const downvotePost = (postId) => {
-    if (!postId) return;
-    return postRef
+    if (!postId || !currentUser) return;
+    postRef
       .doc(postId)
-      .update({ rating: decrement })
-      .then(() => console.log("Downvote Success"))
-      .catch((e) => console.log("Error Downvote -> ", e));
+      .get()
+      .then((doc) => {
+        const { upvotedUsers, downvotedUsers } = doc.data();
+        const userHasUpvoted = upvotedUsers.includes(currentUser.uid);
+        const userHasDownvoted = downvotedUsers.includes(currentUser.uid);
+        const updateObject = !userHasUpvoted
+          ? {
+              rating: !userHasDownvoted ? decrement : increment,
+              downvotedUsers: userHasDownvoted
+                ? firebase.firestore.FieldValue.arrayRemove(currentUser.uid)
+                : firebase.firestore.FieldValue.arrayUnion(currentUser.uid),
+            }
+          : {
+              rating: decrement2,
+              upvotedUsers: firebase.firestore.FieldValue.arrayRemove(
+                currentUser.uid
+              ),
+              downvotedUsers: firebase.firestore.FieldValue.arrayUnion(
+                currentUser.uid
+              ),
+            };
+        postRef
+          .doc(postId)
+          .update(updateObject)
+          .then(() => console.log("Downvote Post Success"))
+          .catch((e) => console.log("Error Downvote Post -> ", e));
+      })
+      .catch((e) => console.log("Error Downvote", e));
   };
 
   const upvoteComment = (postId, commentId) => {
-    if (!postId || !commentId) return;
-    return postRef
+    if (!postId || !commentId || !currentUser) return;
+    postRef
       .doc(postId)
       .collection("comments")
       .doc(commentId)
-      .update({ rating: increment })
-      .then(() => console.log("Upvote Comment Success"))
-      .catch((e) => console.log("Error Upvote Comment -> ", e));
+      .get()
+      .then((doc) => {
+        const { upvotedUsers, downvotedUsers } = doc.data();
+        const userHasUpvoted = upvotedUsers.includes(currentUser.uid);
+        const userHasDownvoted = downvotedUsers.includes(currentUser.uid);
+        const updateObject = !userHasDownvoted
+          ? {
+              rating: !userHasUpvoted ? increment : decrement,
+              upvotedUsers: userHasUpvoted
+                ? firebase.firestore.FieldValue.arrayRemove(currentUser.uid)
+                : firebase.firestore.FieldValue.arrayUnion(currentUser.uid),
+            }
+          : {
+              rating: increment2,
+              upvotedUsers: firebase.firestore.FieldValue.arrayUnion(
+                currentUser.uid
+              ),
+              downvotedUsers: firebase.firestore.FieldValue.arrayRemove(
+                currentUser.uid
+              ),
+            };
+        postRef
+          .doc(postId)
+          .collection("comments")
+          .doc(commentId)
+          .update(updateObject)
+          .then(() => console.log("Upvote Comment Success"))
+          .catch((e) => console.log("Error Upvote Comment -> ", e));
+      })
+      .catch((e) => console.log("Error Upvote Comment", e));
   };
 
   const downvoteComment = (postId, commentId) => {
-    if (!postId || !commentId) return;
-    return postRef
+    if (!postId || !commentId || !currentUser) return;
+    postRef
       .doc(postId)
       .collection("comments")
       .doc(commentId)
-      .update({ rating: decrement })
-      .then(() => console.log("Downvote Comment Success"))
-      .catch((e) => console.log("Error Downvote Comment -> ", e));
+      .get()
+      .then((doc) => {
+        const { upvotedUsers, downvotedUsers } = doc.data();
+        const userHasUpvoted = upvotedUsers.includes(currentUser.uid);
+        const userHasDownvoted = downvotedUsers.includes(currentUser.uid);
+        const updateObject = !userHasUpvoted
+          ? {
+              rating: !userHasDownvoted ? decrement : increment,
+              downvotedUsers: userHasDownvoted
+                ? firebase.firestore.FieldValue.arrayRemove(currentUser.uid)
+                : firebase.firestore.FieldValue.arrayUnion(currentUser.uid),
+            }
+          : {
+              rating: decrement2,
+              upvotedUsers: firebase.firestore.FieldValue.arrayRemove(
+                currentUser.uid
+              ),
+              downvotedUsers: firebase.firestore.FieldValue.arrayUnion(
+                currentUser.uid
+              ),
+            };
+        postRef
+          .doc(postId)
+          .collection("comments")
+          .doc(commentId)
+          .update(updateObject)
+          .then(() => console.log("Downvote Comment Success"))
+          .catch((e) => console.log("Error Downvote Comment -> ", e));
+      })
+      .catch((e) => console.log("Error Downvote Comment", e));
   };
 
   const viewPost = (postId) => {
@@ -194,7 +314,8 @@ export function AuthProvider({ children }) {
         }))
       )
       .catch((e) => {
-        console.log("Error fetching Comment -> ", e);
+        const errorMsg = fbError(e.code, "Failed to fetch comments");
+        showSnackbar("error", errorMsg);
       });
   };
 
@@ -208,7 +329,8 @@ export function AuthProvider({ children }) {
         }))
       )
       .catch((e) => {
-        console.log("Error fetching all posts -> ", e);
+        const errorMsg = fbError(e.code, "Failed to fetch posts");
+        showSnackbar("error", errorMsg);
       });
   };
 

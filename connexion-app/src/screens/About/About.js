@@ -5,7 +5,6 @@ import { styled as muiStyled } from "@material-ui/styles";
 import { PageWrapper } from "../SharedStyles";
 import Theme from "../../Theme";
 import { useAuth } from "../../AuthContext";
-import { fbError } from "../../utils";
 import ErrorSnackbar from "../../components/ErrorSnackbar";
 import { convertSecondsToDate } from "../../utils";
 
@@ -13,8 +12,9 @@ const About = () => {
   const [posts, setPosts] = useState([]);
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
-  const [postId, setPostId] = useState("");
-  const [commentId, setCommentId] = useState("FXjGkgHDy2X2qBrSi728");
+  const [bodyPlain, setbodyPlain] = useState("");
+  const [postId, setPostId] = useState("EX8eBCaAsMblSIgNs1kA");
+  const [commentId, setCommentId] = useState("ELUeRILQcjZlgiEh5MWx");
   const [university, setUniversity] = useState("Global");
   const [isErrorVisible, setErrorVisible] = useState(false);
   const [error, setError] = useState(false);
@@ -45,7 +45,7 @@ const About = () => {
   const handleSubmitPost = (e) => {
     e.preventDefault();
     console.log("Submit -> ", title, body, university);
-    addPost(title, body, university, ["General", "Juniors"]);
+    addPost(title, body, bodyPlain, university, ["General", "Juniors"]);
   };
 
   const handleAddComment = () => {
@@ -103,7 +103,7 @@ const About = () => {
             id="title"
             type="text"
             name="title"
-            placeholder="Title"
+            placeholder="Post Title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
@@ -111,9 +111,17 @@ const About = () => {
             id="body"
             type="text"
             name="body"
-            placeholder="body"
+            placeholder="Body Rich Text"
             value={body}
             onChange={(e) => setBody(e.target.value)}
+          />
+          <Input
+            id="plain"
+            type="text"
+            name="plain"
+            placeholder="Body Plain Text"
+            value={bodyPlain}
+            onChange={(e) => setbodyPlain(e.target.value)}
           />
           {renderDropdown()}
           <SubmitFirebase type="submit">Submit</SubmitFirebase>
