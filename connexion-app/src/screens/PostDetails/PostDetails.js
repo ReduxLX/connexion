@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { useParams } from "react-router-dom";
 import { PageWrapper } from "../SharedStyles";
 import CategorySection from "../Home/CategorySection";
 import Chip from "../../components/Post/Chip";
@@ -54,6 +55,8 @@ const sortedComments = post.comments.sort((a, b) =>
   a.rating > b.rating ? -1 : 1
 );
 const PostDetails = (props) => {
+  const { id } = useParams();
+  console.log("Post Section, use id to fetch comments -> ", id);
   const { initialRating = 0 } = props;
 
   const [rating, setRating] = useState(initialRating);

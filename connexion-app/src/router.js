@@ -21,7 +21,7 @@ const routes = [
   { path: "/login", Component: Login, exclusiveAccess: "Unauthorized" },
   { path: "/profile", Component: Profile },
   { path: "/createtopic", Component: CreateTopic },
-  { path: "/post", Component: PostDetails },
+  { path: "/post/:id", Component: PostDetails },
   { path: "/categories", Component: AllCategories },
 ];
 

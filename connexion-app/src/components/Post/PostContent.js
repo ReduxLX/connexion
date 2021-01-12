@@ -68,7 +68,7 @@ const PostContent = (props) => {
     <PostContentWrapper>
       <PostHeader
         onClick={() => {
-          history.push("./post");
+          history.push("./post/101");
         }}
       >
         {title.trim()}
