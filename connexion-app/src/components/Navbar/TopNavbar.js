@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { NavLink as Link, useLocation, useHistory } from "react-router-dom";
@@ -22,6 +22,9 @@ import { isMobile } from "../../utils";
 const TopNavbar = () => {
   const [visible, setVisible] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [height, setHeight] = useState(0);
+  const ref = useRef(null)
+  const clientHeight = ref.current ? ref.current.clientHeight : 0
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -31,6 +34,11 @@ const TopNavbar = () => {
   const { logout, currentUser } = useAuth();
 
   const displaySearchbar = path === "/" || path === "/discussion";
+
+  // Calculate searchbar height offset so it appears directly below the top navbar
+  useEffect(() => {
+    setHeight(ref.current.clientHeight)
+  }, [clientHeight])
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -120,7 +128,7 @@ const TopNavbar = () => {
           Log out
         </MenuItem>
       </Menu>
-      <TopNavbarContent>
+      <TopNavbarContent ref={ref}>
         <Link to="/">
           <LogoWrapper>CONNEXION</LogoWrapper>
         </Link>
@@ -155,7 +163,7 @@ const TopNavbar = () => {
           )}
         </NavRight>
       </TopNavbarContent>
-      <SearchNavbar visible={visible && displaySearchbar}>
+      <SearchNavbar visible={visible && displaySearchbar} offset={height}>
         {renderSearchBar("searchBarBottom")}
       </SearchNavbar>
     </TopNavbarWrapper>
@@ -207,7 +215,7 @@ const SearchNavbar = styled.div`
   width: 100%;
   background: white;
   max-width: 1200px;
-  top: ${({ visible }) => (visible ? `41px` : `-20px`)};
+  top: ${({ visible, offset }) => (visible ? `${offset}px` : `-20px`)};
   transition: 0.3s;
   z-index: 125;
   padding: 0 1rem;

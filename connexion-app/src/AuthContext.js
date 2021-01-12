@@ -1,6 +1,8 @@
 import React, { useState, useContext, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import firebase from "firebase/app";
 import { auth, firestore } from "./firebase";
+import * as actApp from "./store/App/ac-App";
 
 const AuthContext = React.createContext();
 
@@ -13,6 +15,8 @@ export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
   const [loading, setLoading] = useState(true);
 
+  const dispatch = useDispatch();
+
   // Authentication Methods
   const signup = (email, password) =>
     auth.createUserWithEmailAndPassword(email, password);
@@ -22,10 +26,34 @@ export function AuthProvider({ children }) {
     return auth.signInWithPopup(provider);
   };
 
-  const login = (email, password) =>
-    auth.signInWithEmailAndPassword(email, password);
+  const login = (email, password) =>{
+    auth.signInWithEmailAndPassword(email, password)
+    .then(() => {
+      dispatch(
+        actApp.handleStateGlobal({
+          isSnackbarVisible: true,
+          snackbarVariant: "error",
+          snackbarMsg: "Successful Sign in",
+        })
+      );
+    })
+    .catch((e) => console.log("Error in signing in", e));
+  }
 
-  const logout = () => auth.signOut();
+  const logout = () => {
+    auth
+      .signOut()
+      .then(() => {
+        dispatch(
+          actApp.handleStateGlobal({
+            isSnackbarVisible: true,
+            snackbarVariant: "error",
+            snackbarMsg: "Successfully Logged out",
+          })
+        );
+      })
+      .catch((e) => console.log("Error in logging out", e));
+  };
 
   // Firestore Refs
   const postRef = firestore.collection("posts");

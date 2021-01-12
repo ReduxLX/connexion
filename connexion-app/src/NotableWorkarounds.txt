@@ -19,3 +19,28 @@ Solution:
   To implement private routes, we create separate route components such as UnauthorizedRoute
   which is similar to a normal Route except with custom logic in it's render.
   For example, UnauthorizedRoute would redirect to "/" if user is signed in.
+
+--- Global snackbar in router ---
+  In order to streamline showing errors, success, info messages to the user, we decided to implement
+  a global snackbar component in router.js which uses redux to toggle its visibility, variant and message.
+  This means that virtually any component can now toggle a snackbar by dispatching the following App-action
+  WITHOUT storing any local state hence avoiding unecessary re-renders.
+
+    import * as actApp from ".../ac-App";
+    dispatch(actapp.handleGlobal({
+      isSnackbarVisible: true,
+      snackbarVariant: "error" || "success" || "warning" || "info",
+      snackbarMsg: "Insert message here"
+    }))
+  
+  Currently the snackbar will not close when clicked away. If multiple snackbars are called then the current one
+  will be replaced immediately. Snackbars persist when changing routes (this might be changed)
+
+  --- Searchbar dynamic height ---
+  Problem: 
+    The searchbar for mobile should rest just below the top navbar when expanded but the height of the top
+    navbar varies based on whether the user is logged in and may potentially be different for screens of different sizes
+  Solution:
+    With useRef, track and store the height of the top navbar as local state and pass this height to the Search bar styled components.
+    This may cause infinite looping given: store height -> re-render -> height change after re-render -> re-render
+    As such, we might consider hard coding the height of the topnavbar instead (41 not logged in and 46 logged in + avatar)

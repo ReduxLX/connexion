@@ -10,10 +10,9 @@ export const handleState = (property, value) => {
   };
 };
 
-export const signup = (email, password) => {
+export const handleStateGlobal = (payload) => {
   return {
-    type: types.SIGNUP_START,
-    email,
-    password,
+    type: types.APP_HANDLE_STATE_GLOBAL,
+    payload,
   };
 };

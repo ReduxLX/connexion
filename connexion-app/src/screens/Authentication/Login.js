@@ -33,6 +33,13 @@ const Login = () => {
       dispatch(actApp.handleState("isLoading", false));
       console.log("Success Login");
       history.push("/");
+      dispatch(
+        actApp.handleStateGlobal({
+          isSnackbarVisible: true,
+          snackbarVariant: "success",
+          snackbarMsg: "Welcome back",
+        })
+      );
     } catch (e) {
       console.log("Failed email login -> ", e);
       setError(firebaseErrorMsg(e.code));
@@ -48,6 +55,13 @@ const Login = () => {
       history.push("/");
       dispatch(actApp.handleState("isLoading", false));
       console.log("Success Google Login");
+      dispatch(
+        actApp.handleStateGlobal({
+          isSnackbarVisible: true,
+          snackbarVariant: "success",
+          snackbarMsg: "Welcome back",
+        })
+      );
     } catch (e) {
       console.log("Failed Google login -> ", e);
       setError(firebaseErrorMsg(e.code));

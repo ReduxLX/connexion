@@ -31,11 +31,15 @@ const About = () => {
     viewPost,
   } = useAuth();
 
-  useEffect(async () => {
-    const posts = await fetchAllPosts();
-    setPosts(posts);
-    const comments = await fetchPostComments(postId);
-    console.log(comments);
+  useEffect(() => {
+    async function fetchData(){
+      const posts = await fetchAllPosts();
+      setPosts(posts);
+      const comments = await fetchPostComments(postId);
+      console.log(comments);
+    }
+
+    // fetchData()
   }, []);
 
   const handleSubmitPost = (e) => {

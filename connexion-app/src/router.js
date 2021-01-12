@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import UnauthorizedRoute from "./UnauthorizedRoute";
+import Snackbar from "./components/Snackbar";
 import Navbar from "./components/Navbar/Navbar";
 import Home from "./screens/Home/Home";
 import Discussion from "./screens/Discussion/Discussion";
@@ -27,6 +28,7 @@ const routes = [
 const Routes = () => {
   return (
     <Router>
+      <Snackbar />
       <Navbar />
       {routes.map(({ path, Component, exclusiveAccess = "" }) => {
         if (exclusiveAccess === "Unauthorized") {
