@@ -8,16 +8,15 @@ import Theme from "../../Theme";
 import { useDropzone } from "react-dropzone";
 
 const Profile = () => {
-  const { currentUser, uploadImage, updateProfilePicture } = useAuth();
+  const { currentUser, updateProfilePicture } = useAuth();
   const { displayName, email, photoURL, uid } = currentUser || {};
   const [username, setUsername] = useState(displayName);
-  const [profileUrl, setProfileUrl] = useState("");
   const [photo, setPhoto] = useState(photoURL);
 
   const handleProfileUpdate = async (e) => {
     e.preventDefault();
     console.log("Upload", photo);
-    await uploadImage(photo);
+    await updateProfilePicture(photo);
   };
 
   const onDrop = useCallback((acceptedFiles) => {
@@ -25,10 +24,6 @@ const Profile = () => {
     setPhoto(acceptedFiles[0]);
     console.log(acceptedFiles[0]);
   }, []);
-
-  const handleImageUpdate = () => {
-    updateProfilePicture(profileUrl);
-  };
 
   const {
     acceptedFiles,
@@ -63,14 +58,6 @@ const Profile = () => {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
-        <Input
-          id="profile"
-          type="text"
-          name="profile"
-          placeholder="Enter Profile image url"
-          value={profileUrl}
-          onChange={(e) => setProfileUrl(e.target.value)}
-        />
         <UploadProfile {...getRootProps()}>
           <input {...getInputProps()} />
           {isDragActive ? (
@@ -82,9 +69,6 @@ const Profile = () => {
         <h4>Files</h4>
         <ul>{files}</ul>
         <SubmitFirebase type="submit">Upload Image</SubmitFirebase>
-        <SubmitFirebase onClick={handleImageUpdate}>
-          Update Image url
-        </SubmitFirebase>
       </Form>
     </PageWrapper>
   );

@@ -18,9 +18,6 @@ export function AuthProvider({ children }) {
 
   const dispatch = useDispatch();
 
-  // Db ref
-  const storageRef = firebase.storage().ref();
-
   // Authentication Methods
   const signup = (username, email, password) => {
     dispatch(actApp.handleState("isLoading", true));
@@ -95,31 +92,33 @@ export function AuthProvider({ children }) {
       });
   };
 
-  const updateProfilePicture = (photoURL) => {
-    if (!currentUser)
-      return showSnackbar("error", "Failed to update profile picture");
-    currentUser
-      .updateProfile({
-        photoURL,
-      })
-      .then(() => console.log("Success in updating photo url -> ", photoURL))
-      .catch((e) => {
-        console.log("Failed to update photo url", e);
-      });
-  };
-
-  const uploadImage = (file) => {
-    console.log("Upload file -> ", file);
-
+  const updateProfilePicture = (file) => {
+    if (!file || !currentUser) return;
+    const storageRef = firebase
+      .storage()
+      .ref(currentUser.uid + "/profilePicture/" + file.name);
     const profilePicsRef = storageRef.child("profile.jpg");
     profilePicsRef
       .put(file)
-      .then(function (snapshot) {
-        snapshot.ref.getDownloadURL().then(function (downloadURL) {
-          console.log("File available at", downloadURL);
-        });
+      .then((snapshot) => {
+        snapshot.ref
+          .getDownloadURL()
+          .then((photoURL) => {
+            console.log("File available at", photoURL);
+            currentUser
+              .updateProfile({
+                photoURL,
+              })
+              .then(() =>
+                console.log("Success in updating photo url -> ", photoURL)
+              )
+              .catch((e) => {
+                console.log("Failed to update profile picture", e);
+              });
+          })
+          .catch((e) => console.log("Failed to get picture URL ", e));
       })
-      .catch((e) => console.log("Error in upload image ", e));
+      .catch((e) => console.log("Failed to upload image ", e));
   };
 
   // Firestore Refs
@@ -396,7 +395,6 @@ export function AuthProvider({ children }) {
     fetchPostComments,
     addPostComment,
     viewPost,
-    uploadImage,
   };
 
   return (
