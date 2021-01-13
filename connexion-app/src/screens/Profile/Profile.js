@@ -8,15 +8,19 @@ import Theme from "../../Theme";
 import { useDropzone } from "react-dropzone";
 
 const Profile = () => {
-  const { currentUser, updateProfilePicture } = useAuth();
+  const { currentUser, updateDisplayName, updateProfilePicture } = useAuth();
   const { displayName, email, photoURL, uid } = currentUser || {};
-  const [username, setUsername] = useState(displayName);
+  const [username, setUsername] = useState(displayName || "");
   const [photo, setPhoto] = useState(photoURL);
 
   const handleProfileUpdate = async (e) => {
     e.preventDefault();
     console.log("Upload", photo);
     await updateProfilePicture(photo);
+  };
+
+  const handleUsernameUpdate = async () => {
+    await updateDisplayName(currentUser, username);
   };
 
   const onDrop = useCallback((acceptedFiles) => {
@@ -68,6 +72,9 @@ const Profile = () => {
         </UploadProfile>
         <h4>Files</h4>
         <ul>{files}</ul>
+        <SubmitFirebase onClick={handleUsernameUpdate}>
+          Update username
+        </SubmitFirebase>
         <SubmitFirebase type="submit">Upload Image</SubmitFirebase>
       </Form>
     </PageWrapper>
