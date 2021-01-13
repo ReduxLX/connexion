@@ -6,7 +6,7 @@ import PostContent from "./PostContent";
 import { truncateNum } from "../../utils";
 
 const Post = (props) => {
-  const { initialRating = 0 } = props;
+  const { initialRating = 0, showRating = true } = props;
   const [rating, setRating] = useState(initialRating);
   const [hasVoted, setHasVoted] = useState(false);
 
@@ -35,22 +35,24 @@ const Post = (props) => {
 
   return (
     <PostWrapper>
-      <RatingWrapper>
-        <div onClick={() => handleUpvote()}>
-          <Upvote hasupvoted={hasUpvoted.toString()} />
-        </div>
+      {showRating && (
+        <RatingWrapper>
+          <div onClick={() => handleUpvote()}>
+            <Upvote hasupvoted={hasUpvoted.toString()} />
+          </div>
 
-        <Rating
-          hasUpvoted={hasUpvoted}
-          hasDownvoted={hasDownvoted}
-          rating={truncateNum(rating)}
-        >
-          {truncateNum(rating)}
-        </Rating>
-        <div onClick={() => handleDownvote()}>
-          <Downvote hasdownvoted={hasDownvoted.toString()} />
-        </div>
-      </RatingWrapper>
+          <Rating
+            hasUpvoted={hasUpvoted}
+            hasDownvoted={hasDownvoted}
+            rating={truncateNum(rating)}
+          >
+            {truncateNum(rating)}
+          </Rating>
+          <div onClick={() => handleDownvote()}>
+            <Downvote hasdownvoted={hasDownvoted.toString()} />
+          </div>
+        </RatingWrapper>
+      )}
       <PostContent
         rating={rating}
         hasDownvoted={hasDownvoted}

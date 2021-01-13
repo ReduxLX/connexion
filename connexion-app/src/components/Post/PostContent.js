@@ -22,6 +22,7 @@ const PostContent = (props) => {
     hasDownvoted,
     handleUpvote = () => {},
     handleDownvote = () => {},
+    showRating = true,
   } = props;
 
   const history = useHistory();
@@ -94,7 +95,7 @@ const PostContent = (props) => {
           <Time>
             <p>{time}</p>
           </Time>
-          <RatingControls>{renderRating()}</RatingControls>
+          {showRating && <RatingControls>{renderRating()}</RatingControls>}
         </FooterMiddle>
         <FooterRight>
           <GoComment style={{ width: "25px", height: "25px" }} />
@@ -172,6 +173,10 @@ const FooterLeft = styled.div`
   .PosterUsername {
     @media (max-width: 360px) {
       display: none;
+    }
+    &:hover {
+      opacity: 1;
+      color: ${({ theme: { colors } }) => colors.main};
     }
   }
 `;
