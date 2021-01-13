@@ -109,8 +109,11 @@ const CategoryWrapper = styled.div`
   @media (max-width: 400px) {
     height: 35vw;
   }
-  @media (max-width: 330px) {
-    height: 45vw;
+  @media (max-width: 350px) {
+    height: 50vw;
+  }
+  @media (max-width: 290px) {
+    height: 70vw;
   }
 `;
 
@@ -118,7 +121,7 @@ const CategoryColor = styled.div`
   background-color: ${({ color }) => color};
   margin: 0 0.2rem;
   height: 100%;
-  width: 3px;
+  width: 5px;
   border-radius: 5px;
 `;
 
@@ -129,8 +132,12 @@ const CategoryImage = styled.img`
     height: 80%;
     width: height;
   }
-  @media (max-width: 330px) {
+  @media (max-width: 350px) {
     height: 60%;
+    width: height;
+  }
+  @media (max-width: 290px) {
+    height: 40%;
     width: height;
   }
   padding-left: 0.5rem;
@@ -170,8 +177,8 @@ const CategoryDescription = styled.p`
   @media (max-width: 1000px) {
     font-size: 12px;
   }
-  @media (max-width: 800px) {
-    font-size: 10px;
+  @media (max-width: 768px) {
+    font-family: "Nunito";
   }
 `;
 

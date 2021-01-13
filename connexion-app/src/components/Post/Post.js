@@ -8,14 +8,22 @@ import { useAuth } from "../../AuthContext";
 import { showSnackbar } from "../../utils";
 
 const Post = (props) => {
-  const { postId, initialRating = 0, upvotedUsers, downvotedUsers } = props;
+  const {
+    postId,
+    initialRating = 0,
+    showRating = true,
+    upvotedUsers,
+    downvotedUsers,
+  } = props;
   const { currentUser, upvotePost, downvotePost } = useAuth();
-  const startUpvoted = currentUser
-    ? upvotedUsers.includes(currentUser.uid)
-    : false;
-  const startDownvoted = currentUser
-    ? downvotedUsers.includes(currentUser.uid)
-    : false;
+  const startUpvoted =
+    currentUser && upvotedUsers
+      ? upvotedUsers.includes(currentUser.uid)
+      : false;
+  const startDownvoted =
+    currentUser && upvotedUsers
+      ? downvotedUsers.includes(currentUser.uid)
+      : false;
   const [hasUpvoted, setHasUpvoted] = useState(startUpvoted);
   const [hasDownvoted, setHasDownvoted] = useState(startDownvoted);
   const [rating, setRating] = useState(initialRating);
@@ -61,22 +69,24 @@ const Post = (props) => {
 
   return (
     <PostWrapper>
-      <RatingWrapper>
-        <div onClick={() => handleUpvote()}>
-          <Upvote hasupvoted={hasUpvoted.toString()} />
-        </div>
+      {showRating && (
+        <RatingWrapper>
+          <div onClick={() => handleUpvote()}>
+            <Upvote hasupvoted={hasUpvoted.toString()} />
+          </div>
 
-        <Rating
-          hasUpvoted={hasUpvoted}
-          hasDownvoted={hasDownvoted}
-          rating={truncateNum(rating)}
-        >
-          {truncateNum(rating)}
-        </Rating>
-        <div onClick={() => handleDownvote()}>
-          <Downvote hasdownvoted={hasDownvoted.toString()} />
-        </div>
-      </RatingWrapper>
+          <Rating
+            hasUpvoted={hasUpvoted}
+            hasDownvoted={hasDownvoted}
+            rating={truncateNum(rating)}
+          >
+            {truncateNum(rating)}
+          </Rating>
+          <div onClick={() => handleDownvote()}>
+            <Downvote hasdownvoted={hasDownvoted.toString()} />
+          </div>
+        </RatingWrapper>
+      )}
       <PostContent
         rating={rating}
         hasDownvoted={hasDownvoted}
