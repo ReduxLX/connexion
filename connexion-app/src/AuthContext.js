@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import firebase from "firebase/app";
 import { auth, firestore } from "./firebase";
 import * as actApp from "./store/App/ac-App";
+import * as actHome from "./screens/Home/ac-Home";
 import { showSnackbar, fbError } from "./utils";
 
 const AuthContext = React.createContext();
@@ -17,6 +18,12 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   const dispatch = useDispatch();
+
+  // Field values
+  const increment = firebase.firestore.FieldValue.increment(1);
+  const increment2 = firebase.firestore.FieldValue.increment(2);
+  const decrement = firebase.firestore.FieldValue.increment(-1);
+  const decrement2 = firebase.firestore.FieldValue.increment(-2);
 
   // Authentication Methods
   const signup = (username, email, password) => {
@@ -129,9 +136,12 @@ export function AuthProvider({ children }) {
     if (!currentUser || !title || !body || !bodyPlain || !university) {
       return showSnackbar("error", "Some post details are missing");
     }
+    const { uid, displayName, photoURL } = currentUser;
     return postRef
       .add({
-        uid: currentUser.uid,
+        uid,
+        displayName,
+        photoURL,
         title,
         body,
         bodyPlain,
@@ -139,6 +149,7 @@ export function AuthProvider({ children }) {
         categories,
         views: 0,
         rating: 0,
+        comments: 0,
         upvotedUsers: [],
         downvotedUsers: [],
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
@@ -152,7 +163,7 @@ export function AuthProvider({ children }) {
 
   const addPostComment = (postId, body) => {
     if (!postId || !currentUser || !body) return;
-    return postRef
+    postRef
       .doc(postId)
       .collection("comments")
       .add({
@@ -163,17 +174,20 @@ export function AuthProvider({ children }) {
         downvotedUsers: [],
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       })
-      .then(() => showSnackbar("success", "Comment added successfully"))
+      .then(() =>
+        postRef
+          .doc(postId)
+          .update({ comments: increment })
+          .then(() => showSnackbar("success", "Post added successfully"))
+          .catch((e) => {
+            console.log("Failed to update comment counter");
+          })
+      )
       .catch((e) => {
         const errorMsg = fbError(e.code, "Failed to add comment");
         showSnackbar("error", errorMsg);
       });
   };
-
-  const increment = firebase.firestore.FieldValue.increment(1);
-  const increment2 = firebase.firestore.FieldValue.increment(2);
-  const decrement = firebase.firestore.FieldValue.increment(-1);
-  const decrement2 = firebase.firestore.FieldValue.increment(-2);
 
   // 3 cases: No up/down vote (+1), undo upvote (-1), undo downvote then upvote(+2)
   const upvotePost = (postId) => {
@@ -351,12 +365,14 @@ export function AuthProvider({ children }) {
   const fetchAllPosts = () => {
     return postRef
       .get()
-      .then((snapshot) =>
-        snapshot.docs.map((doc) => ({
+      .then((snapshot) => {
+        const allPosts = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
-        }))
-      )
+        }));
+        dispatch(actHome.handleState("posts", allPosts));
+        console.log("Success fetching posts ", allPosts);
+      })
       .catch((e) => {
         const errorMsg = fbError(e.code, "Failed to fetch posts");
         showSnackbar("error", errorMsg);

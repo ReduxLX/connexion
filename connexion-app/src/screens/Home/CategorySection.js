@@ -5,6 +5,8 @@ import { styled as muiStyled } from "@material-ui/styles";
 import Theme from "../../Theme";
 import Button from "@material-ui/core/Button";
 import { useHistory } from "react-router-dom";
+import { useAuth } from "../../AuthContext";
+import { showSnackbar } from "../../utils";
 
 const placeholderCategories = [
   {
@@ -39,6 +41,7 @@ const placeholderCategories = [
 
 const CategorySection = () => {
   let history = useHistory();
+  const { currentUser } = useAuth();
 
   const renderDiscussions = () => {
     return placeholderCategories.map(({ id, title }) => {
@@ -59,7 +62,12 @@ const CategorySection = () => {
         <NewCategoryButton
           className="CreateTopicButton"
           onClick={() => {
-            history.push("/createtopic");
+            if (currentUser) history.push("/createtopic");
+            else
+              showSnackbar(
+                "error",
+                "You need to be signed in to start a new topic"
+              );
           }}
         >
           <NewCategoryButtonText>Start a New Topic</NewCategoryButtonText>

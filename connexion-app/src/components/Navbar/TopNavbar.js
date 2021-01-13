@@ -49,6 +49,7 @@ const TopNavbar = () => {
     try {
       await logout();
       history.push("/");
+      history.go(0);
     } catch (e) {
       console.log("Failed to logout ", e);
     }

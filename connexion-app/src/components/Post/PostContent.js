@@ -7,7 +7,7 @@ import Avatar from "@material-ui/core/Avatar";
 import ProfileImg1 from "../../res/images/avatar1.jpg";
 import TextTruncate from "react-text-truncate";
 import Theme from "../../Theme";
-import { truncateNum, truncateText } from "../../utils";
+import { truncateNum, truncateText, convertSecondsToDate } from "../../utils";
 import { useHistory } from "react-router-dom";
 
 const PostContent = (props) => {
@@ -15,7 +15,8 @@ const PostContent = (props) => {
     title = "Title",
     body = "Body text",
     poster = "Poster",
-    time = "42s ago",
+    timestamp = "",
+    photoURL = "",
     comments = 0,
     rating = 0,
     hasUpvoted,
@@ -80,7 +81,7 @@ const PostContent = (props) => {
         <FooterLeft>
           <Avatar
             alt="pic"
-            src={ProfileImg1}
+            src={photoURL}
             style={{ width: "30px", height: "30px" }}
           />
           <p className="label">Posted By</p>
@@ -92,7 +93,7 @@ const PostContent = (props) => {
         </FooterLeft>
         <FooterMiddle>
           <Time>
-            <p>{time}</p>
+            <p>{convertSecondsToDate(timestamp.seconds)}</p>
           </Time>
           <RatingControls>{renderRating()}</RatingControls>
         </FooterMiddle>

@@ -4,32 +4,58 @@ import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import Theme from "../../Theme";
 import PostContent from "./PostContent";
 import { truncateNum } from "../../utils";
+import { useAuth } from "../../AuthContext";
+import { showSnackbar } from "../../utils";
 
 const Post = (props) => {
-  const { initialRating = 0 } = props;
+  const { postId, initialRating = 0, upvotedUsers, downvotedUsers } = props;
+  const { currentUser, upvotePost, downvotePost } = useAuth();
+  const startUpvoted = currentUser
+    ? upvotedUsers.includes(currentUser.uid)
+    : false;
+  const startDownvoted = currentUser
+    ? downvotedUsers.includes(currentUser.uid)
+    : false;
+  const [hasUpvoted, setHasUpvoted] = useState(startUpvoted);
+  const [hasDownvoted, setHasDownvoted] = useState(startDownvoted);
   const [rating, setRating] = useState(initialRating);
-  const [hasVoted, setHasVoted] = useState(false);
+  const hasVoted = hasUpvoted || hasDownvoted;
 
-  const hasUpvoted = hasVoted && rating === initialRating + 1;
-  const hasDownvoted = hasVoted && rating === initialRating - 1;
+  const offset = () => {
+    if (startUpvoted) return -1;
+    if (startDownvoted) return +1;
+    return 0;
+  };
 
   const handleUpvote = () => {
-    if (!hasVoted || rating === initialRating - 1) {
-      setRating(initialRating + 1);
-      setHasVoted(true);
+    if (currentUser) {
+      upvotePost(postId);
+      setHasDownvoted(false);
+      if (!hasVoted || hasDownvoted) {
+        setRating(initialRating + 1 + offset());
+        setHasUpvoted(true);
+      } else {
+        setRating(initialRating + offset());
+        setHasUpvoted(false);
+      }
     } else {
-      setRating(initialRating);
-      setHasVoted(false);
+      showSnackbar("error", "You need to be sign in to upvote/downvote");
     }
   };
 
   const handleDownvote = () => {
-    if (!hasVoted || rating === initialRating + 1) {
-      setRating(initialRating - 1);
-      setHasVoted(true);
+    if (currentUser) {
+      downvotePost(postId);
+      setHasUpvoted(false);
+      if (!hasVoted || hasUpvoted) {
+        setRating(initialRating - 1 + offset());
+        setHasDownvoted(true);
+      } else {
+        setRating(initialRating + offset());
+        setHasDownvoted(false);
+      }
     } else {
-      setRating(initialRating);
-      setHasVoted(false);
+      showSnackbar("error", "You need to be logged in to do that");
     }
   };
 
