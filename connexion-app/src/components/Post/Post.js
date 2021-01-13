@@ -39,7 +39,7 @@ const Post = (props) => {
         setHasUpvoted(false);
       }
     } else {
-      showSnackbar("error", "You need to be sign in to upvote/downvote");
+      showSnackbar("error", "You need to sign in to upvote/downvote posts");
     }
   };
 
