@@ -23,7 +23,8 @@ export function truncateNum(num) {
   return `${Math.floor(num / 1000)}k`;
 }
 
-export function truncateText(str, chars) {
+export function truncateText(str = "", chars = 0) {
+  if (str === null) return "";
   return str.length < chars ? str : str.slice(0, chars) + "...";
 }
 
