@@ -13,7 +13,7 @@ const About = () => {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [bodyPlain, setbodyPlain] = useState("");
-  const [postId, setPostId] = useState("EX8eBCaAsMblSIgNs1kA");
+  const [postId, setPostId] = useState("E3Kn62pRQNDkx48NvtfQ");
   const [commentId, setCommentId] = useState("ELUeRILQcjZlgiEh5MWx");
   const [university, setUniversity] = useState("Global");
   const [isErrorVisible, setErrorVisible] = useState(false);
@@ -23,6 +23,7 @@ const About = () => {
     addPost,
     addPostComment,
     fetchAllPosts,
+    fetchSinglePost,
     fetchPostComments,
     upvotePost,
     downvotePost,
@@ -41,6 +42,11 @@ const About = () => {
 
     // fetchData()
   }, []);
+
+  const handleFetchSinglePost = async () => {
+    const response = await fetchSinglePost(postId);
+    console.log("Fetch single response -> ", response);
+  };
 
   const handleSubmitPost = (e) => {
     e.preventDefault();
@@ -159,6 +165,9 @@ const About = () => {
           </SubmitFirebase>
           <SubmitFirebase onClick={handleCommentDownvote}>
             Downvote Comment {commentId} in Post {postId}
+          </SubmitFirebase>
+          <SubmitFirebase onClick={handleFetchSinglePost}>
+            Fetch post {postId}
           </SubmitFirebase>
         </Form>
         <PostContainer>

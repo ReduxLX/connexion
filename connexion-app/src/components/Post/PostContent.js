@@ -11,11 +11,14 @@ import { useHistory } from "react-router-dom";
 
 const PostContent = (props) => {
   const {
-    title = "Title",
-    body = "Body text",
-    poster = "Poster",
+    postId = "",
+    title = "",
+    body = "",
+    bodyPlain = "",
+    displayName = "",
     timestamp = "",
     photoURL = "",
+    university = "",
     comments = 0,
     rating = 0,
     hasUpvoted,
@@ -35,7 +38,7 @@ const PostContent = (props) => {
         line={3}
         element="span"
         truncateText="…"
-        text={body.trim()}
+        text={bodyPlain.trim()}
       />
     ),
     []
@@ -69,14 +72,14 @@ const PostContent = (props) => {
     <PostContentWrapper>
       <PostHeader
         onClick={() => {
-          history.push("./post/101");
+          history.push(`./post/${postId}`);
         }}
       >
         {title.trim()}
       </PostHeader>
       <ChipGroup>
-        {categories.map((category) => (
-          <Chip category={category} />
+        {categories.map((category, index) => (
+          <Chip key={index} category={category} />
         ))}
       </ChipGroup>
       <PostBody>{renderBodyTextMemoized}</PostBody>
@@ -91,7 +94,7 @@ const PostContent = (props) => {
           <p className="label">Posted By</p>
           <p>
             <Poster className="PosterUsername">
-              {truncateText(poster, 15)}
+              {truncateText(displayName, 15)}
             </Poster>
           </p>
         </FooterLeft>

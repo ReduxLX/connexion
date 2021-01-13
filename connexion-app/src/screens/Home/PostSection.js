@@ -31,22 +31,26 @@ const PostSection = () => {
       ({
         id,
         title,
+        body,
         bodyPlain,
-        displayName,
-        comments,
         categories,
+        comments,
+        displayName,
+        photoURL,
         timestamp,
+        university,
         upvotedUsers,
         downvotedUsers,
-        photoURL,
       }) => (
         <Post
           key={id}
           postId={id}
           title={title}
-          body={bodyPlain}
-          poster={displayName}
+          body={body}
+          bodyPlain={bodyPlain}
+          displayName={displayName}
           comments={comments}
+          university={university}
           initialRating={calculateRating(upvotedUsers, downvotedUsers)}
           categories={categories}
           timestamp={timestamp}

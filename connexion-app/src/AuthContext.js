@@ -379,6 +379,20 @@ export function AuthProvider({ children }) {
       });
   };
 
+  const fetchSinglePost = (postId) => {
+    if (!postId) return;
+    return postRef
+      .doc(postId)
+      .get()
+      .then((doc) => {
+        if (doc.exists) return doc.data();
+      })
+      .catch((e) => {
+        const errorMsg = fbError(e.code, "Failed to fetch post");
+        showSnackbar("error", errorMsg);
+      });
+  };
+
   // onAuthStateChanged:
   // Observe changes to user so we can show an error/redirect to page
   // Takes in a user which will either be current user or null
@@ -408,6 +422,7 @@ export function AuthProvider({ children }) {
     upvoteComment,
     downvoteComment,
     fetchAllPosts,
+    fetchSinglePost,
     fetchPostComments,
     addPostComment,
     viewPost,
