@@ -4,7 +4,6 @@ import { GoComment } from "react-icons/go";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import Chip from "./Chip";
 import Avatar from "@material-ui/core/Avatar";
-import ProfileImg1 from "../../res/images/avatar1.jpg";
 import TextTruncate from "react-text-truncate";
 import Theme from "../../Theme";
 import { truncateNum, truncateText, convertSecondsToDate } from "../../utils";
@@ -23,6 +22,7 @@ const PostContent = (props) => {
     hasDownvoted,
     handleUpvote = () => {},
     handleDownvote = () => {},
+    categories = [],
   } = props;
 
   const history = useHistory();
@@ -74,7 +74,11 @@ const PostContent = (props) => {
       >
         {title.trim()}
       </PostHeader>
-      <Chip />
+      <ChipGroup>
+        {categories.map((category) => (
+          <Chip category={category} />
+        ))}
+      </ChipGroup>
       <PostBody>{renderBodyTextMemoized}</PostBody>
       <hr />
       <Footer>
@@ -137,6 +141,15 @@ const PostHeader = styled.h1`
   }
   @media (max-width: 768px) {
     font-size: 16px;
+  }
+`;
+
+const ChipGroup = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  & > * {
+    margin-left: 5px;
+    margin-top: 5px;
   }
 `;
 

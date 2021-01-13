@@ -6,6 +6,7 @@ import CategorySection from "../Home/CategorySection";
 import Chip from "../../components/Post/Chip";
 import Divider from "../../components/Divider";
 import Comment from "../../components/Post/Comment";
+import QuillText from "../../components/Post/QuillText";
 import { truncateNum } from "../../utils";
 
 import { BsEye } from "react-icons/bs";
@@ -136,7 +137,7 @@ const PostDetails = (props) => {
                 <Chip />
               </PostHeaderDetails>
             </PostHeader>
-            <PostBody>{post.body}</PostBody>
+            <QuillText text={post.body} />
             <PostFooter>
               <PostFooterLeft>
                 <div>

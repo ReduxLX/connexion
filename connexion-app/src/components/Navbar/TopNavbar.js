@@ -10,7 +10,6 @@ import {
   InputAdornment,
 } from "@material-ui/core";
 import { styled as muiStyled } from "@material-ui/styles";
-import ProfileImg1 from "../../res/images/avatar1.jpg";
 import { BiSearch } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
 import { IoLogOutOutline } from "react-icons/io5";
@@ -152,7 +151,7 @@ const TopNavbar = () => {
           {currentUser ? (
             <Avatar
               alt="pic"
-              src={ProfileImg1}
+              src={currentUser ? currentUser.photoURL : null}
               style={{ width: "30px", height: "30px" }}
               onClick={(e) => setAnchorEl(e.currentTarget)}
             />
