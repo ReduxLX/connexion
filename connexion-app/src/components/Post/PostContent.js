@@ -156,7 +156,7 @@ const ChipGroup = styled.div`
   display: flex;
   flex-wrap: wrap;
   & > * {
-    margin: 0.1rem 0.3rem 0.3rem 0;
+    margin: 0.1rem 0.5rem 0.3rem 0;
   }
 `;
 
