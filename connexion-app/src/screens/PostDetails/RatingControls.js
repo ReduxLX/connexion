@@ -5,8 +5,14 @@ import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import { truncateNum, showSnackbar } from "../../utils";
 
 const RatingControls = (props) => {
-  const { postId, upvotedUsers, downvotedUsers } = props;
-  const { upvotePost, downvotePost, currentUser } = useAuth();
+  const {
+    upvotedUsers,
+    downvotedUsers,
+    onUpvote = () => {},
+    onDownvote = () => {},
+  } = props;
+  const { currentUser } = useAuth();
+
   const initialRating =
     upvotedUsers && downvotedUsers
       ? upvotedUsers.length - downvotedUsers.length
@@ -32,7 +38,7 @@ const RatingControls = (props) => {
 
   const handleUpvote = () => {
     if (currentUser) {
-      upvotePost(postId);
+      onUpvote();
       setHasDownvoted(false);
       if (!hasVoted || hasDownvoted) {
         setRating(initialRating + 1 + offset());
@@ -42,13 +48,13 @@ const RatingControls = (props) => {
         setHasUpvoted(false);
       }
     } else {
-      showSnackbar("error", "You need to sign in to upvote/downvote posts");
+      showSnackbar("error", "You need to sign in to upvote/downvote");
     }
   };
 
   const handleDownvote = () => {
     if (currentUser) {
-      downvotePost(postId);
+      onDownvote();
       setHasUpvoted(false);
       if (!hasVoted || hasUpvoted) {
         setRating(initialRating - 1 + offset());

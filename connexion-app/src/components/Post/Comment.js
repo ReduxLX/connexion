@@ -6,12 +6,14 @@ import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import RatingControls from "../../screens/PostDetails/RatingControls";
 import QuillText from "./QuillText";
 import { truncateNum } from "../../utils";
+import { useAuth } from "../../AuthContext";
 
 import Avatar from "@material-ui/core/Avatar";
 
 const Comment = (props) => {
   const {
-    commendId,
+    postId,
+    commentId,
     comment,
     displayName,
     photoURL,
@@ -20,12 +22,15 @@ const Comment = (props) => {
     date,
   } = props;
 
+  const { upvoteComment, downvoteComment } = useAuth();
+
   const renderRatingControls = () => {
     return (
       <RatingControls
-        postId={commendId}
         upvotedUsers={upvotedUsers}
         downvotedUsers={downvotedUsers}
+        onUpvote={() => upvoteComment(postId, commentId)}
+        onDownvote={() => downvoteComment(postId, commentId)}
       />
     );
   };

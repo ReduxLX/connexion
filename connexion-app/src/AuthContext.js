@@ -88,7 +88,9 @@ export function AuthProvider({ children }) {
 
   // Update User details
   const updateDisplayName = (user, displayName) => {
-    if (!user) return;
+    if (!user || !displayName) {
+      return showSnackbar("error", "Failed to update display name");
+    }
     user
       .updateProfile({
         displayName,
@@ -100,7 +102,9 @@ export function AuthProvider({ children }) {
   };
 
   const updateProfilePicture = (file) => {
-    if (!file || !currentUser) return;
+    if (!file || !currentUser) {
+      return showSnackbar("error", "Failed to add update profile picture");
+    }
     const storageRef = firebase
       .storage()
       .ref(currentUser.uid + "/profilePicture/" + file.name);
@@ -203,7 +207,9 @@ export function AuthProvider({ children }) {
 
   // 3 cases: No up/down vote (+1), undo upvote (-1), undo downvote then upvote(+2)
   const upvotePost = (postId) => {
-    if (!postId || !currentUser) return;
+    if (!postId || !currentUser) {
+      return showSnackbar("error", "Failed to upvote post");
+    }
     postRef
       .doc(postId)
       .get()
@@ -238,7 +244,9 @@ export function AuthProvider({ children }) {
 
   // 3 cases: No up/down vote (-1), undo upvote (+1), undo downvote then upvote(+2)
   const downvotePost = (postId) => {
-    if (!postId || !currentUser) return;
+    if (!postId || !currentUser) {
+      return showSnackbar("error", "Failed to downvote post");
+    }
     postRef
       .doc(postId)
       .get()
@@ -272,7 +280,9 @@ export function AuthProvider({ children }) {
   };
 
   const upvoteComment = (postId, commentId) => {
-    if (!postId || !commentId || !currentUser) return;
+    if (!postId || !commentId || !currentUser) {
+      return showSnackbar("error", "Failed to upvote comment");
+    }
     postRef
       .doc(postId)
       .collection("comments")
@@ -310,7 +320,9 @@ export function AuthProvider({ children }) {
   };
 
   const downvoteComment = (postId, commentId) => {
-    if (!postId || !commentId || !currentUser) return;
+    if (!postId || !commentId || !currentUser) {
+      return showSnackbar("error", "Failed to downvote comment");
+    }
     postRef
       .doc(postId)
       .collection("comments")
@@ -357,7 +369,9 @@ export function AuthProvider({ children }) {
   };
 
   const fetchPostComments = (postId) => {
-    if (!postId) return;
+    if (!postId) {
+      return showSnackbar("error", "Failed to fetch post comments");
+    }
     dispatch(actHome.handleState("isFetchingComments", true));
     return postRef
       .doc(postId)
@@ -411,6 +425,9 @@ export function AuthProvider({ children }) {
   };
 
   const fetchSinglePost = (postId) => {
+    if (!postId) {
+      return showSnackbar("error", "Failed to fetch post");
+    }
     dispatch(actHome.handleState("isFetchingSinglePost", true));
     if (!postId) return;
     return postRef

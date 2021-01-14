@@ -23,8 +23,10 @@ import { AiOutlineShareAlt } from "react-icons/ai";
 import Avatar from "@material-ui/core/Avatar";
 
 const PostDetails = (props) => {
-  const { id } = useParams();
+  const { id: postId } = useParams();
   const {
+    upvotePost,
+    downvotePost,
     fetchSinglePost,
     fetchPostComments,
     viewPost,
@@ -54,16 +56,16 @@ const PostDetails = (props) => {
 
   useEffect(() => {
     const loadPost = async () => {
-      const fetchedPost = await fetchSinglePost(id);
+      const fetchedPost = await fetchSinglePost(postId);
       setPost(fetchedPost);
       console.log("Post fetched -> ", fetchedPost);
     };
     const loadComments = async () => {
-      const fetchedComments = await fetchPostComments(id);
+      const fetchedComments = await fetchPostComments(postId);
       setComments(fetchedComments);
       console.log("Comments fetched -> ", fetchedComments);
     };
-    viewPost(id);
+    viewPost(postId);
     loadPost();
     loadComments();
   }, []);
@@ -82,6 +84,7 @@ const PostDetails = (props) => {
         return (
           <Comment
             key={id}
+            postId={postId}
             commentId={id}
             comment={body}
             displayName={displayName}
@@ -98,9 +101,10 @@ const PostDetails = (props) => {
   const renderRatingControls = () => {
     return (
       <RatingControls
-        postId={id}
         upvotedUsers={upvotedUsers}
         downvotedUsers={downvotedUsers}
+        onUpvote={() => upvotePost(postId)}
+        onDownvote={() => downvotePost(postId)}
       />
     );
   };
@@ -200,7 +204,7 @@ const PostDetails = (props) => {
           </Post>
         </PostWrapper>
       </PostDetailsWrapper>
-      <PostDetailsModal postId={id} />
+      <PostDetailsModal postId={postId} />
     </PageWrapper>
   );
 };
