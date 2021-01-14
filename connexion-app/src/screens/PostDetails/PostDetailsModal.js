@@ -86,7 +86,6 @@ const PostDetailsModal = (props) => {
         <PostCommentButton
           className="PostComment"
           style={{ marginTop: commentError ? "3px" : "95px" }}
-          commentError={commentError}
           onClick={() => setPostCommentPressed(true)}
         >
           Post your comment

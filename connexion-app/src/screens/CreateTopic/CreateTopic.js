@@ -7,6 +7,7 @@ import Theme from "../../Theme";
 import QuillEditor from "../../components/QuillEditor";
 import { useAuth } from "../../AuthContext";
 
+import { useHistory } from "react-router-dom";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
@@ -26,6 +27,7 @@ const CreateTopic = () => {
   const [submitPressed, setSubmitPressed] = useState(false);
 
   const { addPost } = useAuth();
+  const history = useHistory();
 
   // var doc = new DOMParser().parseFromString(body, "text/html");
 
@@ -66,7 +68,7 @@ const CreateTopic = () => {
     });
   };
 
-  const onSubmit = (formData) => {
+  const onSubmit = async (formData) => {
     if (checkBodyAndCategory()) {
       console.log("Everything valid, submit data to firebase");
       console.log("TITLE: " + formData.title);
@@ -74,7 +76,14 @@ const CreateTopic = () => {
       console.log("BODY PLAIN TEXT: " + bodyPlainText);
       console.log("UNIVERSITY: " + university);
       console.log("CATEGORIES: ", categories);
-      addPost(formData.title, body, bodyPlainText, university, categories);
+      const res = await addPost(
+        formData.title,
+        body,
+        bodyPlainText,
+        university,
+        categories
+      );
+      if (res) history.push("/");
     }
   };
 

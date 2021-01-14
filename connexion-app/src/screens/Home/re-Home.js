@@ -3,6 +3,8 @@ import * as types from "../../store/ActionTypes";
 const initialState = {
   isLoading: false,
   isFetchingPosts: false,
+  isFetchingSinglePost: false,
+  isFetchingComments: false,
   sortPostsBy: "Latest",
   posts: [],
 };

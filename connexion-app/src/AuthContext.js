@@ -154,7 +154,10 @@ export function AuthProvider({ children }) {
         downvotedUsers: [],
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       })
-      .then(() => showSnackbar("success", "Post added successfully"))
+      .then(() => {
+        showSnackbar("success", "Post added successfully");
+        return true;
+      })
       .catch((e) => {
         const errorMsg = fbError(e.code, "Failed to add post");
         showSnackbar("error", errorMsg);
@@ -180,7 +183,7 @@ export function AuthProvider({ children }) {
           .update({ comments: increment })
           .then(() => showSnackbar("success", "Post added successfully"))
           .catch((e) => {
-            console.log("Failed to update comment counter");
+            console.log("Failed to update comment counter", e);
           })
       )
       .catch((e) => {
@@ -346,19 +349,23 @@ export function AuthProvider({ children }) {
 
   const fetchPostComments = (postId) => {
     if (!postId) return;
+    dispatch(actHome.handleState("isFetchingComments", true));
     return postRef
       .doc(postId)
       .collection("comments")
       .get()
-      .then((snapshot) =>
-        snapshot.docs.map((doc) => ({
+      .then((snapshot) => {
+        const comments = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
-        }))
-      )
+        }));
+        dispatch(actHome.handleState("isFetchingComments", false));
+        return comments;
+      })
       .catch((e) => {
         const errorMsg = fbError(e.code, "Failed to fetch comments");
         showSnackbar("error", errorMsg);
+        dispatch(actHome.handleState("isFetchingComments", false));
       });
   };
 
@@ -393,42 +400,20 @@ export function AuthProvider({ children }) {
       });
   };
 
-  const fetchAllPosts2 = () => {
-    dispatch(actHome.handleState("isFetchingPosts", true));
-    return postRef
-      .orderBy("timestamp")
-      .get()
-      .then((snapshot) => {
-        const posts = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        dispatch(
-          actHome.handleStateGlobal({
-            posts,
-            isFetchingPosts: false,
-          })
-        );
-        console.log("Success fetching posts ", posts);
-      })
-      .catch((e) => {
-        const errorMsg = fbError(e.code, "Failed to fetch posts");
-        showSnackbar("error", errorMsg);
-        dispatch(actHome.handleState("isFetchingPosts", false));
-      });
-  };
-
   const fetchSinglePost = (postId) => {
+    dispatch(actHome.handleState("isFetchingSinglePost", true));
     if (!postId) return;
     return postRef
       .doc(postId)
       .get()
       .then((doc) => {
+        dispatch(actHome.handleState("isFetchingSinglePost", false));
         if (doc.exists) return doc.data();
       })
       .catch((e) => {
         const errorMsg = fbError(e.code, "Failed to fetch post");
         showSnackbar("error", errorMsg);
+        dispatch(actHome.handleState("isFetchingSinglePost", false));
       });
   };
 
