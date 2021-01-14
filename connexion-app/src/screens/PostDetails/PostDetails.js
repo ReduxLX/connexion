@@ -10,7 +10,7 @@ import Divider from "../../components/Divider";
 import Comment from "../../components/Post/Comment";
 import QuillText from "../../components/Post/QuillText";
 import RatingControls from "./RatingControls";
-import { convertSecondsToDate } from "../../utils";
+import { convertSecondsToDate, showSnackbar } from "../../utils";
 import { useAuth } from "../../AuthContext";
 import PostDetailsModal from "./PostDetailsModal";
 import PostDetailSkeleton from "./PostDetailSkeleton";
@@ -21,49 +21,15 @@ import { RiChat2Line } from "react-icons/ri";
 import { BsBookmark } from "react-icons/bs";
 import { AiOutlineShareAlt } from "react-icons/ai";
 import Avatar from "@material-ui/core/Avatar";
-import ProfileImg1 from "../../res/images/avatar1.jpg";
 
-const post = {
-  title:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Augue sapien vulputate turpis proin. Vulputate velit aliquet facilisi sit in.",
-  body: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas malesuada fringilla egestas elit, tempor, est id. Risus, tellus blandit at cursus nibh diam consectetur. Malesuada aliquet diam pulvinar interdum leo lacus fringilla libero, adipiscing. Pretium, blandit sagittis nulla ipsum et vel nec, blandit quam. Malesuada eros, donec nibh purus pellentesque cras fringilla. Lacinia consequat mattis donec ipsum. Lorem amet, et risus, eu. Nibh id velit et interdum eu rhoncus cursus felis neque. Mi faucibus hendrerit sit viverra sit augue aliquet vitae metus. Feugiat ut pharetra praesent viverra dui. Rhoncus, congue tempor at ornare. Imperdiet euismod urna adipiscing penatibus duis lacus ac volutpat. Nisi porttitor porttitor ipsum adipiscing.
-    
-    Mauris urna, diam at pellentesque purus vel, commodo, consectetur a. Risus orci auctor condimentum eget pretium scelerisque sem natoque tellus. Aenean nec nullam amet magna suspendisse. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas malesuada fringilla egestas elit, tempor, est id. Risus, tellus blandit at cursus nibh diam consectetur. Malesuada aliquet diam pulvinar interdum leo lacus fringilla libero, adipiscing. Pretium, blandit sagittis nulla ipsum et vel nec, blandit quam.
-
-    Malesuada eros, donec nibh purus pellentesque cras fringilla. Lacinia consequat mattis donec ipsum. Lorem amet, et risus, eu. Nibh id velit et interdum eu rhoncus cursus felis neque. Mi faucibus hendrerit sit viverra sit augue aliquet vitae metus. Feugiat ut pharetra praesent viverra dui. Rhoncus, congue tempor at ornare. Imperdiet euismod urna adipiscing penatibus duis lacus ac volutpat. Nisi porttitor porttitor ipsum adipiscing. 
-    
-    Mauris urna, diam at pellentesque purus vel, commodo, consectetur a. Risus orci auctor condimentum eget pretium scelerisque sem natoque tellus. Aenean nec nullam amet magna suspendisse. `,
-  date: "January 23 2019",
-  views: 438,
-  userId: "A6DF",
-  rating: 2,
-  comments: [
-    {
-      id: "a1412343",
-      userId: "AH7D8",
-      comment: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas malesuada fringilla egestas elit, tempor, est id. Risus, tellus blandit at cursus nibh diam consectetur. Malesuada aliquet diam pulvinar interdum leo lacus fringilla libero, adipiscing. Pretium, blandit sagittis nulla ipsum et vel nec, blandit quam.
-
-      Malesuada aliquet diam pulvinar interdum leo lacus fringilla libero, adipiscing. Pretium, blandit sagittis nulla ipsum et vel nec, blandit quam.`,
-      date: "February 02 2019",
-      rating: 12,
-    },
-    {
-      id: "aosdj4234",
-      userId: "NC89W",
-      comment: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas malesuada fringilla egestas elit, tempor, est id. Risus, tellus blandit at cursus nibh diam consectetur. Malesuada aliquet diam pulvinar interdum leo lacus fringilla libero, adipiscing. Pretium, blandit sagittis nulla ipsum et vel nec, blandit quam. Malesuada aliquet diam pulvinar interdum leo lacus fringilla libero, adipiscing.`,
-      date: "February 34 2019",
-      rating: 13,
-    },
-  ],
-};
-
-// const filteredComment = post.comments.filter((c) => c.userId === "AH7D8")[0];
-const sortedComments = post.comments.sort((a, b) =>
-  a.rating > b.rating ? -1 : 1
-);
 const PostDetails = (props) => {
   const { id } = useParams();
-  const { fetchSinglePost, fetchPostComments, viewPost } = useAuth();
+  const {
+    fetchSinglePost,
+    fetchPostComments,
+    viewPost,
+    currentUser,
+  } = useAuth();
   const [post, setPost] = useState({});
   const [comments, setComments] = useState([]);
   const isFetchingSinglePost = useSelector(
@@ -75,12 +41,10 @@ const PostDetails = (props) => {
   const {
     title,
     body,
-    bodyPlain,
     categories = [],
     displayName,
     photoURL,
     timestamp,
-    university,
     upvotedUsers,
     downvotedUsers,
     views,
@@ -105,16 +69,30 @@ const PostDetails = (props) => {
   }, []);
 
   const Comments = () => {
-    return sortedComments.map(({ id, comment, date, rating }) => {
-      return (
-        <Comment
-          key={id}
-          comment={comment}
-          date={date}
-          initialRating={rating}
-        />
-      );
-    });
+    return comments.map(
+      ({
+        id,
+        body,
+        displayName,
+        photoURL,
+        upvotedUsers,
+        downvotedUsers,
+        timestamp,
+      }) => {
+        return (
+          <Comment
+            key={id}
+            commentId={id}
+            comment={body}
+            displayName={displayName}
+            photoURL={photoURL}
+            upvotedUsers={upvotedUsers}
+            downvotedUsers={downvotedUsers}
+            date={convertSecondsToDate(timestamp.seconds)}
+          />
+        );
+      }
+    );
   };
 
   const renderRatingControls = () => {
@@ -128,7 +106,11 @@ const PostDetails = (props) => {
   };
 
   const handleAddComment = () => {
-    dispatch(actApp.handleState("isModalOpen", true));
+    if (currentUser) {
+      dispatch(actApp.handleState("isModalOpen", true));
+    } else {
+      showSnackbar("error", "You must sign in to add comments");
+    }
   };
 
   const renderCommentSkeleton = (num) => {
@@ -195,10 +177,10 @@ const PostDetails = (props) => {
                   <PostFooterRight>
                     <p>Posted by:</p>
                     <PostFooterUser>
-                      <PostFooterUserName>ReduxLX</PostFooterUserName>
+                      <PostFooterUserName>{displayName}</PostFooterUserName>
                       <Avatar
                         alt="pic"
-                        src={ProfileImg1}
+                        src={photoURL}
                         style={{ width: "35px", height: "35px" }}
                       />
                     </PostFooterUser>
@@ -211,16 +193,14 @@ const PostDetails = (props) => {
               renderCommentSkeleton(3)
             ) : (
               <CommentsSection>
-                <NumberOfComments>
-                  {sortedComments.length} comments
-                </NumberOfComments>
+                <NumberOfComments>{comments.length} comments</NumberOfComments>
                 <Comments />
               </CommentsSection>
             )}
           </Post>
         </PostWrapper>
       </PostDetailsWrapper>
-      <PostDetailsModal />
+      <PostDetailsModal postId={id} />
     </PageWrapper>
   );
 };

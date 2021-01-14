@@ -5,6 +5,8 @@ import ProfileImg1 from "../../res/images/avatar1.jpg";
 import QuillEditor from "../../components/QuillEditor";
 import Theme from "../../Theme";
 import * as actApp from "../../store/App/ac-App";
+import { useAuth } from "../../AuthContext";
+import { showSnackbar } from "../../utils";
 
 import ReactModal from "react-modal";
 import Avatar from "@material-ui/core/Avatar";
@@ -13,14 +15,21 @@ import { styled as muiStyled } from "@material-ui/styles";
 import { MdClose } from "react-icons/md";
 
 const PostDetailsModal = (props) => {
+  const { postId } = props;
   const [postCommentPressed, setPostCommentPressed] = useState(false);
   const [commentError, setCommentError] = useState("");
+
+  const { addPostComment, currentUser } = useAuth();
 
   const dispatch = useDispatch();
 
   const isOpen = useSelector((state) => state.App.isModalOpen);
 
-  const getEditorText = (body, bodyPlainText) => {
+  const getEditorText = async (body, bodyPlainText) => {
+    // FIXME: After submitting the comment, this function will rerun again
+    // after closing the modal due to re-rendering. This can result in double comments submitted
+    // For now the solution is to perform a isOpen check before proceeding.
+    if (!isOpen) return;
     bodyPlainText = bodyPlainText.trim();
     if (bodyPlainText.length <= 0) {
       setCommentError("Your comment cannot be empty");
@@ -28,10 +37,17 @@ const PostDetailsModal = (props) => {
       setCommentError("Your comment cannot exceed 1000 characters");
     } else {
       setCommentError("");
+      console.log("Post Id -> ", postId);
       console.log("SUCCESS! SEND TO FIREBASE:");
       console.log("COMMENT BODY: " + body);
       console.log("COMMENT BODY PLAINTEXT: " + bodyPlainText);
-      closeModal();
+      const response = await addPostComment(postId, body, bodyPlainText);
+      if (response) {
+        closeModal();
+        showSnackbar("success", "Comment added successfully");
+      } else {
+        showSnackbar("error", "Failed to add comment");
+      }
     }
     setPostCommentPressed(false);
   };

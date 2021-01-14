@@ -134,10 +134,10 @@ export function AuthProvider({ children }) {
   // Firestore Methods
   const addPost = (title, body, bodyPlain, university, categories) => {
     if (!currentUser || !title || !body || !bodyPlain || !university) {
-      return showSnackbar("error", "Some post details are missing");
+      return showSnackbar("error", "Failed to add post");
     }
     const { uid, displayName, photoURL } = currentUser;
-    return postRef
+    postRef
       .add({
         uid,
         displayName,
@@ -164,14 +164,20 @@ export function AuthProvider({ children }) {
       });
   };
 
-  const addPostComment = (postId, body) => {
-    if (!postId || !currentUser || !body) return;
-    postRef
+  const addPostComment = (postId, body, bodyPlain) => {
+    if (!postId || !currentUser || !body || !bodyPlain) {
+      return showSnackbar("error", "Failed to add comment");
+    }
+    const { uid, displayName, photoURL } = currentUser;
+    return postRef
       .doc(postId)
       .collection("comments")
       .add({
-        uid: currentUser.uid,
+        uid,
         body,
+        bodyPlain,
+        displayName,
+        photoURL,
         rating: 0,
         upvotedUsers: [],
         downvotedUsers: [],
@@ -181,7 +187,10 @@ export function AuthProvider({ children }) {
         postRef
           .doc(postId)
           .update({ comments: increment })
-          .then(() => showSnackbar("success", "Post added successfully"))
+          .then(() => {
+            showSnackbar("success", "Post added successfully");
+            return true;
+          })
           .catch((e) => {
             console.log("Failed to update comment counter", e);
           })
@@ -353,6 +362,7 @@ export function AuthProvider({ children }) {
     return postRef
       .doc(postId)
       .collection("comments")
+      .orderBy("rating", "desc")
       .get()
       .then((snapshot) => {
         const comments = snapshot.docs.map((doc) => ({

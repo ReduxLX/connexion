@@ -1,79 +1,54 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { HiReply } from "react-icons/hi";
 import { FiFlag } from "react-icons/fi";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
+import RatingControls from "../../screens/PostDetails/RatingControls";
+import QuillText from "./QuillText";
 import { truncateNum } from "../../utils";
 
 import Avatar from "@material-ui/core/Avatar";
-import ProfileImg1 from "../../res/images/avatar1.jpg";
 
 const Comment = (props) => {
-  const { comment, date, initialRating = 0 } = props;
+  const {
+    commendId,
+    comment,
+    displayName,
+    photoURL,
+    upvotedUsers,
+    downvotedUsers,
+    date,
+  } = props;
 
-  const [rating, setRating] = useState(initialRating);
-  const [hasVoted, setHasVoted] = useState(false);
-
-  const hasUpvoted = hasVoted && rating === initialRating + 1;
-  const hasDownvoted = hasVoted && rating === initialRating - 1;
-
-  const handleUpvote = () => {
-    if (!hasVoted || rating === initialRating - 1) {
-      setRating(initialRating + 1);
-      setHasVoted(true);
-    } else {
-      setRating(initialRating);
-      setHasVoted(false);
-    }
-  };
-
-  const handleDownvote = () => {
-    if (!hasVoted || rating === initialRating + 1) {
-      setRating(initialRating - 1);
-      setHasVoted(true);
-    } else {
-      setRating(initialRating);
-      setHasVoted(false);
-    }
-  };
-
-  const renderRating = () => {
+  const renderRatingControls = () => {
     return (
-      <RatingWrapper>
-        <div onClick={() => handleUpvote()}>
-          <Upvote hasupvoted={hasUpvoted.toString()} />
-        </div>
-        <Rating
-          hasUpvoted={hasUpvoted}
-          hasDownvoted={hasDownvoted}
-          rating={truncateNum(rating)}
-        >
-          {truncateNum(rating)}
-        </Rating>
-        <div onClick={() => handleDownvote()}>
-          <Downvote hasdownvoted={hasDownvoted.toString()} />
-        </div>
-      </RatingWrapper>
+      <RatingControls
+        postId={commendId}
+        upvotedUsers={upvotedUsers}
+        downvotedUsers={downvotedUsers}
+      />
     );
   };
 
   return (
     <CommentWrapper>
-      <CommentVotes className="commentVotes">{renderRating()}</CommentVotes>
+      <CommentVotes className="commentVotes">
+        {renderRatingControls()}
+      </CommentVotes>
       <CommentBody>
         <CommentHeader>
           <Avatar
             className="Avatar"
             alt="pic"
-            src={ProfileImg1}
+            src={photoURL}
             style={{ width: "35px", height: "35px" }}
           />
           <CommentHeaderInfo>
-            <CommentHeaderUsername>NaomiEX</CommentHeaderUsername>
+            <CommentHeaderUsername>{displayName}</CommentHeaderUsername>
             <CommentHeaderDate>Posted {date}</CommentHeaderDate>
           </CommentHeaderInfo>
         </CommentHeader>
-        {comment}
+        <QuillText text={comment} />
         <CommentFooter>
           <div>
             <HiReply />
