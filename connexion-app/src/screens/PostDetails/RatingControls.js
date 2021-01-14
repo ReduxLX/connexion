@@ -23,13 +23,7 @@ const RatingControls = (props) => {
   const [hasDownvoted, setHasDownvoted] = useState(startDownvoted);
   const [rating, setRating] = useState(initialRating);
   const hasVoted = hasUpvoted || hasDownvoted;
-  console.log("startUpvoted -> ", startUpvoted);
-  console.log("startDownvoted -> ", startDownvoted);
-  console.log("hasUpvoted -> ", hasUpvoted);
-  console.log("hasDownvoted -> ", hasDownvoted);
-  console.log("initialRating -> ", initialRating);
-  console.log("rating -> ", rating);
-  console.log("hasVoted -> ", hasVoted);
+
   const offset = () => {
     if (startUpvoted) return -1;
     if (startDownvoted) return +1;

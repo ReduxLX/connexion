@@ -154,7 +154,10 @@ export function AuthProvider({ children }) {
         downvotedUsers: [],
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       })
-      .then(() => showSnackbar("success", "Post added successfully"))
+      .then(() => {
+        showSnackbar("success", "Post added successfully");
+        return true;
+      })
       .catch((e) => {
         const errorMsg = fbError(e.code, "Failed to add post");
         showSnackbar("error", errorMsg);
@@ -180,7 +183,7 @@ export function AuthProvider({ children }) {
           .update({ comments: increment })
           .then(() => showSnackbar("success", "Post added successfully"))
           .catch((e) => {
-            console.log("Failed to update comment counter");
+            console.log("Failed to update comment counter", e);
           })
       )
       .catch((e) => {
