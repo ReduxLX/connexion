@@ -11,16 +11,19 @@ import * as actHome from "./ac-Home";
 import { useAuth } from "../../AuthContext";
 import PostSkeleton from "../../components/Post/PostSkeleton";
 
-const PostSection = () => {
+const PostSection = ({ category = "Home" }) => {
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.Home.posts);
   const sortPostsBy = useSelector((state) => state.Home.sortPostsBy);
   const isFetchingPosts = useSelector((state) => state.Home.isFetchingPosts);
+  const cachedCategory = useSelector((state) => state.Home.cachedCategory);
   const { fetchAllPosts } = useAuth();
 
   //!!!!!!!!!REVERSE THIS CHANGE WHEN PUSHING!!!!!!!!!!
   useEffect(() => {
-    if (posts.length <= 0) fetchAllPosts(sortPostsBy);
+    if (posts.length <= 0 || cachedCategory !== category) {
+      fetchAllPosts(sortPostsBy, category);
+    }
   }, [sortPostsBy]);
 
   const calculateRating = (upvotedArray, downvotedArray) => {

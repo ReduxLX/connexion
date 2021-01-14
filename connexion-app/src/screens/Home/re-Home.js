@@ -7,6 +7,7 @@ const initialState = {
   isFetchingComments: false,
   sortPostsBy: "Latest",
   posts: [],
+  cachedCategory: "",
 };
 
 const HomeReducer = (state = initialState, { type, payload }) => {

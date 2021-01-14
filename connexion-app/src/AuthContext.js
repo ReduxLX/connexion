@@ -400,10 +400,16 @@ export function AuthProvider({ children }) {
     else return postRef;
   };
 
-  const fetchAllPosts = (sortBy = "Latest") => {
+  const fetchFilterRef = (sortRef, category) => {
+    if (category === "" || category === "Home") return sortRef;
+    else return sortRef.where("categories", "array-contains", category);
+  };
+
+  const fetchAllPosts = (sortBy = "Latest", category = "") => {
     const sortRef = fetchSortRef(sortBy);
+    const filterRef = fetchFilterRef(sortRef, category);
     dispatch(actHome.handleState("isFetchingPosts", true));
-    return sortRef
+    return filterRef
       .get()
       .then((snapshot) => {
         const posts = snapshot.docs.map((doc) => ({
@@ -419,6 +425,7 @@ export function AuthProvider({ children }) {
         dispatch(
           actHome.handleStateGlobal({
             posts,
+            cachedCategory: category === "" ? "Home" : category,
             isFetchingPosts: false,
           })
         );
