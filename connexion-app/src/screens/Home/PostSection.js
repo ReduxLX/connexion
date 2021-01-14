@@ -18,6 +18,7 @@ const PostSection = () => {
   const isFetchingPosts = useSelector((state) => state.Home.isFetchingPosts);
   const { fetchAllPosts } = useAuth();
 
+  //!!!!!!!!!REVERSE THIS CHANGE WHEN PUSHING!!!!!!!!!!
   useEffect(() => {
     fetchAllPosts(sortPostsBy);
   }, [sortPostsBy]);
@@ -44,22 +45,23 @@ const PostSection = () => {
         upvotedUsers,
         downvotedUsers,
       }) => (
-        <Post
-          key={id}
-          postId={id}
-          title={title}
-          body={body}
-          bodyPlain={bodyPlain}
-          displayName={displayName}
-          comments={comments}
-          university={university}
-          initialRating={calculateRating(upvotedUsers, downvotedUsers)}
-          categories={categories}
-          timestamp={timestamp}
-          upvotedUsers={upvotedUsers}
-          downvotedUsers={downvotedUsers}
-          photoURL={photoURL}
-        />
+        <div style={{ marginBottom: "1.5rem" }} key={id}>
+          <Post
+            postId={id}
+            title={title}
+            body={body}
+            bodyPlain={bodyPlain}
+            displayName={displayName}
+            comments={comments}
+            university={university}
+            initialRating={calculateRating(upvotedUsers, downvotedUsers)}
+            categories={categories}
+            timestamp={timestamp}
+            upvotedUsers={upvotedUsers}
+            downvotedUsers={downvotedUsers}
+            photoURL={photoURL}
+          />
+        </div>
       )
     );
   };

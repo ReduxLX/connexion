@@ -17,11 +17,12 @@ const Chip = (props) => {
 
 const ChipWrapper = styled.div`
   width: fit-content;
-  padding: 0 10px;
+  padding: 2px 15px;
   color: ${(props) => props.chipColor};
   border: ${(props) => `1px solid ${props.chipColor}`};
   border-radius: 20px;
   transition: 0.2s;
+  font-size: 13px;
   &:hover {
     background-color: ${(props) => props.chipColor};
     color: white;
