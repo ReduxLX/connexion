@@ -80,13 +80,19 @@ const CategoryWrapper = styled.div`
   width: 100%;
   height: 10vw;
   align-items: center;
+  margin-right: 2rem;
   margin-bottom: 1.5rem;
   padding: 0.5rem 0.2rem;
   &:hover {
     cursor: pointer;
-    /* opacity: 0.8; */
   }
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.08);
+  @media (min-width: 1500px) {
+    height: 10vw;
+  }
+  @media (min-width: 1700px) {
+    height: 9vw;
+  }
   @media (max-width: 1300px) {
     height: 12vw;
   }
@@ -119,15 +125,22 @@ const CategoryWrapper = styled.div`
 
 const CategoryColor = styled.div`
   background-color: ${({ color }) => color};
-  margin: 0 0.2rem;
   height: 100%;
-  width: 5px;
-  border-radius: 5px;
+  width: 0.3rem;
+  @media (min-width: 1500px) {
+    width: 0.4rem;
+  }
+  margin: 0 0.6rem 0 0.2rem;
+  border-radius: 0.3rem;
 `;
 
 const CategoryImage = styled.img`
   height: 100%;
   width: height;
+  @media (min-width: 1500px) {
+    height: 80%;
+    width: height;
+  }
   @media (max-width: 800px) {
     height: 80%;
     width: height;
@@ -140,7 +153,6 @@ const CategoryImage = styled.img`
     height: 40%;
     width: height;
   }
-  padding-left: 0.5rem;
 `;
 
 const CategoryInfo = styled.div`
@@ -157,6 +169,9 @@ const CategoryInfo = styled.div`
 const CategoryName = styled.p`
   font-family: "Raleway";
   font-size: 28px;
+  @media (min-width: 1500px) {
+    font-size: 32px;
+  }
   @media (max-width: 1000px) {
     font-size: 24px;
   }
@@ -174,6 +189,9 @@ const CategoryName = styled.p`
 const CategoryDescription = styled.p`
   font-family: "NunitoLight";
   font-size: 15px;
+  @media (min-width: 1500px) {
+    font-size: 17px;
+  }
   @media (max-width: 1000px) {
     font-size: 12px;
   }
@@ -192,10 +210,12 @@ const VerticalDivider = styled.div`
 `;
 
 const CategoryDetails = styled.div`
-  width: 80%;
-  padding: 0 1rem;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: 0 0.8rem;
+  width: 30rem;
   height: 100%;
-  align-items: center;
   @media (max-width: 600px) {
     display: none;
   }
@@ -222,6 +242,9 @@ const CategoryDetailsTop = styled.div`
 
 const CategoryDetailsTitle = styled.p`
   color: ${({ theme: { colors } }) => colors.disabled};
+  @media (min-width: 1500px) {
+    font-size: 17px;
+  }
   @media (max-width: 1000px) {
     font-size: 14px;
   }
@@ -251,6 +274,10 @@ const CategoryDetailsBottom = styled.div`
   .Avatar {
     width: 25px;
     height: 25px;
+    @media (min-width: 1500px) {
+      width: 30px;
+      height: 30px;
+    }
     @media (max-width: 1000px) {
       width: 20px;
       height: 20px;
