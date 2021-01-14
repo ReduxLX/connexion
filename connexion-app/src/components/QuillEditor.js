@@ -5,7 +5,12 @@ import "react-quill/dist/quill.bubble.css";
 import "react-quill/dist/quill.snow.css";
 
 const QuillEditor = (props) => {
-  const { submitPressed, getEditorText = () => {} } = props;
+  const {
+    submitPressed = false,
+    getEditorText = () => {},
+    placeholder = "Enter your topic here",
+    height = "200px",
+  } = props;
   const [body, setBody] = useState("");
   const [bodyPlainText, setBodyPlainText] = useState("");
 
@@ -34,23 +39,15 @@ const QuillEditor = (props) => {
   };
 
   return (
-    <QuillWrapper>
-      <ReactQuill
-        modules={modules}
-        placeholder={"Enter your topic here"}
-        onChange={(content, delta, source, editor) => {
-          setBodyPlainText(editor.getText().trim());
-          setBody(content);
-        }}
-      />
-    </QuillWrapper>
+    <ReactQuill
+      style={{ height: height }}
+      modules={modules}
+      placeholder={placeholder}
+      onChange={(content, delta, source, editor) => {
+        setBodyPlainText(editor.getText().trim());
+        setBody(content);
+      }}
+    />
   );
 };
-
-const QuillWrapper = styled.div`
-  & > * {
-    height: 200px;
-  }
-`;
-
 export default QuillEditor;

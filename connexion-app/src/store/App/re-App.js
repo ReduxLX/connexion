@@ -7,6 +7,7 @@ const initialState = {
   isSnackbarVisible: false,
   snackbarVariant: "error",
   snackbarMsg: "",
+  isModalOpen: false,
 };
 
 const AppReducer = (state = initialState, { type, payload }) => {

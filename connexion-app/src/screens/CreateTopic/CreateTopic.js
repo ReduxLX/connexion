@@ -4,7 +4,7 @@ import { PageWrapper } from "../SharedStyles";
 import ChooseCategory from "../../components/CreateTopic/ChooseCategory";
 import Categories from "../../Categories";
 import Theme from "../../Theme";
-import QuillEditor from "../../components/CreateTopic/QuillEditor";
+import QuillEditor from "../../components/QuillEditor";
 import { useAuth } from "../../AuthContext";
 
 import Select from "@material-ui/core/Select";
@@ -25,7 +25,7 @@ const CreateTopic = () => {
   const [categories, setCategories] = useState([]);
   const [submitPressed, setSubmitPressed] = useState(false);
 
-  const {addPost} = useAuth();
+  const { addPost } = useAuth();
 
   // var doc = new DOMParser().parseFromString(body, "text/html");
 
@@ -72,7 +72,7 @@ const CreateTopic = () => {
       console.log("TITLE: " + formData.title);
       console.log("BODY: " + body);
       console.log("BODY PLAIN TEXT: " + bodyPlainText);
-      console.log("UNIVERSITY: " + university); 
+      console.log("UNIVERSITY: " + university);
       console.log("CATEGORIES: ", categories);
       addPost(formData.title, body, bodyPlainText, university, categories);
     }

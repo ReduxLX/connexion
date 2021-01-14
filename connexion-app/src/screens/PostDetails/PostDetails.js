@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import * as actApp from "../../store/App/ac-App";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { PageWrapper } from "../SharedStyles";
@@ -10,6 +12,7 @@ import QuillText from "../../components/Post/QuillText";
 import RatingControls from "./RatingControls";
 import { convertSecondsToDate } from "../../utils";
 import { useAuth } from "../../AuthContext";
+import PostDetailsModal from "./PostDetailsModal";
 
 import { BsEye } from "react-icons/bs";
 import { RiChat2Line } from "react-icons/ri";
@@ -75,6 +78,8 @@ const PostDetails = (props) => {
     views,
   } = post;
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
     const loadPost = async () => {
       const fetchedPost = await fetchSinglePost(id);
@@ -114,6 +119,10 @@ const PostDetails = (props) => {
     );
   };
 
+  const handleAddComment = () => {
+    dispatch(actApp.handleState("isModalOpen", true));
+  };
+
   return (
     <PageWrapper>
       <PostDetailsWrapper>
@@ -142,7 +151,7 @@ const PostDetails = (props) => {
             <QuillText text={body} />
             <PostFooter>
               <PostFooterLeft>
-                <div>
+                <div onClick={handleAddComment}>
                   <RiChat2Line />
                   <p style={{ fontFamily: "NunitoBold" }}>Add a comment</p>
                 </div>
@@ -177,6 +186,7 @@ const PostDetails = (props) => {
           </Post>
         </PostWrapper>
       </PostDetailsWrapper>
+      <PostDetailsModal />
     </PageWrapper>
   );
 };
