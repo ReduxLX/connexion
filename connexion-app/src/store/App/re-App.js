@@ -14,9 +14,8 @@ const AppReducer = (state = initialState, { type, payload }) => {
     case types.APP_HANDLE_STATE:
       return { ...state, [payload.property]: payload.value };
 
-    case types.APP_HANDLE_STATE_GLOBAL: {
+    case types.APP_HANDLE_STATE_GLOBAL:
       return { ...state, ...payload };
-    }
 
     default:
       return state;

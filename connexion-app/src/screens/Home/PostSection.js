@@ -9,11 +9,13 @@ import Post from "../../components/Post/Post";
 import Theme from "../../Theme";
 import * as actHome from "./ac-Home";
 import { useAuth } from "../../AuthContext";
+import PostSkeleton from "../../components/Post/PostSkeleton";
 
 const PostSection = () => {
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.Home.posts);
   const sortPostsBy = useSelector((state) => state.Home.sortPostsBy);
+  const isFetchingPosts = useSelector((state) => state.Home.isFetchingPosts);
   const { fetchAllPosts } = useAuth();
 
   useEffect(() => {
@@ -62,6 +64,16 @@ const PostSection = () => {
     );
   };
 
+  const renderPostSkeletons = (num) => {
+    return (
+      <SkeletonGroup>
+        {[...Array(num)].map((i, index) => (
+          <PostSkeleton key={index} />
+        ))}
+      </SkeletonGroup>
+    );
+  };
+
   const renderDropdown = () => {
     return (
       <CustomForm variant="outlined" hiddenLabel={true} size="small">
@@ -84,7 +96,7 @@ const PostSection = () => {
   return (
     <SectionWrapper>
       <DropdownWrapper>{renderDropdown()}</DropdownWrapper>
-      <div>{renderPosts()}</div>
+      <div>{isFetchingPosts ? renderPostSkeletons(5) : renderPosts()}</div>
     </SectionWrapper>
   );
 };
@@ -104,6 +116,12 @@ const SectionWrapper = styled.div`
     align-items: center;
     margin: 0;
   }
+`;
+
+const SkeletonGroup = styled.div`
+  flex-direction: "column";
+  justify-content: "flex-start";
+  flex: 1;
 `;
 
 const DropdownWrapper = styled.div`

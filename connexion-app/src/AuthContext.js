@@ -363,19 +363,26 @@ export function AuthProvider({ children }) {
   };
 
   const fetchAllPosts = () => {
+    dispatch(actHome.handleState("isFetchingPosts", true));
     return postRef
       .get()
       .then((snapshot) => {
-        const allPosts = snapshot.docs.map((doc) => ({
+        const posts = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
-        dispatch(actHome.handleState("posts", allPosts));
-        console.log("Success fetching posts ", allPosts);
+        dispatch(
+          actHome.handleStateGlobal({
+            posts,
+            isFetchingPosts: false,
+          })
+        );
+        console.log("Success fetching posts ", posts);
       })
       .catch((e) => {
         const errorMsg = fbError(e.code, "Failed to fetch posts");
         showSnackbar("error", errorMsg);
+        dispatch(actHome.handleState("isFetchingPosts", false));
       });
   };
 

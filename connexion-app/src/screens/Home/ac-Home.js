@@ -9,3 +9,10 @@ export const handleState = (property, value) => {
     },
   };
 };
+
+export const handleStateGlobal = (payload) => {
+  return {
+    type: types.HOME_HANDLE_STATE_GLOBAL,
+    payload,
+  };
+};
