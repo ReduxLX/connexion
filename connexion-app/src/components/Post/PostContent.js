@@ -6,6 +6,7 @@ import Chip from "./Chip";
 import Avatar from "@material-ui/core/Avatar";
 import TextTruncate from "react-text-truncate";
 import Theme from "../../Theme";
+import Divider from "../Divider";
 import { truncateNum, truncateText, convertSecondsToDate } from "../../utils";
 import { useHistory } from "react-router-dom";
 
@@ -36,7 +37,7 @@ const PostContent = (props) => {
   const renderBodyTextMemoized = useMemo(
     () => (
       <TextTruncate
-        line={3}
+        line={2}
         element="span"
         truncateText="…"
         text={bodyPlain.trim()}
@@ -84,13 +85,13 @@ const PostContent = (props) => {
         ))}
       </ChipGroup>
       <PostBody>{renderBodyTextMemoized}</PostBody>
-      <hr />
+      <Divider width="100%" height="1px" margin="0.8rem 0 0.3rem 0" />
       <Footer>
         <FooterLeft>
           <Avatar
             alt="pic"
             src={photoURL}
-            style={{ width: "30px", height: "30px" }}
+            style={{ width: "25px", height: "25px" }}
           />
           <p className="label">Posted By</p>
           <p>
@@ -106,7 +107,7 @@ const PostContent = (props) => {
           {showRating && <RatingControls>{renderRating()}</RatingControls>}
         </FooterMiddle>
         <FooterRight>
-          <GoComment style={{ width: "25px", height: "25px" }} />
+          <GoComment style={{ width: "20px", height: "20px" }} />
           <p>{comments}</p>
         </FooterRight>
       </Footer>
@@ -117,9 +118,9 @@ const PostContent = (props) => {
 const PostContentWrapper = styled.div`
   min-width: 250px;
   max-width: 700px;
-  padding: 1em 2em 0.5em;
-  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
-  border-radius: 5px;
+  padding: 1.5em 1.5em 0.8em;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
   text-align: left;
   word-wrap: break-word;
   & > * {
@@ -137,11 +138,11 @@ const PostBody = styled.div`
 const PostHeader = styled.h1`
   margin-bottom: 5px;
   transition: 0.2s;
-  font-size: 20px;
-  font-family: "NunitoBold";
+  font-size: 16px;
+  font-family: "Raleway";
   cursor: pointer;
   &:hover {
-    color: ${({ theme: { colors } }) => colors.main};
+    color: ${({ theme: { colors } }) => colors.main_dark};
   }
   @media (max-width: 768px) {
     font-size: 16px;
@@ -152,8 +153,7 @@ const ChipGroup = styled.div`
   display: flex;
   flex-wrap: wrap;
   & > * {
-    margin-left: 5px;
-    margin-top: 5px;
+    margin: 0.1rem 0.3rem 0.3rem 0;
   }
 `;
 
@@ -163,9 +163,14 @@ const Footer = styled.div`
   padding-right: 1rem;
   color: #9c9c9c;
   & > * {
+    margin-top: 0.2rem;
     span {
       opacity: 0.6;
       color: ${({ theme: { colors } }) => colors.main};
+    }
+    & > *,
+    & > * > * {
+      font-size: 13px;
     }
     @media (max-width: 768px) {
       & > *,
