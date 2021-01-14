@@ -58,3 +58,24 @@ Solution:
     We intercept and write shortened versions for each error encountered, any unhandled/empty error
     will be displayed as "An error has occurred" or a default value provided to the function.
     Additionally, unhandled errors will be printed to the console so they can be documented.
+
+  --- Caching Posts Data and Rating using Redux and React.memo() ---
+  Problem:
+    Every time the user navigates to the home page, posts will be refetched which is not user friendly
+  Solution:
+    Store the posts in redux and only fetch if posts in redux is empty, this meant that fetch requests are only made 
+    when the user visits home for the first time, refreshes the page or changes the sorting by option.
+  Problem:
+    Our Upvote/Downvote UI relies on local state which ensures high responsiveness (no need to listen to server).
+    The problem is local state is lost when user navigates away from home page to another page.
+    This meant that if a user upvoted a post, clicks on it to read and navigates back to home, the Rating UI
+    would revert to its initial fetched state eventhough firebase has recorded the upvote.
+  Solution:
+    Store local state data in redux posts so that we retain the "latest vote state" even when the user navigates away.
+  Problem:
+    By doing this we are essentially tying changes of one post to all posts.
+    All updates will be stored in one posts array AND all posts depend on this array for their data
+    THEREFORE even a single change to an item in this array forces all posts to re-render which is really really bad.
+  Solution:
+    By memoizing the Post component, we ensure that when a user upvotes only the post itself and the home component
+    re-renders.

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import Theme from "../../Theme";
@@ -6,27 +7,23 @@ import PostContent from "./PostContent";
 import { truncateNum } from "../../utils";
 import { useAuth } from "../../AuthContext";
 import { showSnackbar } from "../../utils";
+import * as actHome from "../../screens/Home/ac-Home";
 
 const Post = (props) => {
   const {
     postId,
+    postIndex,
     initialRating = 0,
+    rating,
     showRating = true,
-    upvotedUsers,
-    downvotedUsers,
+    startUpvoted,
+    startDownvoted,
+    hasUpvoted,
+    hasDownvoted,
   } = props;
   const { currentUser, upvotePost, downvotePost } = useAuth();
-  const startUpvoted =
-    currentUser && upvotedUsers
-      ? upvotedUsers.includes(currentUser.uid)
-      : false;
-  const startDownvoted =
-    currentUser && upvotedUsers
-      ? downvotedUsers.includes(currentUser.uid)
-      : false;
-  const [hasUpvoted, setHasUpvoted] = useState(startUpvoted);
-  const [hasDownvoted, setHasDownvoted] = useState(startDownvoted);
-  const [rating, setRating] = useState(initialRating);
+  const dispatch = useDispatch();
+
   const hasVoted = hasUpvoted || hasDownvoted;
 
   const offset = () => {
@@ -38,13 +35,13 @@ const Post = (props) => {
   const handleUpvote = () => {
     if (currentUser) {
       upvotePost(postId);
-      setHasDownvoted(false);
+      dispatch(actHome.setHasDownvoted(postIndex, false));
       if (!hasVoted || hasDownvoted) {
-        setRating(initialRating + 1 + offset());
-        setHasUpvoted(true);
+        dispatch(actHome.setRating(postIndex, initialRating + 1 + offset()));
+        dispatch(actHome.setHasUpvoted(postIndex, true));
       } else {
-        setRating(initialRating + offset());
-        setHasUpvoted(false);
+        dispatch(actHome.setRating(postIndex, initialRating + offset()));
+        dispatch(actHome.setHasUpvoted(postIndex, false));
       }
     } else {
       showSnackbar("error", "You need to sign in to upvote/downvote posts");
@@ -54,13 +51,13 @@ const Post = (props) => {
   const handleDownvote = () => {
     if (currentUser) {
       downvotePost(postId);
-      setHasUpvoted(false);
+      dispatch(actHome.setHasUpvoted(postIndex, false));
       if (!hasVoted || hasUpvoted) {
-        setRating(initialRating - 1 + offset());
-        setHasDownvoted(true);
+        dispatch(actHome.setRating(postIndex, initialRating - 1 + offset()));
+        dispatch(actHome.setHasDownvoted(postIndex, true));
       } else {
-        setRating(initialRating + offset());
-        setHasDownvoted(false);
+        dispatch(actHome.setRating(postIndex, initialRating + offset()));
+        dispatch(actHome.setHasDownvoted(postIndex, false));
       }
     } else {
       showSnackbar("error", "You need to be logged in to do that");
@@ -155,4 +152,4 @@ const Downvote = styled(FaArrowDown)`
   }
 `;
 
-export default Post;
+export default React.memo(Post);

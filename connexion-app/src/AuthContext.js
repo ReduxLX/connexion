@@ -397,6 +397,7 @@ export function AuthProvider({ children }) {
     if (sortBy === "Latest") return postRef.orderBy("timestamp", "desc");
     else if (sortBy === "Oldest") return postRef.orderBy("timestamp");
     else if (sortBy === "Popular") return postRef.orderBy("rating", "desc");
+    else return postRef;
   };
 
   const fetchAllPosts = (sortBy = "Latest") => {
@@ -407,6 +408,12 @@ export function AuthProvider({ children }) {
       .then((snapshot) => {
         const posts = snapshot.docs.map((doc) => ({
           id: doc.id,
+          startUpvoted: doc.data().upvotedUsers.includes(currentUser.uid),
+          startDownvoted: doc.data().downvotedUsers.includes(currentUser.uid),
+          hasUpvoted: doc.data().upvotedUsers.includes(currentUser.uid),
+          hasDownvoted: doc.data().downvotedUsers.includes(currentUser.uid),
+          realRating:
+            doc.data().upvotedUsers.length - doc.data().downvotedUsers.length,
           ...doc.data(),
         }));
         dispatch(
