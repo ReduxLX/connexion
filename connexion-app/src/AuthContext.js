@@ -362,9 +362,41 @@ export function AuthProvider({ children }) {
       });
   };
 
-  const fetchAllPosts = () => {
+  const fetchSortRef = (sortBy) => {
+    if (sortBy === "Latest") return postRef.orderBy("timestamp", "desc");
+    else if (sortBy === "Oldest") return postRef.orderBy("timestamp");
+    else if (sortBy === "Popular") return postRef.orderBy("rating", "desc");
+  };
+
+  const fetchAllPosts = (sortBy = "Latest") => {
+    const sortRef = fetchSortRef(sortBy);
+    dispatch(actHome.handleState("isFetchingPosts", true));
+    return sortRef
+      .get()
+      .then((snapshot) => {
+        const posts = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        dispatch(
+          actHome.handleStateGlobal({
+            posts,
+            isFetchingPosts: false,
+          })
+        );
+        console.log("Success fetching posts ", posts);
+      })
+      .catch((e) => {
+        const errorMsg = fbError(e.code, "Failed to fetch posts");
+        showSnackbar("error", errorMsg);
+        dispatch(actHome.handleState("isFetchingPosts", false));
+      });
+  };
+
+  const fetchAllPosts2 = () => {
     dispatch(actHome.handleState("isFetchingPosts", true));
     return postRef
+      .orderBy("timestamp")
       .get()
       .then((snapshot) => {
         const posts = snapshot.docs.map((doc) => ({

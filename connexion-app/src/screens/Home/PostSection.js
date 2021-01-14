@@ -19,8 +19,8 @@ const PostSection = () => {
   const { fetchAllPosts } = useAuth();
 
   useEffect(() => {
-    fetchAllPosts();
-  }, []);
+    fetchAllPosts(sortPostsBy);
+  }, [sortPostsBy]);
 
   const calculateRating = (upvotedArray, downvotedArray) => {
     if (Array.isArray(upvotedArray) && Array.isArray(downvotedArray)) {
