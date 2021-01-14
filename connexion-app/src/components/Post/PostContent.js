@@ -126,13 +126,15 @@ const PostContentWrapper = styled.div`
   & > * {
     margin-bottom: 0.5rem;
   }
+  .Title {
+    overflow-wrap: "break-word";
+  }
 `;
 
 const PostBody = styled.div`
   display: table;
   table-layout: fixed;
   width: 100%;
-  word-wrap: break-word;
 `;
 
 const PostHeader = styled.h1`
@@ -140,6 +142,7 @@ const PostHeader = styled.h1`
   transition: 0.2s;
   font-size: 16px;
   font-family: "Raleway";
+  overflow-wrap: anywhere;
   cursor: pointer;
   &:hover {
     color: ${({ theme: { colors } }) => colors.main_dark};

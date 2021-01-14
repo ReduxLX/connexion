@@ -35,9 +35,8 @@ const ProfileTab = (props) => {
 
   const renderPosts = (posts) => {
     return posts.map(({ id, title, body, poster, comments, rating }) => (
-      <div style={{ marginTop: "30px" }}>
+      <div key={id} style={{ marginTop: "30px" }}>
         <Post
-          key={id}
           title={title}
           body={body}
           poster={poster}

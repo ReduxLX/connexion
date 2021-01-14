@@ -102,15 +102,14 @@ const CategoryWrapper = styled.div`
   @media (max-width: 900px) {
     height: 15vw;
   }
-  @media (max-width: 700px) {
-    height: 18vw;
+  @media (max-width: 600px) {
+    height: 20vw;
   }
   @media (max-width: 500px) {
     height: 24vw;
   }
-  @media (max-width: 500px) {
-    height: 26vw;
-    margin-bottom: 1rem;
+  @media (max-width: 450px) {
+    height: 28vw;
   }
   @media (max-width: 400px) {
     height: 35vw;
@@ -129,6 +128,12 @@ const CategoryColor = styled.div`
   width: 0.3rem;
   @media (min-width: 1500px) {
     width: 0.4rem;
+  }
+  @media (max-width: 468px) {
+    width: 0.6rem;
+  }
+  @media (max-width: 350px) {
+    width: 0.8rem;
   }
   margin: 0 0.6rem 0 0.2rem;
   border-radius: 0.3rem;
@@ -204,7 +209,7 @@ const VerticalDivider = styled.div`
   width: 3px;
   height: 100%;
   background-color: #efefef;
-  @media (max-width: 600px) {
+  @media (max-width: 768px) {
     display: none;
   }
 `;
@@ -216,7 +221,7 @@ const CategoryDetails = styled.div`
   margin: 0 0.8rem;
   width: 30rem;
   height: 100%;
-  @media (max-width: 600px) {
+  @media (max-width: 768px) {
     display: none;
   }
 `;
