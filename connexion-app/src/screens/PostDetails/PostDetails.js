@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { PageWrapper } from "../SharedStyles";
@@ -6,13 +6,15 @@ import CategorySection from "../Home/CategorySection";
 import Chip from "../../components/Post/Chip";
 import Divider from "../../components/Divider";
 import Comment from "../../components/Post/Comment";
-import { truncateNum } from "../../utils";
+import QuillText from "../../components/Post/QuillText";
+import RatingControls from "./RatingControls";
+import { convertSecondsToDate } from "../../utils";
+import { useAuth } from "../../AuthContext";
 
 import { BsEye } from "react-icons/bs";
 import { RiChat2Line } from "react-icons/ri";
 import { BsBookmark } from "react-icons/bs";
 import { AiOutlineShareAlt } from "react-icons/ai";
-import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import Avatar from "@material-ui/core/Avatar";
 import ProfileImg1 from "../../res/images/avatar1.jpg";
 
@@ -56,54 +58,38 @@ const sortedComments = post.comments.sort((a, b) =>
 );
 const PostDetails = (props) => {
   const { id } = useParams();
-  console.log("Post Section, use id to fetch comments -> ", id);
-  const { initialRating = 0 } = props;
+  const { fetchSinglePost, fetchPostComments, viewPost } = useAuth();
+  const [post, setPost] = useState({});
+  const [comments, setComments] = useState([]);
+  const {
+    title,
+    body,
+    bodyPlain,
+    categories = [],
+    displayName,
+    photoURL,
+    timestamp,
+    university,
+    upvotedUsers,
+    downvotedUsers,
+    views,
+  } = post;
 
-  const [rating, setRating] = useState(initialRating);
-  const [hasVoted, setHasVoted] = useState(false);
-
-  const hasUpvoted = hasVoted && rating === initialRating + 1;
-  const hasDownvoted = hasVoted && rating === initialRating - 1;
-
-  const handleUpvote = () => {
-    if (!hasVoted || rating === initialRating - 1) {
-      setRating(initialRating + 1);
-      setHasVoted(true);
-    } else {
-      setRating(initialRating);
-      setHasVoted(false);
-    }
-  };
-
-  const handleDownvote = () => {
-    if (!hasVoted || rating === initialRating + 1) {
-      setRating(initialRating - 1);
-      setHasVoted(true);
-    } else {
-      setRating(initialRating);
-      setHasVoted(false);
-    }
-  };
-
-  const renderRating = () => {
-    return (
-      <RatingWrapper>
-        <div onClick={() => handleUpvote()}>
-          <Upvote hasupvoted={hasUpvoted.toString()} />
-        </div>
-        <Rating
-          hasUpvoted={hasUpvoted}
-          hasDownvoted={hasDownvoted}
-          rating={truncateNum(rating)}
-        >
-          {truncateNum(rating)}
-        </Rating>
-        <div onClick={() => handleDownvote()}>
-          <Downvote hasdownvoted={hasDownvoted.toString()} />
-        </div>
-      </RatingWrapper>
-    );
-  };
+  useEffect(() => {
+    const loadPost = async () => {
+      const fetchedPost = await fetchSinglePost(id);
+      setPost(fetchedPost);
+      console.log("Post fetched -> ", fetchedPost);
+    };
+    const loadComments = async () => {
+      const fetchedComments = await fetchPostComments(id);
+      setComments(fetchedComments);
+      console.log("Comments fetched -> ", fetchedComments);
+    };
+    viewPost(id);
+    loadPost();
+    loadComments();
+  }, []);
 
   const Comments = () => {
     return sortedComments.map(({ id, comment, date, rating }) => {
@@ -118,25 +104,42 @@ const PostDetails = (props) => {
     });
   };
 
+  const renderRatingControls = () => {
+    return (
+      <RatingControls
+        postId={id}
+        upvotedUsers={upvotedUsers}
+        downvotedUsers={downvotedUsers}
+      />
+    );
+  };
+
   return (
     <PageWrapper>
       <PostDetailsWrapper>
         <CategorySection />
         <PostWrapper>
-          <Votes className="postVotes">{renderRating()}</Votes>
+          <Votes className="postVotes">{renderRatingControls()}</Votes>
           <Post>
             <PostHeader>
-              <PostTitle>{post.title}</PostTitle>
+              <PostTitle>{title}</PostTitle>
               <PostHeaderDetails>
-                <div>Posted {post.date}</div>
+                <div>
+                  Posted{" "}
+                  {convertSecondsToDate(timestamp ? timestamp.seconds : null)}
+                </div>
                 <PostHeaderViews>
                   <BsEye size={"1.4rem"} />
-                  <PostHeaderViewsText>{post.views}</PostHeaderViewsText>
+                  <PostHeaderViewsText>{views}</PostHeaderViewsText>
                 </PostHeaderViews>
-                <Chip />
+                <ChipGroup>
+                  {categories.map((category, index) => (
+                    <Chip key={index} category={category} />
+                  ))}
+                </ChipGroup>
               </PostHeaderDetails>
             </PostHeader>
-            <PostBody>{post.body}</PostBody>
+            <QuillText text={body} />
             <PostFooter>
               <PostFooterLeft>
                 <div>
@@ -199,56 +202,17 @@ const Votes = styled.div`
   flex: 4;
 `;
 
-const RatingWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-right: 0.4rem;
-  min-width: 40px;
-  & > * {
-    margin-bottom: 0.5rem;
-  }
-`;
-
-const Rating = styled.p`
-  font-family: "NunitoBold";
-  font-size: ${({ rating }) => (rating.length > 2 ? "12px" : "16px")};
-  align-items: center;
-  color: ${({ hasUpvoted, hasDownvoted, theme }) =>
-    hasUpvoted
-      ? theme.colors.main
-      : hasDownvoted
-      ? theme.colors.error
-      : theme.colors.disabled};
-`;
-
-const Upvote = styled(FaArrowUp)`
-  width: 20px;
-  height: 20px;
-  transition: 0.2s;
-  cursor: pointer;
-  color: ${({ hasupvoted, theme }) =>
-    hasupvoted === "true" ? theme.colors.main : theme.colors.disabled};
-  &:hover {
-    color: ${({ theme: { colors } }) => colors.main};
-  }
-`;
-
-const Downvote = styled(FaArrowDown)`
-  width: 20px;
-  height: 20px;
-  transition: 0.2s;
-  cursor: pointer;
-  color: ${({ hasdownvoted, theme }) =>
-    hasdownvoted === "true" ? theme.colors.error : theme.colors.disabled};
-  &:hover {
-    color: ${({ theme: { colors } }) => colors.error};
-  }
-`;
-
 const Post = styled.div`
   flex: 46;
+`;
+
+const ChipGroup = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  & > * {
+    margin-left: 5px;
+    margin-top: 5px;
+  }
 `;
 
 const PostHeader = styled.div`

@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import AuthorizedRoute from "./AuthorizedRoute";
 import UnauthorizedRoute from "./UnauthorizedRoute";
 import Snackbar from "./components/Snackbar";
 import Navbar from "./components/Navbar/Navbar";
@@ -19,8 +20,12 @@ const routes = [
   { path: "/about", Component: About },
   { path: "/signup", Component: Signup, exclusiveAccess: "Unauthorized" },
   { path: "/login", Component: Login, exclusiveAccess: "Unauthorized" },
-  { path: "/profile", Component: Profile },
-  { path: "/createtopic", Component: CreateTopic },
+  { path: "/profile", Component: Profile, exclusiveAccess: "Authorized" },
+  {
+    path: "/createtopic",
+    Component: CreateTopic,
+    exclusiveAccess: "Authorized",
+  },
   { path: "/post/:id", Component: PostDetails },
   { path: "/categories", Component: AllCategories },
 ];
@@ -34,6 +39,15 @@ const Routes = () => {
         if (exclusiveAccess === "Unauthorized") {
           return (
             <UnauthorizedRoute
+              key={path}
+              path={path}
+              component={Component}
+              exact
+            />
+          );
+        } else if (exclusiveAccess === "Authorized") {
+          return (
+            <AuthorizedRoute
               key={path}
               path={path}
               component={Component}

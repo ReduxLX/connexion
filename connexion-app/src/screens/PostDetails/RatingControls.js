@@ -1,21 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { FaArrowUp, FaArrowDown } from "react-icons/fa";
-import Theme from "../../Theme";
-import PostContent from "./PostContent";
-import { truncateNum } from "../../utils";
 import { useAuth } from "../../AuthContext";
-import { showSnackbar } from "../../utils";
+import { FaArrowUp, FaArrowDown } from "react-icons/fa";
+import { truncateNum, showSnackbar } from "../../utils";
 
-const Post = (props) => {
-  const {
-    postId,
-    initialRating = 0,
-    showRating = true,
-    upvotedUsers,
-    downvotedUsers,
-  } = props;
-  const { currentUser, upvotePost, downvotePost } = useAuth();
+const RatingControls = (props) => {
+  const { postId, upvotedUsers, downvotedUsers } = props;
+  const { upvotePost, downvotePost, currentUser } = useAuth();
+  const initialRating =
+    upvotedUsers && downvotedUsers
+      ? upvotedUsers.length - downvotedUsers.length
+      : 0;
   const startUpvoted =
     currentUser && upvotedUsers
       ? upvotedUsers.includes(currentUser.uid)
@@ -28,7 +23,13 @@ const Post = (props) => {
   const [hasDownvoted, setHasDownvoted] = useState(startDownvoted);
   const [rating, setRating] = useState(initialRating);
   const hasVoted = hasUpvoted || hasDownvoted;
-
+  console.log("startUpvoted -> ", startUpvoted);
+  console.log("startDownvoted -> ", startDownvoted);
+  console.log("hasUpvoted -> ", hasUpvoted);
+  console.log("hasDownvoted -> ", hasDownvoted);
+  console.log("initialRating -> ", initialRating);
+  console.log("rating -> ", rating);
+  console.log("hasVoted -> ", hasVoted);
   const offset = () => {
     if (startUpvoted) return -1;
     if (startDownvoted) return +1;
@@ -67,43 +68,34 @@ const Post = (props) => {
     }
   };
 
-  return (
-    <PostWrapper>
-      {showRating && (
-        <RatingWrapper>
-          <div onClick={() => handleUpvote()}>
-            <Upvote hasupvoted={hasUpvoted.toString()} />
-          </div>
+  useEffect(() => {
+    setRating(initialRating);
+  }, [initialRating]);
+  useEffect(() => {
+    setHasUpvoted(startUpvoted);
+  }, [startUpvoted]);
+  useEffect(() => {
+    setHasDownvoted(startDownvoted);
+  }, [startDownvoted]);
 
-          <Rating
-            hasUpvoted={hasUpvoted}
-            hasDownvoted={hasDownvoted}
-            rating={truncateNum(rating)}
-          >
-            {truncateNum(rating)}
-          </Rating>
-          <div onClick={() => handleDownvote()}>
-            <Downvote hasdownvoted={hasDownvoted.toString()} />
-          </div>
-        </RatingWrapper>
-      )}
-      <PostContent
-        rating={rating}
-        hasDownvoted={hasDownvoted}
+  return (
+    <RatingWrapper>
+      <div onClick={() => handleUpvote()}>
+        <Upvote hasupvoted={hasUpvoted.toString()} />
+      </div>
+      <Rating
         hasUpvoted={hasUpvoted}
-        handleUpvote={handleUpvote}
-        handleDownvote={handleDownvote}
-        {...props}
-      />
-    </PostWrapper>
+        hasDownvoted={hasDownvoted}
+        rating={truncateNum(rating)}
+      >
+        {truncateNum(rating)}
+      </Rating>
+      <div onClick={() => handleDownvote()}>
+        <Downvote hasdownvoted={hasDownvoted.toString()} />
+      </div>
+    </RatingWrapper>
   );
 };
-
-const PostWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
 
 const RatingWrapper = styled.div`
   display: flex;
@@ -115,20 +107,18 @@ const RatingWrapper = styled.div`
   & > * {
     margin-bottom: 0.5rem;
   }
-  @media (max-width: 768px) {
-    display: none;
-  }
 `;
 
-const Rating = styled.strong`
-  align-items: center;
+const Rating = styled.p`
+  font-family: "NunitoBold";
   font-size: ${({ rating }) => (rating.length > 2 ? "12px" : "16px")};
-  color: ${({ hasUpvoted, hasDownvoted }) =>
+  align-items: center;
+  color: ${({ hasUpvoted, hasDownvoted, theme }) =>
     hasUpvoted
-      ? Theme.colors.main
+      ? theme.colors.main
       : hasDownvoted
-      ? Theme.colors.error
-      : Theme.colors.disabled};
+      ? theme.colors.error
+      : theme.colors.disabled};
 `;
 
 const Upvote = styled(FaArrowUp)`
@@ -136,8 +126,8 @@ const Upvote = styled(FaArrowUp)`
   height: 20px;
   transition: 0.2s;
   cursor: pointer;
-  color: ${({ hasupvoted }) =>
-    hasupvoted === "true" ? Theme.colors.main : Theme.colors.disabled};
+  color: ${({ hasupvoted, theme }) =>
+    hasupvoted === "true" ? theme.colors.main : theme.colors.disabled};
   &:hover {
     color: ${({ theme: { colors } }) => colors.main};
   }
@@ -148,11 +138,11 @@ const Downvote = styled(FaArrowDown)`
   height: 20px;
   transition: 0.2s;
   cursor: pointer;
-  color: ${({ hasdownvoted }) =>
-    hasdownvoted === "true" ? Theme.colors.error : Theme.colors.disabled};
+  color: ${({ hasdownvoted, theme }) =>
+    hasdownvoted === "true" ? theme.colors.error : theme.colors.disabled};
   &:hover {
     color: ${({ theme: { colors } }) => colors.error};
   }
 `;
 
-export default Post;
+export default RatingControls;

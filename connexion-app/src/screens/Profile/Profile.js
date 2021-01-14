@@ -86,7 +86,7 @@ const Profile = () => {
             </ProfileHeader>
             <ProfileDescription>
               {placeholderDescription}
-              <p>Edit</p>
+              <strong>Edit</strong>
             </ProfileDescription>
             <ProfileTab
               userPosts={userPosts}

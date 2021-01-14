@@ -4,24 +4,28 @@ import { GoComment } from "react-icons/go";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import Chip from "./Chip";
 import Avatar from "@material-ui/core/Avatar";
-import ProfileImg1 from "../../res/images/avatar1.jpg";
 import TextTruncate from "react-text-truncate";
 import Theme from "../../Theme";
-import { truncateNum, truncateText } from "../../utils";
+import { truncateNum, truncateText, convertSecondsToDate } from "../../utils";
 import { useHistory } from "react-router-dom";
 
 const PostContent = (props) => {
   const {
-    title = "Title",
-    body = "Body text",
-    poster = "Poster",
-    time = "42s ago",
+    postId = "",
+    title = "",
+    body = "",
+    bodyPlain = "",
+    displayName = "",
+    timestamp = "",
+    photoURL = "",
+    university = "",
     comments = 0,
     rating = 0,
     hasUpvoted,
     hasDownvoted,
     handleUpvote = () => {},
     handleDownvote = () => {},
+    categories = [],
     showRating = true,
   } = props;
 
@@ -35,7 +39,7 @@ const PostContent = (props) => {
         line={3}
         element="span"
         truncateText="…"
-        text={body.trim()}
+        text={bodyPlain.trim()}
       />
     ),
     []
@@ -69,31 +73,35 @@ const PostContent = (props) => {
     <PostContentWrapper>
       <PostHeader
         onClick={() => {
-          history.push("./post/101");
+          history.push(`./post/${postId}`);
         }}
       >
         {title.trim()}
       </PostHeader>
-      <Chip />
+      <ChipGroup>
+        {categories.map((category, index) => (
+          <Chip key={index} category={category} />
+        ))}
+      </ChipGroup>
       <PostBody>{renderBodyTextMemoized}</PostBody>
       <hr />
       <Footer>
         <FooterLeft>
           <Avatar
             alt="pic"
-            src={ProfileImg1}
+            src={photoURL}
             style={{ width: "30px", height: "30px" }}
           />
           <p className="label">Posted By</p>
           <p>
             <Poster className="PosterUsername">
-              {truncateText(poster, 15)}
+              {truncateText(displayName, 15)}
             </Poster>
           </p>
         </FooterLeft>
         <FooterMiddle>
           <Time>
-            <p>{time}</p>
+            <p>{convertSecondsToDate(timestamp.seconds)}</p>
           </Time>
           {showRating && <RatingControls>{renderRating()}</RatingControls>}
         </FooterMiddle>
@@ -137,6 +145,15 @@ const PostHeader = styled.h1`
   }
   @media (max-width: 768px) {
     font-size: 16px;
+  }
+`;
+
+const ChipGroup = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  & > * {
+    margin-left: 5px;
+    margin-top: 5px;
   }
 `;
 
