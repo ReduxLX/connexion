@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { PageWrapper } from "../SharedStyles";
@@ -10,6 +11,8 @@ import QuillText from "../../components/Post/QuillText";
 import RatingControls from "./RatingControls";
 import { convertSecondsToDate } from "../../utils";
 import { useAuth } from "../../AuthContext";
+import PostDetailSkeleton from "./PostDetailSkeleton";
+import CommentSkeleton from "./CommentSkeleton";
 
 import { BsEye } from "react-icons/bs";
 import { RiChat2Line } from "react-icons/ri";
@@ -61,6 +64,12 @@ const PostDetails = (props) => {
   const { fetchSinglePost, fetchPostComments, viewPost } = useAuth();
   const [post, setPost] = useState({});
   const [comments, setComments] = useState([]);
+  const isFetchingSinglePost = useSelector(
+    (state) => state.Home.isFetchingSinglePost
+  );
+  const isFetchingComments = useSelector(
+    (state) => state.Home.isFetchingComments
+  );
   const {
     title,
     body,
@@ -114,66 +123,91 @@ const PostDetails = (props) => {
     );
   };
 
+  const renderCommentSkeleton = (num) => {
+    return (
+      <SkeletonWrapper>
+        {[...Array(num)].map((i, index) => (
+          <CommentSkeleton key={index} />
+        ))}
+      </SkeletonWrapper>
+    );
+  };
+
   return (
     <PageWrapper>
       <PostDetailsWrapper>
         <CategorySection />
         <PostWrapper>
-          <Votes className="postVotes">{renderRatingControls()}</Votes>
+          {!isFetchingSinglePost && <Votes className="postVotes">{renderRatingControls()}</Votes>}
           <Post>
-            <PostHeader>
-              <PostTitle>{title}</PostTitle>
-              <PostHeaderDetails>
-                <div>
-                  Posted{" "}
-                  {convertSecondsToDate(timestamp ? timestamp.seconds : null)}
-                </div>
-                <PostHeaderViews>
-                  <BsEye size={"1.4rem"} />
-                  <PostHeaderViewsText>{views}</PostHeaderViewsText>
-                </PostHeaderViews>
-                <ChipGroup>
-                  {categories.map((category, index) => (
-                    <Chip key={index} category={category} />
-                  ))}
-                </ChipGroup>
-              </PostHeaderDetails>
-            </PostHeader>
-            <QuillText text={body} />
-            <PostFooter>
-              <PostFooterLeft>
-                <div>
-                  <RiChat2Line />
-                  <p style={{ fontFamily: "NunitoBold" }}>Add a comment</p>
-                </div>
-                <div>
-                  <BsBookmark />
-                  <p>Bookmark</p>
-                </div>
-                <div>
-                  <AiOutlineShareAlt size={"1.1rem"} />
-                  <p>Share</p>
-                </div>
-              </PostFooterLeft>
-              <PostFooterRight>
-                <p>Posted by:</p>
-                <PostFooterUser>
-                  <PostFooterUserName>ReduxLX</PostFooterUserName>
-                  <Avatar
-                    alt="pic"
-                    src={ProfileImg1}
-                    style={{ width: "35px", height: "35px" }}
-                  />
-                </PostFooterUser>
-              </PostFooterRight>
-            </PostFooter>
+            {isFetchingSinglePost ? (
+              <SkeletonWrapper>
+                <PostDetailSkeleton />
+              </SkeletonWrapper>
+            ) : (
+              <PostContent>
+                <PostHeader>
+                  <PostTitle>{title}</PostTitle>
+                  <PostHeaderDetails>
+                    <div>
+                      Posted{" "}
+                      {convertSecondsToDate(
+                        timestamp ? timestamp.seconds : null
+                      )}
+                    </div>
+                    <PostHeaderViews>
+                      <BsEye size={"1.4rem"} />
+                      <PostHeaderViewsText>{views}</PostHeaderViewsText>
+                    </PostHeaderViews>
+                    <ChipGroup>
+                      {categories.map((category, index) => (
+                        <Chip key={index} category={category} />
+                      ))}
+                    </ChipGroup>
+                  </PostHeaderDetails>
+                </PostHeader>
+                <QuillText text={body} />
+                <PostFooter>
+                  <PostFooterLeft>
+                    <div>
+                      <RiChat2Line />
+                      <p style={{ fontFamily: "NunitoBold" }}>Add a comment</p>
+                    </div>
+                    <div>
+                      <BsBookmark />
+                      <p>Bookmark</p>
+                    </div>
+                    <div>
+                      <AiOutlineShareAlt size={"1.1rem"} />
+                      <p>Share</p>
+                    </div>
+                  </PostFooterLeft>
+                  <PostFooterRight>
+                    <p>Posted by:</p>
+                    <PostFooterUser>
+                      <PostFooterUserName>ReduxLX</PostFooterUserName>
+                      <Avatar
+                        alt="pic"
+                        src={ProfileImg1}
+                        style={{ width: "35px", height: "35px" }}
+                      />
+                    </PostFooterUser>
+                  </PostFooterRight>
+                </PostFooter>
+              </PostContent>
+            )}
             <Divider width={"100%"} height={"2px"} margin={"1.6rem 0 0 0"} />
-            <CommentsSection>
-              <NumberOfComments>
-                {sortedComments.length} comments
-              </NumberOfComments>
-              <Comments />
-            </CommentsSection>
+            {isFetchingComments ? (
+              renderCommentSkeleton(3)
+
+            ) : (
+              <CommentsSection>
+                <NumberOfComments>
+                  {sortedComments.length} comments
+                </NumberOfComments>
+                <Comments />
+              </CommentsSection>
+            )}
           </Post>
         </PostWrapper>
       </PostDetailsWrapper>
@@ -196,6 +230,15 @@ const PostWrapper = styled.div`
   @media (max-width: 768px) {
     margin: 0.6rem 0 0 0;
   }
+`;
+
+const PostContent = styled.div``;
+
+const SkeletonWrapper = styled.div`
+  flex-direction: column;
+  justify-content: flex-start;
+  flex: 1;
+  margin-top: 1rem;
 `;
 
 const Votes = styled.div`
