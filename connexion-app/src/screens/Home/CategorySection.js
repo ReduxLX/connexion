@@ -7,50 +7,22 @@ import Button from "@material-ui/core/Button";
 import { useHistory } from "react-router-dom";
 import { useAuth } from "../../AuthContext";
 import { showSnackbar } from "../../utils";
-
-const placeholderCategories = [
-  {
-    id: 1,
-    title: "General",
-  },
-  {
-    id: 2,
-    title: "Newcomers Ahoy",
-  },
-  {
-    id: 3,
-    title: "After Monash",
-  },
-  {
-    id: 4,
-    title: "Category 1",
-  },
-  {
-    id: 5,
-    title: "Category 2",
-  },
-  {
-    id: 6,
-    title: "Category 3",
-  },
-  {
-    id: 7,
-    title: "Super Long Category with very important stuff",
-  },
-];
+import { FaRegComments } from "react-icons/fa";
+import Categories from "../../Categories";
+import { darken } from "@material-ui/core";
 
 const CategorySection = () => {
   let history = useHistory();
   const { currentUser } = useAuth();
 
   const renderDiscussions = () => {
-    return placeholderCategories.map(({ id, title }) => {
+    return Categories.map(({ id, name, icon, color }) => {
       return (
         <Category key={id}>
-          <div>
-            <CategoryLogo />
-          </div>
-          <strong>{title}</strong>
+          <IndividualCategoryWrapper color={color}>
+            <img src={icon} alt={name + "icon"} />
+            <p style={{ marginLeft: "15px" }}>{name}</p>
+          </IndividualCategoryWrapper>
         </Category>
       );
     });
@@ -74,14 +46,19 @@ const CategorySection = () => {
         </NewCategoryButton>
       </div>
       <Category
+        style={{ marginBottom: "20px" }}
         onClick={() => {
           history.push("/categories");
         }}
       >
-        <div>
-          <CategoryLogo />
-        </div>
-        <strong>All Categories</strong>
+        <AllCategoriesWrapper>
+          <div style={{ marginTop: "5px" }}>
+            <CategoryLogo />
+          </div>
+          <p className="AllCategories" style={{ marginTop: "5px" }}>
+            All Categories
+          </p>
+        </AllCategoriesWrapper>
       </Category>
       <br />
       {renderDiscussions()}
@@ -106,23 +83,55 @@ const Category = styled.div`
   color: ${({ theme: { colors } }) => colors.disabled};
   transition: 0.2s;
   cursor: pointer;
-  &:hover {
-    color: ${({ theme: { colors } }) => colors.main};
+  p {
+    font-weight: bold;
+    font-family: "Raleway";
+    font-size: 15px;
   }
-  strong {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-family: "NunitoBold";
-    font-size: 14px;
+
+  img {
+    width: 22px;
+    height: 22px;
   }
 `;
 
-const CategoryLogo = styled(GoCommentDiscussion)`
+const AllCategoriesWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
   &:hover {
     color: ${({ theme: { colors } }) => colors.main};
   }
-  margin-right: 10px;
+`;
+
+const IndividualCategoryWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+
+  margin-bottom: 0.6rem;
+  margin-left: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  &:hover {
+    cursor: pointer;
+    img {
+      opacity: 0.8;
+    }
+    p {
+      color: ${({ color }) => color};
+    }
+  }
+`;
+
+const CategoryLogo = styled(FaRegComments)`
+  width: 20px;
+  height: 20px;
+  margin-top: -3px;
+  margin-left: 3px;
+  margin-right: 15px;
+  &:hover {
+    color: ${({ theme: { colors } }) => colors.main};
+  }
 `;
 
 const NewCategoryButton = muiStyled(Button)({
@@ -130,7 +139,6 @@ const NewCategoryButton = muiStyled(Button)({
   color: "white",
   textTransform: "none",
   padding: "0.6rem 0.8rem",
-  marginBottom: "2rem",
   fontSize: "2  px",
   "&:hover": {
     backgroundColor: `${Theme.colors.main_dark}`,
