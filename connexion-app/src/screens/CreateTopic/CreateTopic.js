@@ -10,6 +10,7 @@ import { useAuth } from "../../AuthContext";
 import { useHistory } from "react-router-dom";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import FormControl from "@material-ui/core/FormControl";
 import { styled as muiStyled } from "@material-ui/styles";
 import { useForm } from "react-hook-form";
@@ -25,6 +26,7 @@ const CreateTopic = () => {
   const [university, setUniversity] = useState("Global");
   const [categories, setCategories] = useState([]);
   const [submitPressed, setSubmitPressed] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const { addPost } = useAuth();
   const history = useHistory();
@@ -76,6 +78,7 @@ const CreateTopic = () => {
       console.log("BODY PLAIN TEXT: " + bodyPlainText);
       console.log("UNIVERSITY: " + university);
       console.log("CATEGORIES: ", categories);
+      setLoading(true);
       const res = await addPost(
         formData.title,
         body,
@@ -83,7 +86,11 @@ const CreateTopic = () => {
         university,
         categories
       );
-      if (res) history.push("/");
+      setLoading(false);
+
+      if (res) {
+        history.push("/");
+      }
     }
   };
 
@@ -187,15 +194,27 @@ const CreateTopic = () => {
             {DisplayCategories()}
           </SectionWrapper>
           <SectionError>{categoryError}</SectionError>
-          <CreatePostButton
-            onClick={() => {
-              setSubmitPressed(true);
-              checkBodyAndCategory();
-            }}
-            type="submit"
-          >
-            Create Post
-          </CreatePostButton>
+          <div style={{ display: "flex", flex: 1 }}>
+            {loading ? (
+              <div style={{ margin: "auto", marginTop: "1rem" }}>
+                <CircularProgress
+                  size={35}
+                  style={{ color: Theme.colors.main }}
+                />
+              </div>
+            ) : (
+              <CreatePostButton
+                color="primary"
+                onClick={() => {
+                  setSubmitPressed(true);
+                  checkBodyAndCategory();
+                }}
+                type="submit"
+              >
+                Create Post
+              </CreatePostButton>
+            )}
+          </div>
         </form>
       </CreateTopicWrapper>
     </PageWrapper>
@@ -215,7 +234,7 @@ const CreateTopicWrapper = styled.div`
     margin: 0 7rem 0 7rem;
   }
   @media (max-width: 768px) {
-    margin: 0 2rem 0 2rem;
+    margin: 0 2rem 1rem 2rem;
   }
 `;
 
@@ -278,11 +297,13 @@ const CustomSelect = muiStyled(Select)({
 
 const CreatePostButton = muiStyled(Button)({
   background: Theme.colors.main,
+  flex: 1,
+  maxWidth: "300px",
   color: "white",
   padding: "10px 40px",
+  margin: "2rem 0",
   textTransform: "none",
   fontFamily: "Nunito",
-  marginTop: "2rem",
   "&:hover": {
     backgroundColor: Theme.colors.main_light,
   },

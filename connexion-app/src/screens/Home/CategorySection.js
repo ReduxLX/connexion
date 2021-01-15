@@ -14,12 +14,12 @@ const CategorySection = () => {
   const { currentUser } = useAuth();
 
   const renderDiscussions = () => {
-    return Categories.map(({ id, name, icon, color }) => {
+    return Categories.map(({ name, icon, color }, index) => {
       const redirectCategory = () => {
         history.push(`/categories/${name}`);
       };
       return (
-        <Category key={id} onClick={redirectCategory}>
+        <Category key={index} onClick={redirectCategory}>
           <IndividualCategoryWrapper color={color}>
             <img src={icon} alt={name + "icon"} />
             <p style={{ marginLeft: "15px" }}>{name}</p>

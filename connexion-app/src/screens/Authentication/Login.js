@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { styled as muiStyled } from "@material-ui/styles";
-import Button from "@material-ui/core/Button";
+import { Button, CircularProgress } from "@material-ui/core";
 import { FcGoogle } from "react-icons/fc";
 import Theme from "../../Theme";
 import LoginBg from "../../res/images/Login.png";
@@ -25,7 +25,6 @@ const Login = () => {
   const handleGoogleLogin = async () => {
     await signinGoogle();
   };
-
   return (
     <Wrapper>
       <FullpageWrapper>
@@ -87,19 +86,26 @@ const Login = () => {
             </ErrorLabel>
           </Section>
           <ButtonSection>
-            <LoginButton type="submit" disabled={isLoading}>
-              Sign In
-            </LoginButton>
-            <GoogleLoginButton
-              onClick={handleGoogleLogin}
-              disabled={isLoading}
-              startIcon={<FcGoogle style={{ width: "25px", height: "25px" }} />}
-            >
-              Sign in with Google
-            </GoogleLoginButton>
-            <p style={{ color: "white" }}>
-              Don't have an account yet? <Link to="/signup">Sign up</Link>
-            </p>
+            {isLoading ? (
+              <div style={{ margin: "auto" }}>
+                <CircularProgress size={35} style={{ color: "white" }} />
+              </div>
+            ) : (
+              <>
+                <LoginButton type="submit">Sign in</LoginButton>
+                <GoogleLoginButton
+                  onClick={handleGoogleLogin}
+                  startIcon={
+                    <FcGoogle style={{ width: "25px", height: "25px" }} />
+                  }
+                >
+                  Sign in with Google
+                </GoogleLoginButton>
+                <p style={{ color: "white" }}>
+                  Don't have an account yet? <Link to="/signup">Sign up</Link>
+                </p>
+              </>
+            )}
           </ButtonSection>
         </Form>
       </FullpageWrapper>

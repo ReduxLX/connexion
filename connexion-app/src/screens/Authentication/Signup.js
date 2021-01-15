@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { styled as muiStyled } from "@material-ui/styles";
-import { Button } from "@material-ui/core";
+import { Button, CircularProgress } from "@material-ui/core";
 import { FcGoogle } from "react-icons/fc";
 import { email_regex } from "../../utils/constants";
 import SignupBg from "../../res/images/Signup.png";
@@ -133,19 +133,32 @@ const Signup = () => {
             </ErrorLabel>
           </Section>
           <ButtonSection>
-            <SignupButton type="submit" disabled={isLoading}>
-              Sign Up
-            </SignupButton>
-            <GoogleSignupButton
-              onClick={handleGoogleLogin}
-              disabled={isLoading}
-              startIcon={<FcGoogle style={{ width: "25px", height: "25px" }} />}
-            >
-              Sign up with Google
-            </GoogleSignupButton>
-            <p>
-              Already have an account? <Link to="/login">Sign in</Link>
-            </p>
+            {isLoading ? (
+              <div style={{ margin: "auto" }}>
+                <CircularProgress
+                  size={35}
+                  style={{ color: Theme.colors.main }}
+                />
+              </div>
+            ) : (
+              <>
+                <SignupButton type="submit" disabled={isLoading}>
+                  Sign up
+                </SignupButton>
+                <GoogleSignupButton
+                  onClick={handleGoogleLogin}
+                  disabled={isLoading}
+                  startIcon={
+                    <FcGoogle style={{ width: "25px", height: "25px" }} />
+                  }
+                >
+                  Sign up with Google
+                </GoogleSignupButton>
+                <p>
+                  Already have an account? <Link to="/login">Sign in</Link>
+                </p>
+              </>
+            )}
           </ButtonSection>
         </Form>
       </FullpageWrapper>
