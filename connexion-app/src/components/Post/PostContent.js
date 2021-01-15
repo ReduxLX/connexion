@@ -37,7 +37,7 @@ const PostContent = (props) => {
   const renderBodyTextMemoized = useMemo(
     () => (
       <TextTruncate
-        line={2}
+        line={3}
         element="span"
         truncateText="…"
         text={bodyPlain.trim()}
@@ -91,7 +91,13 @@ const PostContent = (props) => {
           <Avatar
             alt="pic"
             src={photoURL}
-            style={{ width: "25px", height: "25px" }}
+            style={{
+              width: "30px",
+              height: "30px",
+              border: "solid",
+              borderColor: "rgba(0,0,0,0.1)",
+              borderWidth: "3px",
+            }}
           />
           <p className="label">Posted By</p>
           <p>
@@ -107,8 +113,10 @@ const PostContent = (props) => {
           {showRating && <RatingControls>{renderRating()}</RatingControls>}
         </FooterMiddle>
         <FooterRight>
-          <GoComment style={{ width: "20px", height: "20px" }} />
-          <p>{comments}</p>
+          <GoComment
+            style={{ width: "20px", height: "20px", opacity: "0.8" }}
+          />
+          <p style={{ opacity: "0.8" }}>{comments}</p>
         </FooterRight>
       </Footer>
     </PostContentWrapper>
@@ -191,7 +199,7 @@ const FooterLeft = styled.div`
     margin-right: 0.5rem;
   }
   .label {
-    @media (max-width: 768px) {
+    @media (max-width: 860px) {
       display: none;
     }
   }
@@ -216,7 +224,8 @@ const FooterMiddle = styled.div`
 const Time = styled.div`
   display: flex;
   align-items: center;
-  @media (max-width: 768px) {
+  opacity: 0.8;
+  @media (max-width: 860px) {
     display: none;
   }
 `;
