@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
+import { useAuth } from "../../AuthContext";
 import { PageWrapper } from "../SharedStyles";
 import CloudsBG from "../../res/images/CloudsBG.png";
 import ProfileImg1 from "../../res/images/avatar1.jpg";
@@ -63,6 +65,15 @@ const bookmarkedPosts = fakePosts.filter((post) => post.poster !== "NaomiEX");
 const Profile = () => {
   const placeholderDescription =
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Volutpat, donec est ultrices suspendisse netus mattis. Vestibulum non eu, gravida porttitor pellentesque dignissim. Phasellus nibh et accumsan felis convallis ut risus suspendisse.";
+  const { currentUser, fetchUserPosts } = useAuth();
+  const { displayName, photoURL } = currentUser;
+
+  const userPosts = useSelector((state) => state.Home.userPosts);
+  console.log("User posts -> ", userPosts);
+
+  useEffect(() => {
+    if (currentUser) fetchUserPosts();
+  }, []);
 
   return (
     <PageWrapper>
@@ -71,10 +82,10 @@ const Profile = () => {
           <ProfileBackground src={CloudsBG} alt="Background" />
           <ProfileContentWrapper>
             <ProfileHeader>
-              <ProfilePicture src={ProfileImg1} alt="ProfilePicture" />
+              <ProfilePicture src={photoURL} alt="ProfilePicture" />
               <div>
                 <p style={{ fontFamily: "Raleway", fontSize: "24px" }}>
-                  ReduxLX
+                  {displayName}
                 </p>
                 <ProfileHeaderDetails>
                   <MdLocationOn size="1.1rem" className="LocationIcon" />
