@@ -151,8 +151,8 @@ const UserBody = styled.div`
 
 const TextGroup = styled.div`
   text-align: left;
-  max-width: 10.8vw;
-  /* background-color: green; */
+  max-width: 140px;
+  width: 10vw;
 `;
 
 const Username = styled.p`

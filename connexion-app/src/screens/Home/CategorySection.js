@@ -15,8 +15,11 @@ const CategorySection = () => {
 
   const renderDiscussions = () => {
     return Categories.map(({ name, icon, color }) => {
+      const redirectCategory = () => {
+        history.push(`/categories/${name}`);
+      };
       return (
-        <Category key={name}>
+        <Category key={name} onClick={redirectCategory}>
           <IndividualCategoryWrapper color={color}>
             <img src={icon} alt={name + "icon"} />
             <p style={{ marginLeft: "15px" }}>{name}</p>

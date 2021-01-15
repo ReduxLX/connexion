@@ -204,7 +204,7 @@ const PostDetails = (props) => {
           </Post>
         </PostWrapper>
       </PostDetailsWrapper>
-      <PostDetailsModal postId={postId} />
+      <PostDetailsModal postId={postId} setComments={setComments}/>
     </PageWrapper>
   );
 };

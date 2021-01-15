@@ -1,8 +1,10 @@
 import React from "react";
 import styled from "styled-components";
+import { useHistory } from "react-router-dom";
 
 const Chip = (props) => {
   const { category = "General" } = props;
+  const history = useHistory();
 
   const chipColor = () => {
     if (category === "Future Monashians") return "#FFC700";
@@ -12,7 +14,15 @@ const Chip = (props) => {
     else return "#F85F73";
   };
 
-  return <ChipWrapper chipColor={chipColor()}>{category}</ChipWrapper>;
+  const redirectCategory = () => {
+    history.push(`/categories/${category}`);
+  };
+
+  return (
+    <ChipWrapper chipColor={chipColor()} onClick={redirectCategory}>
+      {category}
+    </ChipWrapper>
+  );
 };
 
 const ChipWrapper = styled.div`

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import ProfileImg1 from "../../res/images/avatar1.jpg";
 import QuillEditor from "../../components/QuillEditor";
 import Theme from "../../Theme";
 import * as actApp from "../../store/App/ac-App";
@@ -15,15 +14,21 @@ import { styled as muiStyled } from "@material-ui/styles";
 import { MdClose } from "react-icons/md";
 
 const PostDetailsModal = (props) => {
-  const { postId } = props;
+  const { postId, setComments } = props;
   const [postCommentPressed, setPostCommentPressed] = useState(false);
   const [commentError, setCommentError] = useState("");
 
-  const { addPostComment, currentUser } = useAuth();
+  const { addPostComment, fetchPostComments, currentUser } = useAuth();
 
   const dispatch = useDispatch();
 
   const isOpen = useSelector((state) => state.App.isModalOpen);
+
+  const reloadComments = async () => {
+    const fetchedComments = await fetchPostComments(postId);
+    setComments(fetchedComments);
+    console.log("Comments fetched -> ", fetchedComments);
+  };
 
   const getEditorText = async (body, bodyPlainText) => {
     // FIXME: After submitting the comment, this function will rerun again
@@ -45,6 +50,7 @@ const PostDetailsModal = (props) => {
       if (response) {
         closeModal();
         showSnackbar("success", "Comment added successfully");
+        reloadComments();
       } else {
         showSnackbar("error", "Failed to add comment");
       }
@@ -88,8 +94,14 @@ const PostDetailsModal = (props) => {
       </ModalHeader>
       <ModalPoster>
         <p>Posting as: </p>
-        <Avatar className="Avatar" src={ProfileImg1} alt="UserProfile" />
-        <ModalHeaderUsername>NaomiEX</ModalHeaderUsername>
+        <Avatar
+          className="Avatar"
+          src={currentUser ? currentUser.photoURL : null}
+          alt="UserProfile"
+        />
+        <ModalHeaderUsername>
+          {currentUser ? currentUser.displayName : ""}
+        </ModalHeaderUsername>
       </ModalPoster>
       <QuillEditor
         height="150px"

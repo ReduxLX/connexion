@@ -24,7 +24,7 @@ const PostSection = ({ category = "Home" }) => {
     if (posts.length <= 0 || cachedCategory !== category) {
       fetchAllPosts(sortPostsBy, category);
     }
-  }, [sortPostsBy]);
+  }, [sortPostsBy, category]);
 
   const calculateRating = (upvotedArray, downvotedArray) => {
     if (Array.isArray(upvotedArray) && Array.isArray(downvotedArray)) {
@@ -85,11 +85,11 @@ const PostSection = ({ category = "Home" }) => {
 
   const renderPostSkeletons = (num) => {
     return (
-      <SkeletonGroup>
+      <div>
         {[...Array(num)].map((i, index) => (
           <PostSkeleton key={index} />
         ))}
-      </SkeletonGroup>
+      </div>
     );
   };
 
@@ -116,13 +116,15 @@ const PostSection = ({ category = "Home" }) => {
   return (
     <SectionWrapper>
       <DropdownWrapper>{renderDropdown()}</DropdownWrapper>
-      <div>{isFetchingPosts ? renderPostSkeletons(5) : renderPosts()}</div>
+      <PostWrapper>
+        {isFetchingPosts ? renderPostSkeletons(5) : renderPosts()}
+      </PostWrapper>
     </SectionWrapper>
   );
 };
 
 const SectionWrapper = styled.div`
-  flex: 6;
+  flex: 8;
   text-align: left;
   margin-right: 1rem;
   & > * {
@@ -138,10 +140,10 @@ const SectionWrapper = styled.div`
   }
 `;
 
-const SkeletonGroup = styled.div`
-  flex-direction: "column";
-  justify-content: "flex-start";
-  flex: 1;
+const PostWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 `;
 
 const DropdownWrapper = styled.div`
