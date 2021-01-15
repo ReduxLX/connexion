@@ -8,6 +8,7 @@ import { Button, CircularProgress } from "@material-ui/core";
 import { FcGoogle } from "react-icons/fc";
 import { email_regex } from "../../utils/constants";
 import SignupBg from "../../res/images/Signup.png";
+import Sign_Up_BG from "../../res/images/Sign_Up_BG.svg";
 import Theme from "../../Theme";
 import { useAuth } from "../../AuthContext";
 
@@ -60,7 +61,7 @@ const Signup = () => {
             </ErrorLabel>
           </Section>
           <Section>
-            <InputLabel htmlFor="email">Email</InputLabel>
+            <InputLabel htmlFor="email">Email address</InputLabel>
             <Input
               id="email"
               type="text"
@@ -143,7 +144,7 @@ const Signup = () => {
             ) : (
               <>
                 <SignupButton type="submit" disabled={isLoading}>
-                  Sign up
+                  <p style={{ fontSize: "15px" }}>Sign up</p>
                 </SignupButton>
                 <GoogleSignupButton
                   onClick={handleGoogleLogin}
@@ -152,7 +153,7 @@ const Signup = () => {
                     <FcGoogle style={{ width: "25px", height: "25px" }} />
                   }
                 >
-                  Sign up with Google
+                  <p style={{ fontSize: "15px" }}>Sign up with Google</p>
                 </GoogleSignupButton>
                 <p>
                   Already have an account? <Link to="/login">Sign in</Link>
@@ -162,7 +163,12 @@ const Signup = () => {
           </ButtonSection>
         </Form>
       </FullpageWrapper>
-      <Background img={SignupBg}></Background>
+      <Background img={Sign_Up_BG}>
+        <BackgroundTextWrapper>
+          <BackgroundText>CONNECT WITH THE PAST,</BackgroundText>
+          <BackgroundText>PRESENT, AND FUTURE</BackgroundText>
+        </BackgroundTextWrapper>
+      </Background>
     </Wrapper>
   );
 };
@@ -175,21 +181,18 @@ const Wrapper = styled.div`
 const FullpageWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  flex: 1;
-  padding: 1.5rem 3rem;
+  flex: 9;
+  padding: 1.5rem 5rem 0 5rem;
   max-width: 1200px;
-  & > * {
-    margin: 0 0 2rem;
-  }
   @media (max-width: 768px) {
     padding: 1.5rem 2rem;
   }
 `;
 
 const Form = styled.form`
-  flex: 1;
+  max-width: 80vw;
   & > * {
-    margin: 2rem 0;
+    margin: 1rem 0 1rem 0;
   }
 `;
 
@@ -208,41 +211,43 @@ const Section = styled.div`
 
 const ButtonSection = styled(Section)`
   height: auto;
-  margin-top: 3rem;
+  margin-top: 1.5rem;
 `;
 
 const InputLabel = styled.label`
   color: ${({ theme: { colors } }) => colors.main};
   margin-left: 1rem;
   margin-bottom: 0.3rem;
-  font-size: 18px;
+  font-family: "NunitoSemiBold";
+  font-size: 13px;
 `;
 
 const Input = styled.input`
-  padding: 0.5rem;
+  padding: 0.5rem 1rem;
   border: ${({ theme: { colors }, isErrorActive }) =>
     isErrorActive
       ? `2px solid ${colors.error}`
-      : `1px solid ${colors.disabled}`};
-  border-radius: 5px;
-
+      : `1px solid ${colors.disabled_light}`};
+  border-radius: 2.5px;
+  font-size: 13px;
   &:hover {
     border: ${({ theme: { colors }, isErrorActive }) =>
-      isErrorActive ? `2px solid ${colors.error}` : `1px solid black`};
+      isErrorActive
+        ? `2px solid ${colors.error}`
+        : `1px solid ${colors.disabled}`};
   }
   &:focus {
     border: ${({ theme: { colors }, isErrorActive }) =>
-      isErrorActive ? `2px solid ${colors.error}` : `2px solid ${colors.main}`};
+      isErrorActive ? `2px solid ${colors.error}` : `1px solid ${colors.main}`};
   }
 `;
 
 const SignupButton = muiStyled(Button)({
   background: Theme.colors.main,
   color: "white",
-  fontSize: "14px",
   textTransform: "none",
-  padding: "0.6rem 0.8rem",
-  marginBottom: "1rem",
+  padding: "0.5rem 0.8rem",
+  marginBottom: "0.5rem",
   "&:hover": {
     backgroundColor: `${Theme.colors.main_dark}`,
   },
@@ -252,20 +257,21 @@ const GoogleSignupButton = muiStyled(SignupButton)({
   background: "white",
   color: Theme.colors.main,
   border: `1px solid ${Theme.colors.disabled}`,
+  fontSize: "12px",
   borderRadius: "5px",
   "&:hover": {
-    backgroundColor: "#ebebeb",
+    backgroundColor: "#fafafa",
   },
 });
 
 const Title = styled.h1`
   color: ${({ theme: { colors } }) => colors.main};
-  font-family: "Nunito";
-  font-weight: lighter;
-  font-size: 36px;
-  margin-bottom: -10px;
+  font-family: "RalewayLight";
+  font-size: 32px;
+  margin-bottom: 1.5rem;
   text-align: left;
-  margin-left: 1rem;
+  margin-left: 0.8rem;
+  white-space: nowrap;
   @media (max-width: 768px) {
     font-size: 24px;
     margin-top: -0.3rem;
@@ -275,9 +281,10 @@ const Title = styled.h1`
 const LogoWrapper = styled.div`
   display: flex;
   align-items: center;
-  font-family: "Raleway";
-  font-weight: 800;
-  font-size: 30px;
+  font-family: "RalewayExtraBold";
+  margin-left: 1rem;
+  margin-bottom: 2rem;
+  font-size: 16px;
   color: ${({ theme: { colors } }) => colors.main};
   @media (max-width: 768px) {
     font-size: 20px;
@@ -285,12 +292,34 @@ const LogoWrapper = styled.div`
 `;
 
 const Background = styled.div`
+  display: flex;
   background-image: ${({ img }) => `url(${img})`};
   background-size: cover;
   background-position: left;
-  flex: 2;
+  flex: 20;
   @media (max-width: 768px) {
     display: none;
+  }
+`;
+
+const BackgroundTextWrapper = styled.div`
+  margin-left: 60px;
+  margin-top: 30.6rem;
+  @media (max-width: 1000px) {
+    margin-top: 31rem;
+  }
+  @media (max-width: 850px) {
+    margin-left: 30px;
+  }
+`;
+
+const BackgroundText = styled.p`
+  font-family: "RalewayLight";
+  margin-bottom: 0.5rem;
+  color: white;
+  font-size: 32px;
+  @media (max-width: 1000px) {
+    font-size: 23px;
   }
 `;
 
@@ -298,6 +327,20 @@ const ErrorLabel = styled.p`
   color: ${({ theme: { colors } }) => colors.error};
   @media (max-width: 768px) {
     font-size: 12px;
+  }
+`;
+
+const SwitchPageTextWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  p {
+    font-size: 12px;
+    color: ${({ theme: { colors } }) => colors.disabled};
+    margin-right: 2px;
+  }
+  .SignIn {
+    font-size: 12px;
+    text-decoration: underline;
   }
 `;
 
