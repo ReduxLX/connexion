@@ -141,7 +141,7 @@ export function AuthProvider({ children }) {
       return showSnackbar("error", "Failed to add post");
     }
     const { uid, displayName, photoURL } = currentUser;
-    postRef
+    return postRef
       .add({
         uid,
         displayName,
@@ -160,6 +160,12 @@ export function AuthProvider({ children }) {
       })
       .then(() => {
         showSnackbar("success", "Post added successfully");
+        dispatch(
+          actHome.handleStateGlobal({
+            sortPostsBy: "Latest",
+            cachedCategory: "",
+          })
+        );
         return true;
       })
       .catch((e) => {
@@ -192,7 +198,7 @@ export function AuthProvider({ children }) {
           .doc(postId)
           .update({ comments: increment })
           .then(() => {
-            showSnackbar("success", "Post added successfully");
+            showSnackbar("success", "Comment added successfully");
             return true;
           })
           .catch((e) => {
@@ -412,16 +418,24 @@ export function AuthProvider({ children }) {
     return filterRef
       .get()
       .then((snapshot) => {
-        const posts = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          startUpvoted: doc.data().upvotedUsers.includes(currentUser.uid),
-          startDownvoted: doc.data().downvotedUsers.includes(currentUser.uid),
-          hasUpvoted: doc.data().upvotedUsers.includes(currentUser.uid),
-          hasDownvoted: doc.data().downvotedUsers.includes(currentUser.uid),
-          realRating:
-            doc.data().upvotedUsers.length - doc.data().downvotedUsers.length,
-          ...doc.data(),
-        }));
+        const posts = snapshot.docs.map((doc) => {
+          const { upvotedUsers, downvotedUsers } = doc.data();
+          const startUpvoted = currentUser
+            ? upvotedUsers.includes(currentUser.uid)
+            : false;
+          const startDownvoted = currentUser
+            ? downvotedUsers.includes(currentUser.uid)
+            : false;
+          return {
+            id: doc.id,
+            startUpvoted,
+            startDownvoted,
+            hasUpvoted: startUpvoted,
+            hasDownvoted: startDownvoted,
+            realRating: upvotedUsers.length - downvotedUsers.length,
+            ...doc.data(),
+          };
+        });
         dispatch(
           actHome.handleStateGlobal({
             posts,

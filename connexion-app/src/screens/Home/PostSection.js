@@ -24,7 +24,7 @@ const PostSection = ({ category = "Home" }) => {
     if (posts.length <= 0 || cachedCategory !== category) {
       fetchAllPosts(sortPostsBy, category);
     }
-  }, [sortPostsBy]);
+  }, [sortPostsBy, category]);
 
   const calculateRating = (upvotedArray, downvotedArray) => {
     if (Array.isArray(upvotedArray) && Array.isArray(downvotedArray)) {

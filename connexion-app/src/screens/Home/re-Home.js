@@ -15,8 +15,9 @@ const HomeReducer = (state = initialState, { type, payload }) => {
     case types.HOME_HANDLE_STATE:
       return { ...state, [payload.property]: payload.value };
 
-    case types.HOME_HANDLE_STATE_GLOBAL:
+    case types.HOME_HANDLE_STATE_GLOBAL: {
       return { ...state, ...payload };
+    }
 
     case types.UPVOTE_POST: {
       const { index, hasUpvoted } = payload;
