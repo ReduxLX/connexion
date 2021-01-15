@@ -36,3 +36,18 @@
   src: local("RalewayBold"),
     url(./res/fonts/Raleway-Bold.ttf) format("opentype");
 }
+@font-face {
+  font-family: "RalewaySemiBold";
+  src: local("RalewaySemiBold"),
+    url(./res/fonts/Raleway-SemiBold.ttf) format("opentype");
+}
+@font-face {
+  font-family: "RalewayMedium";
+  src: local("RalewayMedium"),
+    url(./res/fonts/Raleway-Medium.ttf) format("opentype");
+}
+@font-face {
+  font-family: "RalewayExtraBold";
+  src: local("RalewayExtraBold"),
+    url(./res/fonts/Raleway-ExtraBold.ttf) format("opentype");
+}

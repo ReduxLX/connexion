@@ -3,18 +3,19 @@ import styled from "styled-components";
 import Avatar from "@material-ui/core/Avatar";
 import ProfileImg1 from "../../res/images/avatar1.jpg";
 import { truncateNum } from "../../utils";
+import Divider from "../../components/Divider";
 
 const fakeTopUsers = [
   {
     id: 1,
     username: "Marius Von Augustus du Rene",
-    role: "Alumni / Lecturer / Hacker",
+    role: "Alumni",
     points: 212121212112121,
   },
   {
     id: 2,
     username: "Hoagie Macintosh",
-    role: "Current Student / Community Leader",
+    role: "Current Student ",
     points: 5673,
   },
   {
@@ -29,6 +30,12 @@ const fakeTopUsers = [
     role: "Current Student",
     points: 993,
   },
+  {
+    id: 5,
+    username: "Arthur Calahan",
+    role: "Current Student",
+    points: 993,
+  },
 ];
 
 const currentUser = {
@@ -38,19 +45,22 @@ const currentUser = {
   points: 503,
 };
 
+const isTopUser = fakeTopUsers[0].id;
+
 const TopUsersSection = () => {
   const renderUser = ({ id, username, role, points }) => {
     return (
-      <UserWrapper key={id}>
+      <UserWrapper key={id} isTopUser={id === isTopUser}>
         <UserBody>
           <Avatar
+            className="Avatar"
             alt="pic"
             src={ProfileImg1}
-            style={{ width: "40px", height: "40px" }}
+            style={{ width: "35px", height: "35px" }}
           />
           <TextGroup>
-            <strong>{username}</strong>
-            <p>{role}</p>
+            <Username>{username}</Username>
+            <p className="Role">{role}</p>
           </TextGroup>
         </UserBody>
         <UserRank>
@@ -72,9 +82,9 @@ const TopUsersSection = () => {
 
   return (
     <SectionWrapper>
-      <p>Top Users</p>
+      <Title>Top Users</Title>
       {renderTopUsers()}
-      <hr />
+      <Divider width="100%" height="1px" />
       {renderCurrentUser(currentUser)}
     </SectionWrapper>
   );
@@ -84,7 +94,8 @@ const SectionWrapper = styled.div`
   flex: 2;
   min-width: 240px;
   height: fit-content;
-  padding: 1rem;
+  margin-left: 1rem;
+  padding: 1rem 1rem 0 0.6rem;
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
   text-align: left;
   & > * {
@@ -95,17 +106,45 @@ const SectionWrapper = styled.div`
   }
 `;
 
+const Title = styled.p`
+  font-family: "RalewaySemiBold";
+  margin-left: 0.2rem;
+  margin-bottom: 1.5rem;
+`;
+
 const UserWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  margin-bottom: 1.2rem;
   color: ${({ theme: { colors } }) => colors.disabled};
+  & > * {
+    .Avatar {
+      border: solid;
+      border-width: 4px;
+      border-color: ${({ isTopUser }) =>
+        isTopUser ? "rgba(250, 190, 44, 0.2)" : "rgba(0,0,0,0.08)"};
+    }
+    > * {
+      .Role {
+        font-size: 12px;
+        opacity: ${({ isTopUser }) => (isTopUser ? 0.6 : 0.5)};
+      }
+
+      color: ${({ isTopUser }) => isTopUser && "#FABE2C"};
+    }
+  }
 `;
 
 const UserBody = styled.div`
   display: flex;
+  align-items: center;
   width: 85%;
   & > * {
     margin-right: 0.5rem;
+  }
+  &:hover {
+    opacity: 0.85;
+    cursor: pointer;
   }
 `;
 
@@ -114,15 +153,13 @@ const TextGroup = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  p {
-    font-size: 12px;
-  }
-  strong {
-    font-size: 14px;
-    cursor: pointer;
-    font-weight: normal;
-    color: ${({ theme: { colors } }) => colors.main};
-  }
+  width: 120px;
+`;
+
+const Username = styled.p`
+  font-family: "RalewaySemiBold";
+  font-weight: bold;
+  font-size: 14px;
 `;
 
 const UserRank = styled.div`

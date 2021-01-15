@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const Divider = (props) => {
-  const { width, height, margin = 0 } = props;
+  const { width = "100px", height = "1px", margin = 0 } = props;
   return <DividerWrapper width={width} height={height} margin={margin} />;
 };
 
