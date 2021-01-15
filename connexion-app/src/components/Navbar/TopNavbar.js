@@ -54,6 +54,18 @@ const TopNavbar = () => {
     }
   };
 
+  const handleSearch = (e) => {
+    if (e.key === "Enter") {
+      const searchInput = e.target.value;
+      if (searchInput && searchInput.trim() !== "") {
+        history.push(`/?search=${searchInput}`);
+      } else {
+        history.push("/");
+      }
+      e.preventDefault();
+    }
+  };
+
   const renderSearchBar = (id = "searchbar") => {
     return (
       <SearchFieldWrapper>
@@ -63,6 +75,7 @@ const TopNavbar = () => {
           variant="outlined"
           placeholder="Search Forum"
           fullWidth={true}
+          onKeyPress={handleSearch}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
