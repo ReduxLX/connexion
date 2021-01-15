@@ -452,6 +452,38 @@ export function AuthProvider({ children }) {
       });
   };
 
+  const fetchUserPosts = () => {
+    if (!currentUser) {
+      showSnackbar("error", "User is not logged in");
+    }
+    dispatch(actHome.handleState("isFetchingUserPosts", true));
+    return postRef
+      .where("uid", "==", currentUser.uid)
+      .get()
+      .then((snapshot) => {
+        const userPosts = snapshot.docs.map((doc) => {
+          const { upvotedUsers, downvotedUsers } = doc.data();
+          return {
+            id: doc.id,
+            realRating: upvotedUsers.length - downvotedUsers.length,
+            ...doc.data(),
+          };
+        });
+        dispatch(
+          actHome.handleStateGlobal({
+            userPosts,
+            isFetchingUserPosts: false,
+          })
+        );
+        console.log("Success fetching user posts ", userPosts);
+      })
+      .catch((e) => {
+        const errorMsg = fbError(e.code, "Failed to fetch user posts");
+        showSnackbar("error", errorMsg);
+        dispatch(actHome.handleState("isFetchingPosts", false));
+      });
+  };
+
   const fetchSinglePost = (postId) => {
     if (!postId) {
       return showSnackbar("error", "Failed to fetch post");
@@ -503,6 +535,7 @@ export function AuthProvider({ children }) {
     fetchAllPosts,
     fetchSinglePost,
     fetchPostComments,
+    fetchUserPosts,
     addPostComment,
     viewPost,
   };

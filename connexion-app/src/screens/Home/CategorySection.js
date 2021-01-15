@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { styled as muiStyled } from "@material-ui/styles";
 import Theme from "../../Theme";
 import Button from "@material-ui/core/Button";
-import { useHistory } from "react-router-dom";
+import { useHistory, NavLink } from "react-router-dom";
 import { useAuth } from "../../AuthContext";
 import { showSnackbar } from "../../utils";
 import { FaRegComments } from "react-icons/fa";
@@ -14,15 +14,24 @@ const CategorySection = () => {
   const { currentUser } = useAuth();
 
   const renderDiscussions = () => {
-    return Categories.map(({ name, icon, color }) => {
+    return Categories.map(({ name, icon, color }, index) => {
       const redirectCategory = () => {
         history.push(`/categories/${name}`);
       };
       return (
-        <Category key={name} onClick={redirectCategory}>
+        <Category key={index}>
           <IndividualCategoryWrapper color={color}>
-            <img src={icon} alt={name + "icon"} />
-            <p style={{ marginLeft: "15px" }}>{name}</p>
+            <NavLink
+              to={`/categories/${name}`}
+              activeStyle={{
+                fontWeight: "bold",
+                color,
+              }}
+              style={{ display: "flex" }}
+            >
+              <img src={icon} alt={name + "icon"} />
+              <p style={{ marginLeft: "15px" }}>{name}</p>
+            </NavLink>
           </IndividualCategoryWrapper>
         </Category>
       );
@@ -66,8 +75,15 @@ const CategorySection = () => {
 };
 
 const SectionWrapper = styled.div`
+  position: sticky;
+  display: flex;
+  align-self: flex-start;
+  left: 0;
+  top: 6rem;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 1rem;
   min-width: 150px;
-  flex: 2;
   & > * {
     margin-bottom: 1rem;
   }

@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { styled as muiStyled } from "@material-ui/styles";
-import { Button } from "@material-ui/core";
+import { Button, CircularProgress } from "@material-ui/core";
 import { FcGoogle } from "react-icons/fc";
 import { email_regex } from "../../utils/constants";
 import SignupBg from "../../res/images/Signup.png";
@@ -134,29 +134,35 @@ const Signup = () => {
             </ErrorLabel>
           </Section>
           <ButtonSection>
-            <SignupButton type="submit" disabled={isLoading}>
-              <p style={{ fontSize: "15px" }}>Sign Up</p>
-            </SignupButton>
-            <GoogleSignupButton
-              onClick={handleGoogleLogin}
-              disabled={isLoading}
-              startIcon={
-                <FcGoogle
-                  style={{
-                    width: "20px",
-                    height: "20px",
-                  }}
+            {isLoading ? (
+              <div style={{ margin: "auto" }}>
+                <CircularProgress
+                  size={35}
+                  style={{ color: Theme.colors.main }}
                 />
-              }
-            >
-              <p style={{ fontSize: "15px" }}>Sign up with Google</p>
-            </GoogleSignupButton>
-            <SwitchPageTextWrapper>
-              <p>Already have an account?</p>
-              <Link className="SignIn" to="/login">
-                Sign in
-              </Link>
-            </SwitchPageTextWrapper>
+              </div>
+            ) : (
+              <>
+                <SignupButton type="submit" disabled={isLoading}>
+                  <p style={{ fontSize: "15px" }}>Sign up</p>
+                </SignupButton>
+                <GoogleSignupButton
+                  onClick={handleGoogleLogin}
+                  disabled={isLoading}
+                  startIcon={
+                    <FcGoogle style={{ width: "25px", height: "25px" }} />
+                  }
+                >
+                  <p style={{ fontSize: "15px" }}>Sign up with Google</p>
+                </GoogleSignupButton>
+                <SwitchPageTextWrapper>
+                  <p>Already have an account?</p>
+                  <Link className="SignIn" to="/login">
+                    Sign in
+                  </Link>
+                </SwitchPageTextWrapper>
+              </>
+            )}
           </ButtonSection>
         </Form>
       </FullpageWrapper>

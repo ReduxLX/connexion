@@ -30,22 +30,57 @@ const ProfileTab = (props) => {
     setFocusedTab(newValue);
   };
 
-  const tabLabel1 = "Posts (18 Posts)";
+  const tabLabel1 = `Posts (${userPosts.length} Posts)`;
   const tabLabel2 = "Bookmarks (23 Bookmarks)";
 
   const renderPosts = (posts) => {
-    return posts.map(({ id, title, body, poster, comments, rating }) => (
-      <div key={id} style={{ marginTop: "30px" }}>
-        <Post
-          title={title}
-          body={body}
-          poster={poster}
-          comments={comments}
-          initialRating={rating}
-          showRating={false}
-        />
-      </div>
-    ));
+    return posts.map(
+      ({
+        id,
+        postIndex,
+        title,
+        body,
+        bodyPlain,
+        categories,
+        comments,
+        realRating,
+        displayName,
+        photoURL,
+        timestamp,
+        university,
+        upvotedUsers,
+        downvotedUsers,
+        startUpvoted,
+        startDownvoted,
+        hasUpvoted,
+        hasDownvoted,
+      }) => (
+        <div style={{ marginBottom: "1.5rem" }} key={id}>
+          <Post
+            showRating={false}
+            postId={id}
+            postIndex={postIndex}
+            title={title}
+            body={body}
+            bodyPlain={bodyPlain}
+            displayName={displayName}
+            comments={comments}
+            university={university}
+            initialRating={realRating}
+            rating={realRating}
+            categories={categories}
+            timestamp={timestamp}
+            upvotedUsers={upvotedUsers}
+            downvotedUsers={downvotedUsers}
+            photoURL={photoURL}
+            startUpvoted={startUpvoted}
+            startDownvoted={startDownvoted}
+            hasUpvoted={hasUpvoted}
+            hasDownvoted={hasDownvoted}
+          />
+        </div>
+      )
+    );
   };
 
   return (

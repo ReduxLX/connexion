@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import { useLocation } from "react-router-dom";
 import { styled as muiStyled } from "@material-ui/styles";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
@@ -13,6 +14,7 @@ import PostSkeleton from "../../components/Post/PostSkeleton";
 
 const PostSection = ({ category = "Home" }) => {
   const dispatch = useDispatch();
+  const location = useLocation();
   const posts = useSelector((state) => state.Home.posts);
   const sortPostsBy = useSelector((state) => state.Home.sortPostsBy);
   const isFetchingPosts = useSelector((state) => state.Home.isFetchingPosts);
@@ -32,30 +34,44 @@ const PostSection = ({ category = "Home" }) => {
     }
     return 0;
   };
+
+  // Index and filter posts based on search query
+  const filterPosts = () => {
+    let indexedPosts = posts.map((post, i) => ({ ...post, postIndex: i }));
+    const searchQuery = location.search ? location.search.slice(8) : "";
+    if (searchQuery) {
+      const regex = new RegExp(searchQuery.toLowerCase(), "g");
+      const filteredPosts = indexedPosts.filter((post) => {
+        return post.title.toString().toLowerCase().match(regex);
+      });
+      return filteredPosts;
+    }
+    return indexedPosts;
+  };
+
   const renderPosts = () => {
-    return posts.map(
-      (
-        {
-          id,
-          title,
-          body,
-          bodyPlain,
-          categories,
-          comments,
-          realRating,
-          displayName,
-          photoURL,
-          timestamp,
-          university,
-          upvotedUsers,
-          downvotedUsers,
-          startUpvoted,
-          startDownvoted,
-          hasUpvoted,
-          hasDownvoted,
-        },
-        postIndex
-      ) => (
+    const filteredPosts = filterPosts();
+    return filteredPosts.map(
+      ({
+        id,
+        postIndex,
+        title,
+        body,
+        bodyPlain,
+        categories,
+        comments,
+        realRating,
+        displayName,
+        photoURL,
+        timestamp,
+        university,
+        upvotedUsers,
+        downvotedUsers,
+        startUpvoted,
+        startDownvoted,
+        hasUpvoted,
+        hasDownvoted,
+      }) => (
         <div style={{ marginBottom: "1.5rem" }} key={id}>
           <Post
             postId={id}
@@ -101,7 +117,7 @@ const PostSection = ({ category = "Home" }) => {
           value={sortPostsBy}
           onChange={(e) => {
             dispatch(actHome.handleState("sortPostsBy", e.target.value));
-            fetchAllPosts(e.target.value);
+            fetchAllPosts(e.target.value, category);
           }}
           inputProps={{ MenuProps: { disableScrollLock: true } }}
         >

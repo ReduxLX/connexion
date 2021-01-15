@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { FormControl, Select, Button, MenuItem } from "@material-ui/core";
+import {
+  FormControl,
+  Select,
+  Button,
+  MenuItem,
+  CircularProgress,
+} from "@material-ui/core";
 import { styled as muiStyled } from "@material-ui/styles";
 import { PageWrapper } from "../SharedStyles";
 import Theme from "../../Theme";
@@ -168,6 +174,9 @@ const About = () => {
           </SubmitFirebase>
           <SubmitFirebase onClick={handleFetchSinglePost}>
             Fetch post {postId}
+          </SubmitFirebase>
+          <SubmitFirebase disabled={true}>
+            <CircularProgress size={25} style={{ color: "white" }} />
           </SubmitFirebase>
         </Form>
         <PostContainer>

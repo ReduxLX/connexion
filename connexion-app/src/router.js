@@ -17,6 +17,7 @@ import CategoryPosts from "./screens/Categories/CategoryPosts";
 
 const routes = [
   { path: "/", Component: Home },
+  { path: "/?search=:search", Component: Home },
   { path: "/leaderboard", Component: Leaderboard },
   { path: "/about", Component: About },
   { path: "/signup", Component: Signup, exclusiveAccess: "Unauthorized" },

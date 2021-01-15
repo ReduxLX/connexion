@@ -10,7 +10,6 @@ const Home = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
   return (
     <PageWrapper>
       <HomeWrapper>
@@ -24,6 +23,7 @@ const Home = () => {
 
 const HomeWrapper = styled.div`
   display: flex;
+  position: relative;
 `;
 
 export default Home;
