@@ -1,0 +1,12 @@
+<svg width="973" height="1024" viewBox="0 0 973 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="0.592285" width="972" height="1024" fill="white"/>
+<mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="973" height="1024">
+<rect x="0.592285" width="972" height="1024" fill="white"/>
+</mask>
+<g mask="url(#mask0)">
+<path d="M0.652379 44C35.5272 173.235 162.766 304.739 329.831 212.236C402.854 171.803 553.476 107.107 658.522 151.992C763.568 196.878 829.005 251.594 972.592 465" stroke="#4232FF" stroke-opacity="0.15" stroke-width="1.5" stroke-dasharray="5 5"/>
+<path d="M1140.56 390.548C838.787 131.987 618.52 401.439 461.926 507.884C305.331 614.33 191.01 480.626 1.00005 480" stroke="#4232FF" stroke-opacity="0.15" stroke-width="1.5" stroke-dasharray="5 5"/>
+<path d="M-49.3476 605C-9.98636 716.827 130.966 831.336 313.965 752.792C393.952 718.461 559.086 663.791 674.956 703.357C790.826 742.923 859.592 806 970.092 840.5" stroke="#4232FF" stroke-opacity="0.15" stroke-width="1.5" stroke-dasharray="5 5"/>
+<path d="M34.5922 1023.56C94.0012 832.153 227.233 836.361 591.592 1024.56" stroke="#4232FF" stroke-opacity="0.15" stroke-width="1.5" stroke-dasharray="5 5"/>
+</g>
+</svg>
