@@ -56,9 +56,7 @@ const CategorySection = () => {
           <div style={{ marginTop: "5px" }}>
             <CategoryLogo />
           </div>
-          <p className="AllCategories" style={{ marginTop: "5px" }}>
-            All Categories
-          </p>
+          <p style={{ marginTop: "5px" }}>All Categories</p>
         </AllCategoriesWrapper>
       </Category>
       <br />
@@ -85,9 +83,11 @@ const Category = styled.div`
   transition: 0.2s;
   cursor: pointer;
   p {
-    font-weight: bold;
-    font-family: "Raleway";
-    font-size: 15px;
+    font-family: "RalewaySemiBold";
+    font-size: 14px;
+    @media (max-width: 850px) {
+      font-size: 13px;
+    }
   }
 
   img {
@@ -99,20 +99,30 @@ const Category = styled.div`
 const AllCategoriesWrapper = styled.div`
   display: flex;
   flex-direction: row;
+  max-width: 12vw;
   &:hover {
     color: ${({ theme: { colors } }) => colors.main};
+  }
+  p {
+    font-family: "RalewayExtraBold";
+    white-space: nowrap;
   }
 `;
 
 const IndividualCategoryWrapper = styled.div`
   display: flex;
   align-items: center;
-  white-space: nowrap;
-
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.4rem;
   margin-left: 2px;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  max-width: 11.5vw;
+  min-width: 140px;
+
+  p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   &:hover {
     cursor: pointer;
     img {
@@ -139,17 +149,18 @@ const NewCategoryButton = muiStyled(Button)({
   background: Theme.colors.main,
   color: "white",
   textTransform: "none",
-  padding: "0.6rem 0.8rem",
-  fontSize: "2  px",
+  padding: "0.6rem 1.2rem",
+  fontSize: "2px",
   "&:hover": {
     backgroundColor: `${Theme.colors.main_dark}`,
   },
 });
 
 const NewCategoryButtonText = styled.p`
-  font-size: 14px;
+  font-family: "NunitoLight";
+  font-size: 15px;
   @media (max-width: 970px) {
-    font-size: 12px;
+    font-size: 14px;
   }
 `;
 

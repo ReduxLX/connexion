@@ -92,7 +92,8 @@ const TopUsersSection = () => {
 
 const SectionWrapper = styled.div`
   flex: 2;
-  min-width: 240px;
+  min-width: 200px;
+  width: 20vw;
   height: fit-content;
   margin-left: 1rem;
   padding: 1rem 1rem 0 0.6rem;
@@ -110,6 +111,7 @@ const Title = styled.p`
   font-family: "RalewaySemiBold";
   margin-left: 0.2rem;
   margin-bottom: 1.5rem;
+  color: ${({ theme: { colors } }) => colors.secondary};
 `;
 
 const UserWrapper = styled.div`
