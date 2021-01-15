@@ -6,7 +6,6 @@ const PostSkeleton = (props) => {
     <ContentLoader
       speed={2}
       width="100%"
-      height="100%"
       viewBox="0 0 400 130"
       backgroundColor="#f3f3f3"
       foregroundColor="#ecebeb"

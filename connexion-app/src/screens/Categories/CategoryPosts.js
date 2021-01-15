@@ -30,6 +30,7 @@ const CategoryPosts = () => {
 
 const CategoryPostsWrapper = styled.div`
   display: flex;
+  justify-content: flex-start;
 `;
 
 export default CategoryPosts;
