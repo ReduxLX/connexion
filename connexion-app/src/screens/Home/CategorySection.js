@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { styled as muiStyled } from "@material-ui/styles";
 import Theme from "../../Theme";
 import Button from "@material-ui/core/Button";
-import { useHistory } from "react-router-dom";
+import { useHistory, NavLink } from "react-router-dom";
 import { useAuth } from "../../AuthContext";
 import { showSnackbar } from "../../utils";
 import { FaRegComments } from "react-icons/fa";
@@ -19,10 +19,19 @@ const CategorySection = () => {
         history.push(`/categories/${name}`);
       };
       return (
-        <Category key={index} onClick={redirectCategory}>
+        <Category key={index}>
           <IndividualCategoryWrapper color={color}>
-            <img src={icon} alt={name + "icon"} />
-            <p style={{ marginLeft: "15px" }}>{name}</p>
+            <NavLink
+              to={`/categories/${name}`}
+              activeStyle={{
+                fontWeight: "bold",
+                color,
+              }}
+              style={{ display: "flex" }}
+            >
+              <img src={icon} alt={name + "icon"} />
+              <p style={{ marginLeft: "15px" }}>{name}</p>
+            </NavLink>
           </IndividualCategoryWrapper>
         </Category>
       );

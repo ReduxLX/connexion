@@ -117,7 +117,7 @@ const PostSection = ({ category = "Home" }) => {
           value={sortPostsBy}
           onChange={(e) => {
             dispatch(actHome.handleState("sortPostsBy", e.target.value));
-            fetchAllPosts(e.target.value);
+            fetchAllPosts(e.target.value, category);
           }}
           inputProps={{ MenuProps: { disableScrollLock: true } }}
         >
