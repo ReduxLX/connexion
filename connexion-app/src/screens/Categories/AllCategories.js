@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import { useHistory } from "react-router-dom";
+
 import { PageWrapper } from "../SharedStyles";
 import CategorySection from "../Home/CategorySection";
 import Categories from "../../Categories";
@@ -10,10 +12,17 @@ import Avatar from "@material-ui/core/Avatar";
 import AvatarGroup from "@material-ui/lab/AvatarGroup";
 
 const AllCategories = () => {
+  const history = useHistory();
+
   const CategoriesList = () => {
     return Categories.map(({ name, description, image, color }) => {
       return (
-        <CategoryWrapper key={name}>
+        <CategoryWrapper
+          key={name}
+          onClick={() => {
+            history.push(`/categories/${name}`);
+          }}
+        >
           <CategoryColor color={color}></CategoryColor>
           <CategoryImage src={image} alt={name} />
           <CategoryInfo>

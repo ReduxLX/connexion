@@ -10,3 +10,6 @@ export const LOGIN_ERROR = "LOGIN_ERROR";
 // Home
 export const HOME_HANDLE_STATE = "HOME_HANDLE_STATE";
 export const HOME_HANDLE_STATE_GLOBAL = "HOME_HANDLE_STATE_GLOBAL";
+export const UPVOTE_POST = "UPVOTE_POST";
+export const DOWNVOTE_POST = "DOWNVOTE_POST";
+export const SET_RATING = "SET_RATING";

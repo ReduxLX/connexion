@@ -11,16 +11,19 @@ import * as actHome from "./ac-Home";
 import { useAuth } from "../../AuthContext";
 import PostSkeleton from "../../components/Post/PostSkeleton";
 
-const PostSection = () => {
+const PostSection = ({ category = "Home" }) => {
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.Home.posts);
   const sortPostsBy = useSelector((state) => state.Home.sortPostsBy);
   const isFetchingPosts = useSelector((state) => state.Home.isFetchingPosts);
+  const cachedCategory = useSelector((state) => state.Home.cachedCategory);
   const { fetchAllPosts } = useAuth();
 
   //!!!!!!!!!REVERSE THIS CHANGE WHEN PUSHING!!!!!!!!!!
   useEffect(() => {
-    fetchAllPosts(sortPostsBy);
+    if (posts.length <= 0 || cachedCategory !== category) {
+      fetchAllPosts(sortPostsBy, category);
+    }
   }, [sortPostsBy]);
 
   const calculateRating = (upvotedArray, downvotedArray) => {
@@ -31,23 +34,32 @@ const PostSection = () => {
   };
   const renderPosts = () => {
     return posts.map(
-      ({
-        id,
-        title,
-        body,
-        bodyPlain,
-        categories,
-        comments,
-        displayName,
-        photoURL,
-        timestamp,
-        university,
-        upvotedUsers,
-        downvotedUsers,
-      }) => (
+      (
+        {
+          id,
+          title,
+          body,
+          bodyPlain,
+          categories,
+          comments,
+          realRating,
+          displayName,
+          photoURL,
+          timestamp,
+          university,
+          upvotedUsers,
+          downvotedUsers,
+          startUpvoted,
+          startDownvoted,
+          hasUpvoted,
+          hasDownvoted,
+        },
+        postIndex
+      ) => (
         <div style={{ marginBottom: "1.5rem" }} key={id}>
           <Post
             postId={id}
+            postIndex={postIndex}
             title={title}
             body={body}
             bodyPlain={bodyPlain}
@@ -55,11 +67,16 @@ const PostSection = () => {
             comments={comments}
             university={university}
             initialRating={calculateRating(upvotedUsers, downvotedUsers)}
+            rating={realRating}
             categories={categories}
             timestamp={timestamp}
             upvotedUsers={upvotedUsers}
             downvotedUsers={downvotedUsers}
             photoURL={photoURL}
+            startUpvoted={startUpvoted}
+            startDownvoted={startDownvoted}
+            hasUpvoted={hasUpvoted}
+            hasDownvoted={hasDownvoted}
           />
         </div>
       )
@@ -82,9 +99,10 @@ const PostSection = () => {
         <CustomSelect
           id="demo-simple-select-outlined"
           value={sortPostsBy}
-          onChange={(e) =>
-            dispatch(actHome.handleState("sortPostsBy", e.target.value))
-          }
+          onChange={(e) => {
+            dispatch(actHome.handleState("sortPostsBy", e.target.value));
+            fetchAllPosts(e.target.value);
+          }}
           inputProps={{ MenuProps: { disableScrollLock: true } }}
         >
           <MenuItem value="Latest">Latest</MenuItem>

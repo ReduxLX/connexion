@@ -16,3 +16,33 @@ export const handleStateGlobal = (payload) => {
     payload,
   };
 };
+
+export const setHasUpvoted = (index, hasUpvoted) => {
+  return {
+    type: types.UPVOTE_POST,
+    payload: {
+      index,
+      hasUpvoted,
+    },
+  };
+};
+
+export const setHasDownvoted = (index, hasDownvoted) => {
+  return {
+    type: types.DOWNVOTE_POST,
+    payload: {
+      index,
+      hasDownvoted,
+    },
+  };
+};
+
+export const setRating = (index, rating) => {
+  return {
+    type: types.SET_RATING,
+    payload: {
+      index,
+      rating,
+    },
+  };
+};

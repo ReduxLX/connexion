@@ -397,21 +397,35 @@ export function AuthProvider({ children }) {
     if (sortBy === "Latest") return postRef.orderBy("timestamp", "desc");
     else if (sortBy === "Oldest") return postRef.orderBy("timestamp");
     else if (sortBy === "Popular") return postRef.orderBy("rating", "desc");
+    else return postRef;
   };
 
-  const fetchAllPosts = (sortBy = "Latest") => {
+  const fetchFilterRef = (sortRef, category) => {
+    if (category === "" || category === "Home") return sortRef;
+    else return sortRef.where("categories", "array-contains", category);
+  };
+
+  const fetchAllPosts = (sortBy = "Latest", category = "") => {
     const sortRef = fetchSortRef(sortBy);
+    const filterRef = fetchFilterRef(sortRef, category);
     dispatch(actHome.handleState("isFetchingPosts", true));
-    return sortRef
+    return filterRef
       .get()
       .then((snapshot) => {
         const posts = snapshot.docs.map((doc) => ({
           id: doc.id,
+          startUpvoted: doc.data().upvotedUsers.includes(currentUser.uid),
+          startDownvoted: doc.data().downvotedUsers.includes(currentUser.uid),
+          hasUpvoted: doc.data().upvotedUsers.includes(currentUser.uid),
+          hasDownvoted: doc.data().downvotedUsers.includes(currentUser.uid),
+          realRating:
+            doc.data().upvotedUsers.length - doc.data().downvotedUsers.length,
           ...doc.data(),
         }));
         dispatch(
           actHome.handleStateGlobal({
             posts,
+            cachedCategory: category === "" ? "Home" : category,
             isFetchingPosts: false,
           })
         );

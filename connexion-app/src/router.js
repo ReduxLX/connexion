@@ -13,6 +13,7 @@ import Profile from "./screens/Profile/Profile";
 import CreateTopic from "./screens/CreateTopic/CreateTopic";
 import PostDetails from "./screens/PostDetails/PostDetails";
 import AllCategories from "./screens/Categories/AllCategories";
+import CategoryPosts from "./screens/Categories/CategoryPosts";
 
 const routes = [
   { path: "/", Component: Home },
@@ -28,6 +29,7 @@ const routes = [
   },
   { path: "/post/:id", Component: PostDetails },
   { path: "/categories", Component: AllCategories },
+  { path: "/categories/:category", Component: CategoryPosts },
 ];
 
 const Routes = () => {
