@@ -15,9 +15,6 @@ const CategorySection = () => {
 
   const renderDiscussions = () => {
     return Categories.map(({ name, icon, color }, index) => {
-      const redirectCategory = () => {
-        history.push(`/categories/${name}`);
-      };
       return (
         <Category key={index}>
           <IndividualCategoryWrapper color={color}>

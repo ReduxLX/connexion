@@ -504,6 +504,27 @@ export function AuthProvider({ children }) {
       });
   };
 
+  const fetchCategoryPosts = (category = "") => {
+    return postRef
+      .orderBy("timestamp", "desc")
+      .where("categories", "array-contains", category)
+      .get()
+      .then((snapshot) => {
+        const posts = snapshot.docs.map((doc) => {
+          return {
+            id: doc.id,
+            ...doc.data(),
+          };
+        });
+        console.log(`Success fetching ${category} posts `, posts);
+        return posts;
+      })
+      .catch((e) => {
+        const errorMsg = fbError(e.code, `Failed to fetch ${category} posts `);
+        showSnackbar("error", errorMsg);
+      });
+  };
+
   // onAuthStateChanged:
   // Observe changes to user so we can show an error/redirect to page
   // Takes in a user which will either be current user or null
@@ -536,6 +557,7 @@ export function AuthProvider({ children }) {
     fetchSinglePost,
     fetchPostComments,
     fetchUserPosts,
+    fetchCategoryPosts,
     addPostComment,
     viewPost,
   };
