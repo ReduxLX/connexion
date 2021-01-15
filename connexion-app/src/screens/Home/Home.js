@@ -23,6 +23,7 @@ const Home = () => {
 
 const HomeWrapper = styled.div`
   display: flex;
+  position: relative;
 `;
 
 export default Home;

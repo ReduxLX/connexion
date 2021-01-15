@@ -75,8 +75,15 @@ const CategorySection = () => {
 };
 
 const SectionWrapper = styled.div`
+  position: sticky;
+  display: flex;
+  align-self: flex-start;
+  left: 0;
+  top: 6rem;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 1rem;
   min-width: 150px;
-  flex: 2;
   & > * {
     margin-bottom: 1rem;
   }
