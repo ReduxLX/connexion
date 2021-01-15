@@ -36,6 +36,8 @@ const About = () => {
     upvoteComment,
     downvoteComment,
     viewPost,
+    fetchTopUsers,
+    fetchUserData,
   } = useAuth();
 
   useEffect(() => {
@@ -82,6 +84,10 @@ const About = () => {
 
   const handleViewPost = () => {
     viewPost(postId);
+  };
+
+  const handleFetchTopUsers = () => {
+    fetchUserData();
   };
 
   const renderDropdown = () => {
@@ -174,6 +180,9 @@ const About = () => {
           </SubmitFirebase>
           <SubmitFirebase onClick={handleFetchSinglePost}>
             Fetch post {postId}
+          </SubmitFirebase>
+          <SubmitFirebase onClick={handleFetchTopUsers}>
+            Fetch user data
           </SubmitFirebase>
           <SubmitFirebase disabled={true}>
             <CircularProgress size={25} style={{ color: "white" }} />

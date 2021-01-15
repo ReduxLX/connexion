@@ -6,9 +6,12 @@ const initialState = {
   isFetchingUserPosts: false,
   isFetchingSinglePost: false,
   isFetchingComments: false,
+  isFetchingTopUsers: false,
   sortPostsBy: "Latest",
   posts: [],
+  topUsers: [],
   userPosts: [],
+  userData: {},
   cachedCategory: "",
 };
 

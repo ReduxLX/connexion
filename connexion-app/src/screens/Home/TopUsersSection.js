@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 import Avatar from "@material-ui/core/Avatar";
 import ProfileImg1 from "../../res/images/avatar1.jpg";
 import { truncateNum } from "../../utils";
+import { useAuth } from "../../AuthContext";
 import Divider from "../../components/Divider";
+import TopUserSkeleton from "./TopUserSkeleton";
 
 const fakeTopUsers = [
   {
@@ -38,28 +41,34 @@ const fakeTopUsers = [
   },
 ];
 
-const currentUser = {
-  id: 5,
-  username: "You",
-  role: "Current Student",
-  points: 503,
-};
-
-const isTopUser = fakeTopUsers[0].id;
-
 const TopUsersSection = () => {
-  const renderUser = ({ id, username, role, points }) => {
+  const { fetchTopUsers, fetchUserData, currentUser } = useAuth();
+  const topUsers = useSelector((state) => state.Home.topUsers);
+  const userData = useSelector((state) => state.Home.userData);
+  const isFetchingTopUsers = useSelector(
+    (state) => state.Home.isFetchingTopUsers
+  );
+  console.log("isFetchingTopUsers", isFetchingTopUsers);
+  useEffect(() => {
+    if (topUsers.length === 0) fetchTopUsers();
+    fetchUserData();
+  }, []);
+
+  const topUserId = topUsers && topUsers.length > 0 ? topUsers[0].uid : null;
+  console.log("topUserId", topUserId);
+  console.log(topUsers);
+  const renderUser = ({ uid, displayName, role, points, photoURL }) => {
     return (
-      <UserWrapper key={id} isTopUser={id === isTopUser}>
+      <UserWrapper key={uid} isTopUser={uid === topUserId}>
         <UserBody>
           <Avatar
             className="Avatar"
             alt="pic"
-            src={ProfileImg1}
+            src={photoURL}
             style={{ width: "35px", height: "35px" }}
           />
           <TextGroup>
-            <Username>{username}</Username>
+            <Username>{uid === currentUser.uid ? "You" : displayName}</Username>
             <p className="Role">{role}</p>
           </TextGroup>
         </UserBody>
@@ -71,13 +80,19 @@ const TopUsersSection = () => {
   };
 
   const renderTopUsers = () => {
-    return fakeTopUsers.map((user) => {
-      return renderUser(user);
-    });
+    return isFetchingTopUsers ? (
+      <TopUserSkeleton num={5} />
+    ) : (
+      topUsers.map((user) => {
+        return renderUser(user);
+      })
+    );
   };
 
   const renderCurrentUser = () => {
-    return renderUser(currentUser);
+    if (userData && userData.uid) {
+      return renderUser(userData);
+    }
   };
 
   return (
@@ -85,7 +100,7 @@ const TopUsersSection = () => {
       <Title>Top Users</Title>
       {renderTopUsers()}
       <Divider width="100%" height="1px" />
-      {renderCurrentUser(currentUser)}
+      {renderCurrentUser()}
     </SectionWrapper>
   );
 };

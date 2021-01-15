@@ -25,6 +25,13 @@ export function AuthProvider({ children }) {
   const decrement = firebase.firestore.FieldValue.increment(-1);
   const decrement2 = firebase.firestore.FieldValue.increment(-2);
 
+  const increment10 = firebase.firestore.FieldValue.increment(10);
+  const increment20 = firebase.firestore.FieldValue.increment(20);
+
+  // Firestore Refs
+  const postRef = firestore.collection("posts");
+  const userRef = firestore.collection("users");
+
   // Authentication Methods
   const signup = (username, email, password) => {
     dispatch(actApp.handleState("isLoading", true));
@@ -32,6 +39,7 @@ export function AuthProvider({ children }) {
       .createUserWithEmailAndPassword(email, password)
       .then((result) => {
         updateDisplayName(result.user, username);
+        initializeUserdata(result.user, username);
         showSnackbar("success", "Welcome to Connexion " + username);
         dispatch(actApp.handleState("isLoading", false));
       })
@@ -49,6 +57,7 @@ export function AuthProvider({ children }) {
       .signInWithPopup(provider)
       .then((result) => {
         const username = result ? result.user.displayName : "";
+        initializeUserdata(result.user);
         showSnackbar("success", "Welcome to Connexion " + username);
         dispatch(actApp.handleState("isLoading", false));
       })
@@ -87,6 +96,28 @@ export function AuthProvider({ children }) {
   };
 
   // Update User details
+  const initializeUserdata = (user, displayName = "") => {
+    if (!user) return;
+    const { uid, photoURL, email } = user;
+    userRef
+      .doc(uid)
+      .set({
+        uid,
+        displayName,
+        photoURL,
+        email,
+        points: 0,
+        role: "Guest",
+        summary: "",
+        location: "",
+        bookmarkedPosts: [],
+      })
+      .then(() => console.log("Succeeded in initializing user data"))
+      .catch((e) => {
+        console.log("Failed to initialize user data");
+      });
+  };
+
   const updateDisplayName = (user, displayName) => {
     if (!user || !displayName) {
       return showSnackbar("error", "Failed to update display name");
@@ -132,9 +163,6 @@ export function AuthProvider({ children }) {
       .catch((e) => console.log("Failed to upload image ", e));
   };
 
-  // Firestore Refs
-  const postRef = firestore.collection("posts");
-
   // Firestore Methods
   const addPost = (title, body, bodyPlain, university, categories) => {
     if (!currentUser || !title || !body || !bodyPlain || !university) {
@@ -159,6 +187,7 @@ export function AuthProvider({ children }) {
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       })
       .then(() => {
+        addPoints(increment20);
         showSnackbar("success", "Post added successfully");
         dispatch(
           actHome.handleStateGlobal({
@@ -198,6 +227,7 @@ export function AuthProvider({ children }) {
           .doc(postId)
           .update({ comments: increment })
           .then(() => {
+            addPoints(increment10);
             showSnackbar("success", "Comment added successfully");
             return true;
           })
@@ -374,6 +404,17 @@ export function AuthProvider({ children }) {
       .catch((e) => console.log("Error View Post -> ", e));
   };
 
+  const addPoints = (incrementField) => {
+    if (!currentUser && !incrementField) return;
+    userRef
+      .doc(currentUser.uid)
+      .update({
+        points: incrementField,
+      })
+      .then(() => console.log("Points added success"))
+      .catch((e) => console.log("Error adding points ", e));
+  };
+
   const fetchPostComments = (postId) => {
     if (!postId) {
       return showSnackbar("error", "Failed to fetch post comments");
@@ -525,6 +566,38 @@ export function AuthProvider({ children }) {
       });
   };
 
+  const fetchTopUsers = () => {
+    dispatch(actHome.handleState("isFetchingTopUsers", true));
+    userRef
+      .orderBy("points", "desc")
+      .limit(5)
+      .get()
+      .then((snapshot) => {
+        const topUsers = snapshot.docs.map((doc) => {
+          return doc.data();
+        });
+        console.log("Success fetching top users", topUsers);
+        dispatch(
+          actHome.handleStateGlobal({
+            topUsers,
+            isFetchingTopUsers: false,
+          })
+        );
+      });
+  };
+
+  const fetchUserData = () => {
+    userRef
+      .doc(currentUser.uid)
+      .get()
+      .then((doc) => {
+        console.log("Success fetching user data", doc.data());
+        const userData = doc.data();
+        dispatch(actHome.handleState("userData", userData));
+      })
+      .catch((e) => console.log("Error fetching user data", e));
+  };
+
   // onAuthStateChanged:
   // Observe changes to user so we can show an error/redirect to page
   // Takes in a user which will either be current user or null
@@ -549,17 +622,19 @@ export function AuthProvider({ children }) {
     logout,
     signinGoogle,
     addPost,
+    addPostComment,
     upvotePost,
-    downvotePost,
+    viewPost,
     upvoteComment,
+    downvotePost,
     downvoteComment,
     fetchAllPosts,
     fetchSinglePost,
     fetchPostComments,
     fetchUserPosts,
     fetchCategoryPosts,
-    addPostComment,
-    viewPost,
+    fetchUserData,
+    fetchTopUsers,
   };
 
   return (
