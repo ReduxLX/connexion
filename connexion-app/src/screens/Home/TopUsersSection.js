@@ -128,6 +128,7 @@ const UserWrapper = styled.div`
       .Role {
         font-size: 12px;
         opacity: ${({ isTopUser }) => (isTopUser ? 0.6 : 0.5)};
+        white-space: nowrap;
       }
 
       color: ${({ isTopUser }) => isTopUser && "#FABE2C"};
@@ -150,16 +151,17 @@ const UserBody = styled.div`
 
 const TextGroup = styled.div`
   text-align: left;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 120px;
+  max-width: 10.8vw;
+  /* background-color: green; */
 `;
 
 const Username = styled.p`
   font-family: "RalewaySemiBold";
   font-weight: bold;
   font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const UserRank = styled.div`

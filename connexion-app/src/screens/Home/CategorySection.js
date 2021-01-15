@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { GoCommentDiscussion } from "react-icons/go";
 import { styled as muiStyled } from "@material-ui/styles";
 import Theme from "../../Theme";
 import Button from "@material-ui/core/Button";
@@ -9,16 +8,15 @@ import { useAuth } from "../../AuthContext";
 import { showSnackbar } from "../../utils";
 import { FaRegComments } from "react-icons/fa";
 import Categories from "../../Categories";
-import { darken } from "@material-ui/core";
 
 const CategorySection = () => {
   let history = useHistory();
   const { currentUser } = useAuth();
 
   const renderDiscussions = () => {
-    return Categories.map(({ id, name, icon, color }) => {
+    return Categories.map(({ name, icon, color }) => {
       return (
-        <Category key={id}>
+        <Category key={name}>
           <IndividualCategoryWrapper color={color}>
             <img src={icon} alt={name + "icon"} />
             <p style={{ marginLeft: "15px" }}>{name}</p>
