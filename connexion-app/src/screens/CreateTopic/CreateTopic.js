@@ -57,11 +57,12 @@ const CreateTopic = () => {
   };
 
   const DisplayCategories = () => {
-    return Categories.map(({ name, description }) => {
+    return Categories.map(({ name, description, short_description }) => {
       return (
         <ChooseCategory
           key={name}
           name={name}
+          short_description={short_description}
           description={description}
           disabled={categories.length < 3 ? false : true}
           onSelect={changeCategoriesSelected}
@@ -166,7 +167,7 @@ const CreateTopic = () => {
             />
             <SectionError className="BodyError">{bodyError}</SectionError>
           </SectionWrapper>
-          <div style={{ marginTop: "4.5rem" }}>
+          <UniversitySection>
             <SectionTitle>University</SectionTitle>
             <SectionSubtitle>
               Choose the appropriate Monash University or Universities that the
@@ -185,7 +186,7 @@ const CreateTopic = () => {
                 <MenuItem value="Malaysia">Malaysia</MenuItem>
               </CustomSelect>
             </CustomForm>
-          </div>
+          </UniversitySection>
           <SectionWrapper>
             <SectionTitle>Categories</SectionTitle>
             <SectionSubtitle>
@@ -236,6 +237,9 @@ const CreateTopicWrapper = styled.div`
   @media (max-width: 768px) {
     margin: 0 2rem 1rem 2rem;
   }
+  @media (max-width: 350px) {
+    margin: 0 0.5rem;
+  }
 `;
 
 const Title = styled.h1`
@@ -285,14 +289,22 @@ const TitleInput = styled.input`
     isErrorActive ? colors.error : colors.disabled_light};
 `;
 
+const UniversitySection = styled.div`
+  margin-top: 4.5rem;
+  @media (max-width: 500px) {
+    margin-top: 8rem;
+  }
+`;
+
 const CustomForm = muiStyled(FormControl)({
-  minWidth: 300,
+  minWidth: 260,
 });
 
 const CustomSelect = muiStyled(Select)({
   fontWeight: "regular",
   fontFamily: "Nunito",
   color: "black",
+  width: "150px",
 });
 
 const CreatePostButton = muiStyled(Button)({
