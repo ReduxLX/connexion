@@ -8,6 +8,8 @@ import { useAuth } from "../../AuthContext";
 import { showSnackbar } from "../../utils";
 import { FaRegComments } from "react-icons/fa";
 import Categories from "../../Categories";
+import All_Categories_2 from "../../res/images/All_Categories_2.png";
+import All_Categories_Activated_2 from "../../res/images/All_Categories_Activated_2.png";
 
 const CategorySection = () => {
   let history = useHistory();
@@ -64,7 +66,11 @@ const CategorySection = () => {
       >
         <AllCategoriesWrapper>
           <div style={{ marginTop: "5px" }}>
-            <CategoryLogo />
+            <CategoryLogo className="Inactivated" src={All_Categories_2} />
+            <CategoryLogo
+              className="Activated"
+              src={All_Categories_Activated_2}
+            />
           </div>
           <p style={{ marginTop: "5px" }}>All Categories</p>
         </AllCategoriesWrapper>
@@ -117,7 +123,23 @@ const AllCategoriesWrapper = styled.div`
   display: flex;
   flex-direction: row;
   max-width: 12vw;
+  & > * {
+    .Inactivated {
+      display: flex;
+    }
+    .Activated {
+      display: none;
+    }
+  }
   &:hover {
+    & > * {
+      .Inactivated {
+        display: none;
+      }
+      .Activated {
+        display: flex;
+      }
+    }
     color: ${({ theme: { colors } }) => colors.main};
   }
   p {
@@ -151,7 +173,7 @@ const IndividualCategoryWrapper = styled.div`
   }
 `;
 
-const CategoryLogo = styled(FaRegComments)`
+const CategoryLogo = styled.img`
   width: 20px;
   height: 20px;
   margin-top: -3px;

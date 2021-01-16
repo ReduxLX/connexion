@@ -21,7 +21,6 @@ const PostSection = ({ category = "Home" }) => {
   const cachedCategory = useSelector((state) => state.Home.cachedCategory);
   const { fetchAllPosts } = useAuth();
 
-  //!!!!!!!!!REVERSE THIS CHANGE WHEN PUSHING!!!!!!!!!!
   useEffect(() => {
     if (posts.length <= 0 || cachedCategory !== category) {
       fetchAllPosts(sortPostsBy, category);

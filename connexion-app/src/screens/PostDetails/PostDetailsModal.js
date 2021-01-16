@@ -6,6 +6,7 @@ import Theme from "../../Theme";
 import * as actApp from "../../store/App/ac-App";
 import { useAuth } from "../../AuthContext";
 import { showSnackbar } from "../../utils";
+import "./PostDetailsModal.css";
 
 import ReactModal from "react-modal";
 import Avatar from "@material-ui/core/Avatar";
@@ -63,28 +64,16 @@ const PostDetailsModal = (props) => {
   };
 
   return (
-    <ReactModal
+    <Modal
       isOpen={isOpen}
       closeTimeoutMS={200}
       ariaHideApp={false}
+      className="Modal"
       style={{
         overlay: {
           top: 0,
           backgroundColor: "rgba(0, 0, 0, 0.3)",
           zIndex: 999,
-        },
-        content: {
-          position: "absolute",
-          display: "flex",
-          flexDirection: "column",
-          color: "black",
-          backgroundColor: "white",
-          borderRadius: "8px",
-          margin: "auto",
-          width: "50%",
-          height: "70%",
-          maxHeight: "480px",
-          padding: "30px 30px 0 30px",
         },
       }}
     >
@@ -103,12 +92,32 @@ const PostDetailsModal = (props) => {
           {currentUser ? currentUser.displayName : ""}
         </ModalHeaderUsername>
       </ModalPoster>
-      <QuillEditor
-        height="150px"
-        submitPressed={postCommentPressed}
-        getEditorText={getEditorText}
-        placeholder="Enter your comment here"
-      />
+      <div className="FullEditor">
+        <QuillEditor
+          height="150px"
+          submitPressed={postCommentPressed}
+          getEditorText={getEditorText}
+          placeholder="Enter your comment here"
+        />
+      </div>
+      <div className="LimitedEditor">
+        <QuillEditor
+          mode="limited"
+          height="150px"
+          submitPressed={postCommentPressed}
+          getEditorText={getEditorText}
+          placeholder="Enter your comment here"
+        />
+      </div>
+      <div className="MinimalEditor">
+        <QuillEditor
+          mode="minimal"
+          height="150px"
+          submitPressed={postCommentPressed}
+          getEditorText={getEditorText}
+          placeholder="Enter your comment here"
+        />
+      </div>
       {commentError.length > 0 && <Error>{commentError}</Error>}
       <ButtonContainer>
         <PostCommentButton
@@ -119,7 +128,7 @@ const PostDetailsModal = (props) => {
           Post your comment
         </PostCommentButton>
       </ButtonContainer>
-    </ReactModal>
+    </Modal>
   );
 };
 
@@ -137,11 +146,45 @@ const ModalHeader = styled.div`
       cursor: pointer;
     }
   }
+  @media (max-width: 400px) {
+    margin-bottom: 2rem;
+  }
+`;
+
+const Modal = styled(ReactModal)`
+  .FullEditor {
+    display: flex;
+  }
+  .LimitedEditor {
+    display: none;
+  }
+  .MinimalEditor {
+    display: none;
+  }
+  @media (max-width: 768px) {
+    .FullEditor {
+      display: none;
+    }
+    .LimitedEditor {
+      display: flex;
+    }
+  }
+  @media (max-width: 400px) {
+    .LimitedEditor {
+      display: none;
+    }
+    .MinimalEditor {
+      display: flex;
+    }
+  }
 `;
 
 const Title = styled.div`
   font-family: "RalewayBold";
   font-size: 24px;
+  @media (max-width: 400px) {
+    font-size: 20px;
+  }
 `;
 
 const ModalPoster = styled.div`
@@ -156,6 +199,9 @@ const ModalPoster = styled.div`
     width: 30px;
     height: 30px;
     margin-right: 0.25rem;
+  }
+  @media (max-width: 400px) {
+    display: none;
   }
 `;
 

@@ -10,6 +10,7 @@ const QuillEditor = (props) => {
     getEditorText = () => {},
     placeholder = "Enter your topic here",
     height = "200px",
+    mode = "complete",
   } = props;
   const [body, setBody] = useState("");
   const [bodyPlainText, setBodyPlainText] = useState("");
@@ -37,11 +38,38 @@ const QuillEditor = (props) => {
       ["link", "image"],
     ],
   };
+  const modules_limited = {
+    toolbar: [
+      [{ header: [1, 2, 3, false] }],
+      ["bold", "italic", "blockquote"],
+      [
+        { list: "ordered" },
+        { list: "bullet" },
+        { align: [] },
+        { indent: "-1" },
+        { indent: "+1" },
+      ],
+      ["link", "image"],
+    ],
+  };
+  const modules_minimal = {
+    toolbar: [
+      ["bold", "italic"],
+      [{ list: "ordered" }, { list: "bullet" }, { align: [] }],
+      ["link", "image"],
+    ],
+  };
 
   return (
     <ReactQuill
       style={{ height: height }}
-      modules={modules}
+      modules={
+        mode === "limited"
+          ? modules_limited
+          : mode === "minimal"
+          ? modules_minimal
+          : modules
+      }
       placeholder={placeholder}
       onChange={(content, delta, source, editor) => {
         setBodyPlainText(editor.getText().trim());

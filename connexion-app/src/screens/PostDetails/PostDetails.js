@@ -204,7 +204,7 @@ const PostDetails = (props) => {
           </Post>
         </PostWrapper>
       </PostDetailsWrapper>
-      <PostDetailsModal postId={postId} setComments={setComments}/>
+      <PostDetailsModal postId={postId} setComments={setComments} />
     </PageWrapper>
   );
 };
@@ -261,6 +261,7 @@ const PostTitle = styled.h1`
   font-family: "NunitoBold";
   color: ${({ theme: { colors } }) => colors.secondary};
   text-align: left;
+  overflow-wrap: anywhere;
 `;
 
 const PostHeaderDetails = styled.div`
