@@ -28,6 +28,7 @@ const TopNavbar = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const muiModalOpen = useSelector((state) => state.App.muiModalOpen);
+  const isUploadingImage = useSelector((state) => state.App.isUploadingImage);
 
   const path = useLocation().pathname;
   const { logout, currentUser } = useAuth();

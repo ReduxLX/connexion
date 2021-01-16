@@ -18,7 +18,8 @@ const TopUsersSection = () => {
 
   useEffect(() => {
     if (topUsers.length === 0) fetchTopUsers();
-    fetchUserData();
+    console.log(Object.keys(userData).length === 0);
+    if (Object.keys(userData).length === 0) fetchUserData();
   }, []);
 
   const renderUser = ({ uid, displayName, role, points, photoURL }, index) => {
