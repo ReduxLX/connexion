@@ -587,6 +587,7 @@ export function AuthProvider({ children }) {
   };
 
   const fetchUserData = () => {
+    if (!currentUser) return;
     userRef
       .doc(currentUser.uid)
       .get()
