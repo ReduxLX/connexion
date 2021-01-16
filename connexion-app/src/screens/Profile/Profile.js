@@ -48,9 +48,7 @@ const Profile = () => {
                 <ProfilePicture src={photoURL} alt="ProfilePicture" />
               </div>
               <div>
-                <p style={{ fontFamily: "Raleway", fontSize: "24px" }}>
-                  {displayName}
-                </p>
+                <Username>{displayName}</Username>
                 <ProfileHeaderDetails>
                   <MdLocationOn size="1.1rem" className="LocationIcon" />
                   <p>Florida, Kentucky</p>
@@ -79,20 +77,28 @@ const Profile = () => {
 
 const ContentWrapper = styled.div`
   display: flex;
-  flex: 1;
+  width: 100%;
   justify-content: space-around;
 `;
 
 const ProfileWrapper = styled.div`
-  width: 64%;
+  width: 70%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const ProfileBackground = styled.img`
   width: 100%;
-  height: 140px;
+  height: 13vw;
+  max-height: 10rem;
+  @media (max-width: 768px) {
+    height: 15vw;
+    min-height: 4.5rem;
+  }
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
 `;
@@ -103,13 +109,26 @@ const ProfileContentWrapper = styled.div`
 `;
 
 const ProfilePicture = muiStyled(Avatar)({
-  width: "100px",
-  height: "100px",
-  margin: "-50px 0 0 -2px",
+  width: "8vw",
+  height: "8vw",
+  margin: "-4vw 0 0 0.2rem",
   border: "solid",
   borderColor: "white",
   borderWidth: "4px",
+  minWidth: "2.5rem",
+  minHeight: "2.5rem",
+  "@media(max-width:768px)": {
+    borderWidth: "2px",
+  },
 });
+
+const Username = styled.p`
+  font-family: "Raleway";
+  font-size: 24px;
+  @media (max-width: 768px) {
+    font-size: 18px;
+  }
+`;
 
 const ProfileHeader = styled.div`
   display: flex;
@@ -127,9 +146,16 @@ const ProfileHeaderDetails = styled.div`
   white-space: pre;
   .LocationIcon {
     color: ${({ theme: { colors } }) => colors.disabled_light};
+    @media (max-width: 768px) {
+      width: 15px;
+      height: 15px;
+    }
   }
   & > * {
     font-size: 14px;
+    @media (max-width: 768px) {
+      font-size: 12px;
+    }
   }
 `;
 
@@ -145,6 +171,9 @@ const ProfileHeaderRole = styled.div`
 const ProfileDescription = styled.p`
   margin-top: 1rem;
   font-size: 14px;
+  @media (max-width: 768px) {
+    font-size: 12px;
+  }
   & > * {
     display: inline-block;
     cursor: pointer;
@@ -155,6 +184,9 @@ const ProfileDescription = styled.p`
     margin-left: 2px;
     color: ${({ theme: { colors } }) => colors.disabled};
     text-decoration: underline;
+    @media (max-width: 768px) {
+      font-size: 12px;
+    }
   }
 `;
 

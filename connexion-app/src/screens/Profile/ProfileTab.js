@@ -100,38 +100,23 @@ const ProfileTab = (props) => {
           onChange={handleChange}
         >
           <Tab
+            className="Tab"
             style={{
-              textTransform: "none",
-              marginLeft: "-25px",
               color:
                 focusedTab === "1" ? Theme.colors.main : Theme.colors.disabled,
             }}
-            label={
-              <p
-                style={{
-                  fontSize: "14px",
-                  marginBottom: "-15px",
-                }}
-              >
-                {tabLabel1}
-              </p>
-            }
+            label={<TabLabel>{tabLabel1}</TabLabel>}
             value="1"
             id="tab_1"
             disableRipple
           />
           <Tab
+            className="Tab"
             style={{
-              textTransform: "none",
-              marginLeft: "-15px",
               color:
                 focusedTab === "2" ? Theme.colors.main : Theme.colors.disabled,
             }}
-            label={
-              <p style={{ fontSize: "14px", marginBottom: "-15px" }}>
-                {tabLabel2}
-              </p>
-            }
+            label={<TabLabel>{tabLabel2}</TabLabel>}
             value="2"
             id="tab_2"
             disableRipple
@@ -155,12 +140,30 @@ const TabWrapper = styled.div`
     background-color: white;
     color: ${({ theme: { colors } }) => colors.main};
   }
+  .Tab {
+    margin-left: -2vw;
+    @media (max-width: 768px) {
+      margin-left: -5vw;
+    }
+    @media (max-width: 599px) {
+      margin-left: -2vw;
+    }
+  }
 `;
 
 const TabIndicator = styled.span`
   width: 40px;
   height: 1px;
   background-color: ${({ theme: { colors } }) => colors.main};
+`;
+
+const TabLabel = styled.p`
+  text-transform: none;
+  font-size: 14px;
+  margin-bottom: -15px;
+  @media (max-width: 768px) {
+    font-size: 10px;
+  }
 `;
 
 export default ProfileTab;
