@@ -104,21 +104,23 @@ export function AuthProvider({ children }) {
   const initializeUserdata = (user, displayName = "") => {
     if (!user) return;
     const { uid, photoURL, email } = user;
+    const initialData = {
+      uid,
+      displayName,
+      photoURL,
+      email,
+      points: 0,
+      role: "Guest",
+      summary: "",
+      location: "",
+      bookmarkedPosts: [],
+    };
     userRef
       .doc(uid)
-      .set({
-        uid,
-        displayName,
-        photoURL,
-        email,
-        points: 0,
-        role: "Guest",
-        summary: "",
-        location: "",
-        bookmarkedPosts: [],
-      })
+      .set(initialData)
       .then(() => {
         console.log("Succeeded in initializing user data");
+        dispatch(actHome.handleState("userData", initialData));
       })
       .catch((e) => {
         console.log("Failed to initialize user data");
@@ -598,11 +600,11 @@ export function AuthProvider({ children }) {
       });
   };
 
-  const fetchTopUsers = () => {
+  const fetchTopUsers = (limit = 5) => {
     dispatch(actHome.handleState("isFetchingTopUsers", true));
     userRef
       .orderBy("points", "desc")
-      .limit(5)
+      .limit(limit)
       .get()
       .then((snapshot) => {
         const topUsers = snapshot.docs.map((doc) => {
@@ -619,6 +621,7 @@ export function AuthProvider({ children }) {
   };
 
   const fetchUserData = () => {
+    console.log("Fetch user Data", currentUser);
     if (!currentUser) return;
     dispatch(actHome.handleState("isFetchingUserData", true));
     userRef
@@ -627,12 +630,11 @@ export function AuthProvider({ children }) {
       .then((doc) => {
         console.log("Success fetching user data", doc.data());
         const userData = doc.data();
-        dispatch(
-          actHome.handleStateGlobal({
-            isFetchingUserData: false,
-            userData: userData,
-          })
-        );
+        dispatch(actHome.handleState("isFetchingUserData", false));
+        if (userData) {
+          console.log("SET USER DATA AS  -> ", userData);
+          dispatch(actHome.handleState("userData", userData));
+        }
       })
       .catch((e) => console.log("Error fetching user data", e));
   };

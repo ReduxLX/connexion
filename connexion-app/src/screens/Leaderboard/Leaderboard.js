@@ -21,8 +21,8 @@ const Leaderboard = () => {
   );
 
   useEffect(() => {
-    if (topUsers.length === 0) fetchTopUsers();
-    fetchUserData();
+    if (topUsers.length === 0) fetchTopUsers(5);
+    if (Object.keys(userData).length === 0) fetchUserData();
   }, []);
 
   const renderUser = ({ uid, displayName, role, points, photoURL }, rank) => {
@@ -38,7 +38,7 @@ const Leaderboard = () => {
           </UserDetailsTextWrapper>
         </UserDetails>
         <PointsWrapper rank={rank + 1}>
-          {rank >= 0 && <GiLaurelsTrophy className="Trophy" />}
+          {rank < 3 && <GiLaurelsTrophy className="Trophy" />}
           <Points>{truncateNum(points)}</Points>
         </PointsWrapper>
       </UserWrapper>
