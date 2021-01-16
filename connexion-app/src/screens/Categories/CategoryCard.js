@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 import { useAuth } from "../../AuthContext";
 import ProfileImg1 from "../../res/images/avatar1.jpg";
 import Divider from "../../components/Divider";
+import { truncateText } from "../../utils";
 
 import Avatar from "@material-ui/core/Avatar";
 import AvatarGroup from "@material-ui/lab/AvatarGroup";
@@ -36,7 +37,9 @@ const CategoryCard = (props) => {
       return (
         <>
           <Avatar className="Avatar" alt="LastTopic" src={photoURL} />
-          <CategoryDetailsLastTopic>{title}</CategoryDetailsLastTopic>
+          <CategoryDetailsLastTopic>
+            {truncateText(title, 20)}
+          </CategoryDetailsLastTopic>
         </>
       );
     } else {

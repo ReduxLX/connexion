@@ -2,44 +2,10 @@ import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import Avatar from "@material-ui/core/Avatar";
-import ProfileImg1 from "../../res/images/avatar1.jpg";
 import { truncateNum } from "../../utils";
 import { useAuth } from "../../AuthContext";
 import Divider from "../../components/Divider";
 import TopUserSkeleton from "./TopUserSkeleton";
-
-const fakeTopUsers = [
-  {
-    id: 1,
-    username: "Marius Von Augustus du Rene",
-    role: "Alumni",
-    points: 212121212112121,
-  },
-  {
-    id: 2,
-    username: "Hoagie Macintosh",
-    role: "Current Student ",
-    points: 5673,
-  },
-  {
-    id: 3,
-    username: "Rip Van Winkle",
-    role: "Prospective Student",
-    points: 2103,
-  },
-  {
-    id: 4,
-    username: "Arthur Calahan",
-    role: "Current Student",
-    points: 993,
-  },
-  {
-    id: 5,
-    username: "Arthur Calahan",
-    role: "Current Student",
-    points: 993,
-  },
-];
 
 const TopUsersSection = () => {
   const { fetchTopUsers, fetchUserData, currentUser } = useAuth();
@@ -57,6 +23,7 @@ const TopUsersSection = () => {
   const topUserId = topUsers && topUsers.length > 0 ? topUsers[0].uid : null;
   console.log("topUserId", topUserId);
   console.log(topUsers);
+
   const renderUser = ({ uid, displayName, role, points, photoURL }) => {
     return (
       <UserWrapper key={uid} isTopUser={uid === topUserId}>
@@ -68,7 +35,9 @@ const TopUsersSection = () => {
             style={{ width: "35px", height: "35px" }}
           />
           <TextGroup>
-            <Username>{uid === currentUser.uid ? "You" : displayName}</Username>
+            <Username>
+              {currentUser && uid === currentUser.uid ? "You" : displayName}
+            </Username>
             <p className="Role">{role}</p>
           </TextGroup>
         </UserBody>
@@ -99,8 +68,12 @@ const TopUsersSection = () => {
     <SectionWrapper>
       <Title>Top Users</Title>
       {renderTopUsers()}
-      <Divider width="100%" height="1px" />
-      {renderCurrentUser()}
+      {currentUser && (
+        <>
+          <Divider width="100%" height="1px" />
+          {renderCurrentUser()}
+        </>
+      )}
     </SectionWrapper>
   );
 };
