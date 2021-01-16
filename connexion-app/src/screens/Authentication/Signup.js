@@ -155,9 +155,12 @@ const Signup = () => {
                 >
                   <p style={{ fontSize: "15px" }}>Sign up with Google</p>
                 </GoogleSignupButton>
-                <p>
-                  Already have an account? <Link to="/login">Sign in</Link>
-                </p>
+                <SwitchPageTextWrapper>
+                  <p>Already have an account?</p>
+                  <Link className="SignIn" to="/login">
+                    Sign in
+                  </Link>
+                </SwitchPageTextWrapper>
               </>
             )}
           </ButtonSection>

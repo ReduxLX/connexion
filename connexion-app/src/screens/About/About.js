@@ -1,278 +1,71 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
-import {
-  FormControl,
-  Select,
-  Button,
-  MenuItem,
-  CircularProgress,
-} from "@material-ui/core";
-import { styled as muiStyled } from "@material-ui/styles";
 import { PageWrapper } from "../SharedStyles";
-import Theme from "../../Theme";
-import { useAuth } from "../../AuthContext";
-import ErrorSnackbar from "../../components/ErrorSnackbar";
-import { convertSecondsToDate } from "../../utils";
+
+const placeholderText = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vitae tempus, sollicitudin aenean senectus purus nunc. Mi nisi, lectus diam sit arcu. Lacus pellentesque velit feugiat hac convallis. 
+
+Cursus at urna sed imperdiet viverra iaculis augue enim. Amet euismod massa, elementum ipsum mattis neque congue nulla. Ultricies molestie massa purus aliquet. Sit lectus viverra ut ut sed consequat. Purus nisl et, lacus nulla duis. At urna accumsan, ullamcorper at sed. Tincidunt augue tristique urna ultrices ut est. Pharetra malesuada scelerisque est aliquet risus sit lorem vestibulum feugiat. Vitae donec vitae mattis faucibus. Id morbi molestie in lacus ut aliquet. Fringilla morbi rutrum aliquet in ultricies. 
+
+Ultricies enim felis curabitur varius integer egestas. At eu, mauris mollis quis tempor viverra duis venenatis.`;
 
 const About = () => {
-  const [posts, setPosts] = useState([]);
-  const [title, setTitle] = useState("");
-  const [body, setBody] = useState("");
-  const [bodyPlain, setbodyPlain] = useState("");
-  const [postId, setPostId] = useState("E3Kn62pRQNDkx48NvtfQ");
-  const [commentId, setCommentId] = useState("ELUeRILQcjZlgiEh5MWx");
-  const [university, setUniversity] = useState("Global");
-  const [isErrorVisible, setErrorVisible] = useState(false);
-  const [error, setError] = useState(false);
-
-  const {
-    addPost,
-    addPostComment,
-    fetchAllPosts,
-    fetchSinglePost,
-    fetchPostComments,
-    upvotePost,
-    downvotePost,
-    upvoteComment,
-    downvoteComment,
-    viewPost,
-    fetchTopUsers,
-    fetchUserData,
-  } = useAuth();
-
-  useEffect(() => {
-    async function fetchData() {
-      const posts = await fetchAllPosts();
-      setPosts(posts);
-      const comments = await fetchPostComments(postId);
-      console.log(comments);
-    }
-
-    // fetchData()
-  }, []);
-
-  const handleFetchSinglePost = async () => {
-    const response = await fetchSinglePost(postId);
-    console.log("Fetch single response -> ", response);
-  };
-
-  const handleSubmitPost = (e) => {
-    e.preventDefault();
-    console.log("Submit -> ", title, body, university);
-    addPost(title, body, bodyPlain, university, ["General", "Juniors"]);
-  };
-
-  const handleAddComment = () => {
-    addPostComment(postId, "Comment body");
-  };
-
-  const handleUpvote = () => {
-    upvotePost(postId);
-  };
-
-  const handleDownvote = () => {
-    downvotePost(postId);
-  };
-
-  const handleCommentUpvote = () => {
-    upvoteComment(postId, commentId);
-  };
-
-  const handleCommentDownvote = () => {
-    downvoteComment(postId, commentId);
-  };
-
-  const handleViewPost = () => {
-    viewPost(postId);
-  };
-
-  const handleFetchTopUsers = () => {
-    fetchUserData();
-  };
-
-  const renderDropdown = () => {
-    return (
-      <CustomForm variant="outlined" hiddenLabel={true} size="small">
-        <CustomSelect
-          id="demo-simple-select-outlined"
-          value={university}
-          onChange={(e) => setUniversity(e.target.value)}
-        >
-          <MenuItem value="Global">Global</MenuItem>
-          <MenuItem value="Malaysia">Malaysia</MenuItem>
-          <MenuItem value="Australia">Australia</MenuItem>
-        </CustomSelect>
-      </CustomForm>
-    );
-  };
-  console.log(posts);
   return (
     <PageWrapper>
-      <h1>Firebase Playground</h1>
-      <ErrorSnackbar
-        isErrorVisible={isErrorVisible}
-        handleClose={() => setErrorVisible(false)}
-        message={error}
-        type="fullscreen"
-      />
-      <TwoColumn>
-        <Form onSubmit={handleSubmitPost}>
-          <Input
-            id="title"
-            type="text"
-            name="title"
-            placeholder="Post Title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <Input
-            id="body"
-            type="text"
-            name="body"
-            placeholder="Body Rich Text"
-            value={body}
-            onChange={(e) => setBody(e.target.value)}
-          />
-          <Input
-            id="plain"
-            type="text"
-            name="plain"
-            placeholder="Body Plain Text"
-            value={bodyPlain}
-            onChange={(e) => setbodyPlain(e.target.value)}
-          />
-          {renderDropdown()}
-          <SubmitFirebase type="submit">Submit</SubmitFirebase>
-          <hr />
-          <Input
-            id="postId"
-            type="text"
-            name="postId"
-            placeholder="Enter Post ID here"
-            value={postId}
-            onChange={(e) => setPostId(e.target.value)}
-          />
-          <Input
-            id="commentId"
-            type="text"
-            name="commentId"
-            placeholder="Enter Comment ID here"
-            value={commentId}
-            onChange={(e) => setCommentId(e.target.value)}
-          />
-          <SubmitFirebase onClick={handleUpvote}>
-            Upvote Post {postId}
-          </SubmitFirebase>
-          <SubmitFirebase onClick={handleDownvote}>
-            Downvote Post {postId}
-          </SubmitFirebase>
-          <SubmitFirebase onClick={handleViewPost}>
-            View Post {postId}
-          </SubmitFirebase>
-          <SubmitFirebase onClick={handleAddComment}>
-            Add Comment in Post {postId}
-          </SubmitFirebase>
-          <SubmitFirebase onClick={handleCommentUpvote}>
-            Upvote Comment {commentId} in Post {postId}
-          </SubmitFirebase>
-          <SubmitFirebase onClick={handleCommentDownvote}>
-            Downvote Comment {commentId} in Post {postId}
-          </SubmitFirebase>
-          <SubmitFirebase onClick={handleFetchSinglePost}>
-            Fetch post {postId}
-          </SubmitFirebase>
-          <SubmitFirebase onClick={handleFetchTopUsers}>
-            Fetch user data
-          </SubmitFirebase>
-          <SubmitFirebase disabled={true}>
-            <CircularProgress size={25} style={{ color: "white" }} />
-          </SubmitFirebase>
-        </Form>
-        <PostContainer>
-          {posts.map(
-            ({
-              id,
-              title,
-              body,
-              university,
-              views,
-              rating,
-              timestamp: { seconds },
-            }) => (
-              <div key={id}>
-                <strong>Title: {title}</strong>
-                <p>id: {id}</p>
-                <p>Body: {body}</p>
-                <p>University: {university}</p>
-                <p>Views: {views}</p>
-                <p>Rating: {rating}</p>
-                <p>Posted on: {convertSecondsToDate(seconds)}</p>
-                <br />
-              </div>
-            )
-          )}
-        </PostContainer>
-      </TwoColumn>
+      <AboutSection>
+        <TeamPicture />
+        <div>
+          <SectionTitle section="AboutUs">About Us</SectionTitle>
+          <SectionText section="AboutUs">{placeholderText}</SectionText>
+        </div>
+      </AboutSection>
+      <HowItWorksSection>
+        <div>
+          <SectionTitle>How It Works</SectionTitle>
+          <SectionText>{placeholderText}</SectionText>
+        </div>
+      </HowItWorksSection>
     </PageWrapper>
   );
 };
 
-const TwoColumn = styled.div`
+const AboutSection = styled.div`
   display: flex;
-  & > * {
-    margin-left: 1rem;
-  }
+  flex-direction: row;
+  margin-top: 2rem;
+  text-align: right;
 `;
 
-const Form = styled.form`
+const SectionTitle = styled.p`
+  font-family: "RalewayExtraBold";
+  font-size: 38px;
+  color: ${({ section, theme: { colors } }) =>
+    section === "AboutUs" ? colors.main : "white"};
+`;
+
+const SectionText = styled.p`
+  font-family: "Nunito";
+  font-size: 14px;
+  white-space: pre-line;
+  color: ${({ section, theme: { colors } }) =>
+    section === "AboutUs" ? colors.main : "white"};
+  margin-top: 1rem;
+`;
+
+const TeamPicture = styled.div`
+  border: solid;
+  border-color: ${({ theme: { colors } }) => colors.disabled_light};
+  border-width: 5px;
+  width: 2000px;
+  height: 250px;
+  margin: 2.8rem 5rem 0 13.1rem;
+`;
+
+const HowItWorksSection = styled.div`
   display: flex;
-  flex: 1;
-  max-width: 500px;
-  flex-direction: column;
-  & > * {
-    margin-bottom: 1rem;
-  }
+  text-align: left;
+  margin: 100px -6rem -6rem -6rem;
+  padding: 100px 6rem 6rem 6rem;
+  background-color: ${({ theme: { colors } }) => colors.main};
 `;
-
-const PostContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const Input = styled.input`
-  padding: 0.5rem;
-  border: ${({ theme: { colors } }) => `1px solid ${colors.disabled}`};
-  border-radius: 5px;
-
-  &:hover {
-    border: 1px solid black;
-  }
-  &:focus {
-    border: ${({ theme: { colors } }) => `2px solid ${colors.main}`};
-  }
-`;
-
-const CustomForm = muiStyled(FormControl)({
-  minWidth: 120,
-  backgroundColor: Theme.colors.form,
-  borderRadius: "5px",
-});
-
-const CustomSelect = muiStyled(Select)({
-  fontWeight: "regular",
-  color: Theme.colors.form_input,
-});
-
-const SubmitFirebase = muiStyled(Button)({
-  background: Theme.colors.main,
-  color: "white",
-  fontSize: "14px",
-  textTransform: "none",
-  padding: "0.6rem 0.8rem",
-  marginTop: "1rem",
-  "&:hover": {
-    backgroundColor: `${Theme.colors.main_dark}`,
-  },
-});
 
 export default About;

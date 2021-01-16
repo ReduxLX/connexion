@@ -104,9 +104,12 @@ const Login = () => {
                 >
                   <p style={{ fontSize: "15px" }}>Sign in with Google</p>
                 </GoogleLoginButton>
-                <p style={{ color: "white" }}>
-                  Don't have an account yet? <Link to="/signup">Sign up</Link>
-                </p>
+                <SwitchPageTextWrapper>
+                  <p style={{ color: "white" }}>Don't have an account yet?</p>
+                  <Link className="SignUp" to="/signup">
+                    Sign up
+                  </Link>
+                </SwitchPageTextWrapper>
               </>
             )}
           </ButtonSection>
