@@ -39,8 +39,8 @@ const PostDetailsModal = (props) => {
     bodyPlainText = bodyPlainText.trim();
     if (bodyPlainText.length <= 0) {
       setCommentError("Your comment cannot be empty");
-    } else if (bodyPlainText.length > 1000) {
-      setCommentError("Your comment cannot exceed 1000 characters");
+    } else if (bodyPlainText.length > 2000) {
+      setCommentError("Your comment cannot exceed 2000 characters");
     } else {
       setCommentError("");
       console.log("Post Id -> ", postId);

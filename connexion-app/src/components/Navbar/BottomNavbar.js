@@ -13,7 +13,8 @@ import {
 } from "react-icons/ai";
 import { IoChatboxOutline } from "react-icons/io5";
 import Theme from "../../Theme";
-import { isMobile } from "../../utils";
+import { isMobile, showSnackbar } from "../../utils";
+import { useAuth } from "../../AuthContext";
 
 const bottomLinks = [
   { to: "/", label: "Home", icon: <AiOutlineHome /> },
@@ -25,6 +26,7 @@ const bottomLinks = [
 const BottomNavbar = () => {
   const muiModalOpen = useSelector((state) => state.App.muiModalOpen);
   const history = useHistory();
+  const { currentUser } = useAuth();
 
   const renderBottomLinks = () => {
     return bottomLinks.map(({ to, label, icon }) => (
@@ -38,7 +40,17 @@ const BottomNavbar = () => {
 
   return (
     <BottomNavbarWrapper muiModalOpen={muiModalOpen && !isMobile()}>
-      <AddPostButton size="small" onClick={() => history.push("/createtopic")}>
+      <AddPostButton
+        size="small"
+        onClick={() => {
+          if (currentUser) history.push("/createtopic");
+          else
+            showSnackbar(
+              "error",
+              "You need to be signed in to start a new topic"
+            );
+        }}
+      >
         <AiOutlinePlus
           style={{ color: "white", width: "20px", height: "20px" }}
         />
