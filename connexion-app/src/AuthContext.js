@@ -117,7 +117,9 @@ export function AuthProvider({ children }) {
         location: "",
         bookmarkedPosts: [],
       })
-      .then(() => console.log("Succeeded in initializing user data"))
+      .then(() => {
+        console.log("Succeeded in initializing user data");
+      })
       .catch((e) => {
         console.log("Failed to initialize user data");
       });
@@ -145,27 +147,52 @@ export function AuthProvider({ children }) {
       .storage()
       .ref(currentUser.uid + "/profilePicture/" + file.name);
     const profilePicsRef = storageRef.child("profile.jpg");
-    profilePicsRef
+    dispatch(actApp.handleState("isUploadingImage", true));
+    return profilePicsRef
       .put(file)
       .then((snapshot) => {
-        snapshot.ref
+        return snapshot.ref
           .getDownloadURL()
           .then((photoURL) => {
             console.log("File available at", photoURL);
-            currentUser
+            return currentUser
               .updateProfile({
                 photoURL,
               })
-              .then(() =>
-                console.log("Success in updating photo url -> ", photoURL)
-              )
+              .then(() => {
+                return userRef
+                  .doc(currentUser.uid)
+                  .update({ photoURL })
+                  .then(() => {
+                    showSnackbar(
+                      "success",
+                      "Profile picture updated successfully"
+                    );
+                    dispatch(actApp.handleState("isUploadingImage", false));
+                    console.log("Success in updating photo url -> ", photoURL);
+                    return true;
+                  })
+                  .catch((e) => {
+                    dispatch(actApp.handleState("isUploadingImage", false));
+                    console.log("Failed to update userdata", e);
+                  });
+              })
               .catch((e) => {
+                dispatch(actApp.handleState("isUploadingImage", false));
+
                 console.log("Failed to update profile picture", e);
               });
           })
-          .catch((e) => console.log("Failed to get picture URL ", e));
+          .catch((e) => {
+            dispatch(actApp.handleState("isUploadingImage", false));
+
+            console.log("Failed to get picture URL ", e);
+          });
       })
-      .catch((e) => console.log("Failed to upload image ", e));
+      .catch((e) => {
+        dispatch(actApp.handleState("isUploadingImage", false));
+        console.log("Failed to upload image ", e);
+      });
   };
 
   // Firestore Methods

@@ -67,8 +67,12 @@ const Leaderboard = () => {
         <TopUsersWrapper>
           <Title>Leaderboard</Title>
           {renderLeaderboard()}
-          <Divider width="100%" height="1px" margin="1rem 0" />
-          {renderCurrentUser()}
+          {currentUser && (
+            <>
+              <Divider width="100%" height="1px" margin="1rem 0" />
+              {renderCurrentUser()}
+            </>
+          )}
         </TopUsersWrapper>
       )}
     </PageWrapper>

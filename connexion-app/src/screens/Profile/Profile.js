@@ -1,74 +1,26 @@
 import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { useAuth } from "../../AuthContext";
 import { PageWrapper } from "../SharedStyles";
 import CloudsBG from "../../res/images/CloudsBG.png";
-import ProfileImg1 from "../../res/images/avatar1.jpg";
+import * as actApp from "../../store/App/ac-App";
 import ProfileTab from "./ProfileTab";
+import UploadPictureModal from "./UploadPictureModal";
 
 import Avatar from "@material-ui/core/Avatar";
 import { styled as muiStyled } from "@material-ui/styles";
 import { MdLocationOn } from "react-icons/md";
 
-const fakePosts = [
-  {
-    id: 1,
-    title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    body:
-      "nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword_nospaceword",
-    poster: "Arthur Calahan",
-    comments: 100,
-    rating: 100000,
-  },
-  {
-    id: 2,
-    title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    body:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lacinia, turpis eu euismod venenatis, nulla magna convallis tortor, eu blandit nibh ante non orci. Nunc sed ante volutpat, suscipit libero sit amet, vestibulum ex. Vestibulum in fringilla augue. Integer ligula enim, scelerisque et maximus id, pellentesque id dui. Vestibulum at mattis massa. Fusce viverra iaculis faucibus. Vestibulum molestie sapien vel mauris varius molestie non sed metus. Duis placerat ac ligula porttitor varius. Cras eu vulputate velit, sit amet gravida mauris. Duis non dictum erat, non semper ligula. Phasellus id sem quis eros tempor accumsan ut ac tellus. Ut dignissim accumsan justo vitae porttitor.",
-    poster: "Marius Von Augustus Herr",
-    comments: 5,
-    rating: 999,
-  },
-  {
-    id: 3,
-    title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    body:
-      "I am a moderately short post, not too short and not too long, this should not have a read more as it is only two lines long",
-    poster: "NaomiEX",
-    comments: 5,
-    rating: 25,
-  },
-  {
-    id: 4,
-    title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    body:
-      "This text will fit 2 lines approximately on a desktop monitor, read more should not apply but maybe sometimes it does, well lets find out shall we__________",
-    poster: "NaomiEX",
-    comments: 5,
-    rating: 10,
-  },
-  {
-    id: 5,
-    title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    body:
-      "This text tests the boundary of when text starts to truncate, read more should pop up when removing/adding 1 character making this a nice edge case. From the looks of things, it seems to only truncate after the third line overflows which is allright ?  ?",
-    poster: "NaomiEX",
-    comments: 5,
-    rating: -10,
-  },
-];
-
-const userPosts = fakePosts.filter((post) => post.poster === "NaomiEX");
-const bookmarkedPosts = fakePosts.filter((post) => post.poster !== "NaomiEX");
-
 const Profile = () => {
   const placeholderDescription =
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Volutpat, donec est ultrices suspendisse netus mattis. Vestibulum non eu, gravida porttitor pellentesque dignissim. Phasellus nibh et accumsan felis convallis ut risus suspendisse.";
   const { currentUser, fetchUserPosts } = useAuth();
+  const dispatch = useDispatch();
   const { displayName, photoURL } = currentUser;
 
   const userPosts = useSelector((state) => state.Home.userPosts);
+  const isUploadingImage = useSelector((state) => state.App.isUploadingImage);
   console.log("User posts -> ", userPosts);
 
   useEffect(() => {
@@ -77,12 +29,19 @@ const Profile = () => {
 
   return (
     <PageWrapper>
+      <UploadPictureModal />
       <ContentWrapper>
         <ProfileWrapper>
           <ProfileBackground src={CloudsBG} alt="Background" />
           <ProfileContentWrapper>
             <ProfileHeader>
-              <ProfilePicture src={photoURL} alt="ProfilePicture" />
+              <div
+                onClick={() =>
+                  dispatch(actApp.handleState("isPictureModalOpen", true))
+                }
+              >
+                <ProfilePicture src={photoURL} alt="ProfilePicture" />
+              </div>
               <div>
                 <p style={{ fontFamily: "Raleway", fontSize: "24px" }}>
                   {displayName}
@@ -99,10 +58,7 @@ const Profile = () => {
               {placeholderDescription}
               <strong>Edit</strong>
             </ProfileDescription>
-            <ProfileTab
-              userPosts={userPosts}
-              bookmarkedPosts={bookmarkedPosts}
-            />
+            <ProfileTab userPosts={userPosts} bookmarkedPosts={userPosts} />
           </ProfileContentWrapper>
         </ProfileWrapper>
       </ContentWrapper>

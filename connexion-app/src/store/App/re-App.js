@@ -8,6 +8,8 @@ const initialState = {
   snackbarVariant: "error",
   snackbarMsg: "",
   isModalOpen: false,
+  isPictureModalOpen: false,
+  isUploadingImage: false,
 };
 
 const AppReducer = (state = initialState, { type, payload }) => {
