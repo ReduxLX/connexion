@@ -59,6 +59,7 @@ const TopNavbar = () => {
       const searchInput = e.target.value;
       if (searchInput && searchInput.trim() !== "") {
         history.push(`/?search=${searchInput}`);
+        setVisible(false);
       } else {
         history.push("/");
       }

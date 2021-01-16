@@ -7,6 +7,7 @@ const initialState = {
   isFetchingSinglePost: false,
   isFetchingComments: false,
   isFetchingTopUsers: false,
+  isFetchingUserData: false,
   sortPostsBy: "Latest",
   posts: [],
   topUsers: [],

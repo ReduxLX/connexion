@@ -1,70 +1,44 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { PageWrapper } from "../SharedStyles";
 import styled from "styled-components";
 import Avatar from "@material-ui/core/Avatar";
-import ProfileImg1 from "../../res/images/avatar1.jpg";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { truncateNum } from "../../utils";
 import Divider from "../../components/Divider";
+import { useAuth } from "../../AuthContext";
+import Theme from "../../Theme";
 
 import { GiLaurelsTrophy } from "react-icons/gi";
 
-const fakeTopUsers = [
-  {
-    id: 1,
-    username: "Marius Von Augustus du Rene",
-    role: "Alumni",
-    points: 430,
-  },
-  {
-    id: 2,
-    username: "Hoagie Macintosh",
-    role: "Current Student ",
-    points: 394,
-  },
-  {
-    id: 3,
-    username: "Rip Van Winkle",
-    role: "Prospective Student",
-    points: 376,
-  },
-  {
-    id: 4,
-    username: "Arthur Calahan",
-    role: "Current Student",
-    points: 283,
-  },
-  {
-    id: 5,
-    username: "Arthur Calahan",
-    role: "Current Student",
-    points: 259,
-  },
-];
-
-const currentUser = {
-  id: 5,
-  username: "You",
-  role: "Current Student",
-  points: 120,
-};
-
-const topUserIds = [fakeTopUsers[0].id, fakeTopUsers[1].id, fakeTopUsers[2].id];
-
 const Leaderboard = () => {
-  const renderUser = ({ id, username, role, points }) => {
+  const { fetchTopUsers, fetchUserData, currentUser } = useAuth();
+
+  const topUsers = useSelector((state) => state.Home.topUsers);
+  const userData = useSelector((state) => state.Home.userData);
+  const isFetchingTopUsers = useSelector(
+    (state) => state.Home.isFetchingTopUsers
+  );
+
+  useEffect(() => {
+    if (topUsers.length === 0) fetchTopUsers();
+    fetchUserData();
+  }, []);
+
+  const renderUser = ({ uid, displayName, role, points, photoURL }, rank) => {
     return (
-      <UserWrapper key={id} rank={topUserIds.indexOf(id) + 1}>
+      <UserWrapper key={uid} rank={rank + 1}>
         <UserDetails>
-          <Avatar className="Avatar" src={ProfileImg1} alt="userProfile" />
+          <Avatar className="Avatar" src={photoURL} alt="userProfile" />
           <UserDetailsTextWrapper>
-            <Username>{username}</Username>
+            <Username>
+              {currentUser && uid === currentUser.uid ? "You" : displayName}
+            </Username>
             <p className="Role">Role: {role}</p>
           </UserDetailsTextWrapper>
         </UserDetails>
-        <PointsWrapper rank={topUserIds.indexOf(id) + 1}>
-          {topUserIds.indexOf(id) >= 0 && (
-            <GiLaurelsTrophy className="Trophy" />
-          )}
+        <PointsWrapper rank={rank + 1}>
+          {rank >= 0 && <GiLaurelsTrophy className="Trophy" />}
           <Points>{truncateNum(points)}</Points>
         </PointsWrapper>
       </UserWrapper>
@@ -72,23 +46,31 @@ const Leaderboard = () => {
   };
 
   const renderLeaderboard = () => {
-    return fakeTopUsers.map((otherUser) => {
-      return renderUser(otherUser);
+    return topUsers.map((otherUser, index) => {
+      return renderUser(otherUser, index);
     });
   };
 
   const renderCurrentUser = () => {
-    return renderUser(currentUser);
+    if (userData && userData.uid) {
+      return renderUser(userData);
+    }
   };
 
   return (
     <PageWrapper>
-      <TopUsersWrapper>
-        <Title>Leaderboard</Title>
-        {renderLeaderboard()}
-        <Divider width="100%" height="1px" margin="1rem 0" />
-        {renderCurrentUser()}
-      </TopUsersWrapper>
+      {isFetchingTopUsers ? (
+        <div style={{ margin: "auto", marginTop: "3rem" }}>
+          <CircularProgress size={35} style={{ color: Theme.colors.main }} />
+        </div>
+      ) : (
+        <TopUsersWrapper>
+          <Title>Leaderboard</Title>
+          {renderLeaderboard()}
+          <Divider width="100%" height="1px" margin="1rem 0" />
+          {renderCurrentUser()}
+        </TopUsersWrapper>
+      )}
     </PageWrapper>
   );
 };
