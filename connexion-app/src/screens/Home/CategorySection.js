@@ -15,9 +15,6 @@ const CategorySection = () => {
 
   const renderDiscussions = () => {
     return Categories.map(({ name, icon, color }, index) => {
-      const redirectCategory = () => {
-        history.push(`/categories/${name}`);
-      };
       return (
         <Category key={index}>
           <IndividualCategoryWrapper color={color}>
@@ -27,7 +24,7 @@ const CategorySection = () => {
                 fontWeight: "bold",
                 color,
               }}
-              style={{ display: "flex" }}
+              style={{ display: "flex", alignItems: "center" }}
             >
               <img src={icon} alt={name + "icon"} />
               <p style={{ marginLeft: "15px" }}>{name}</p>
