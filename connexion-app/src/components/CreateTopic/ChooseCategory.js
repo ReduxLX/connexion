@@ -7,6 +7,7 @@ const ChooseCategory = (props) => {
     description = "",
     onSelect = () => {},
     disabled = false,
+    short_description,
   } = props;
   const [isSelected, setIsSelected] = useState(false);
 
@@ -24,7 +25,8 @@ const ChooseCategory = (props) => {
       }}
     >
       <CategoryName>{name}</CategoryName>
-      <p>{description}</p>
+      <p className="FullDescription">{description}</p>
+      <p className="ShortDescription">{short_description}</p>
     </CategoryWrapper>
   );
 };
@@ -40,6 +42,20 @@ const CategoryWrapper = styled.div`
   padding: 1rem;
   color: ${({ selected, theme: { colors } }) =>
     selected ? colors.main : colors.disabled};
+  .ShortDescription {
+    display: none;
+  }
+  .FullDescription {
+    display: flex;
+  }
+  @media (max-width: 400px) {
+    .ShortDescription {
+      display: flex;
+    }
+    .FullDescription {
+      display: none;
+    }
+  }
 `;
 
 const CategoryName = styled.p`
