@@ -24,7 +24,11 @@ const CategorySection = () => {
                 fontWeight: "bold",
                 color,
               }}
-              style={{ display: "flex", alignItems: "center" }}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                color: Theme.colors.disabled,
+              }}
             >
               <img src={icon} alt={name + "icon"} />
               <p style={{ marginLeft: "15px" }}>{name}</p>

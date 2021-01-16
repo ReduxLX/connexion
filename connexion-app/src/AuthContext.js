@@ -56,9 +56,13 @@ export function AuthProvider({ children }) {
     return auth
       .signInWithPopup(provider)
       .then((result) => {
-        const username = result ? result.user.displayName : "";
-        initializeUserdata(result.user);
-        showSnackbar("success", "Welcome to Connexion " + username);
+        const username = result ? result.user.displayName : "Guest";
+        if (result.additionalUserInfo.isNewUser) {
+          initializeUserdata(result.user, username);
+          showSnackbar("success", "Welcome to Connexion " + username);
+        } else {
+          showSnackbar("success", "Welcome back " + username);
+        }
         dispatch(actApp.handleState("isLoading", false));
       })
       .catch((e) => {
@@ -72,8 +76,9 @@ export function AuthProvider({ children }) {
     dispatch(actApp.handleState("isLoading", true));
     return auth
       .signInWithEmailAndPassword(email, password)
-      .then(() => {
-        showSnackbar("success", "Welcome back");
+      .then((result) => {
+        const username = result ? result.user.displayName : "Guest";
+        showSnackbar("success", "Welcome back " + username);
         dispatch(actApp.handleState("isLoading", false));
       })
       .catch((e) => {
@@ -588,13 +593,19 @@ export function AuthProvider({ children }) {
 
   const fetchUserData = () => {
     if (!currentUser) return;
+    dispatch(actHome.handleState("isFetchingUserData", true));
     userRef
       .doc(currentUser.uid)
       .get()
       .then((doc) => {
         console.log("Success fetching user data", doc.data());
         const userData = doc.data();
-        dispatch(actHome.handleState("userData", userData));
+        dispatch(
+          actHome.handleStateGlobal({
+            isFetchingUserData: false,
+            userData: userData,
+          })
+        );
       })
       .catch((e) => console.log("Error fetching user data", e));
   };

@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import Avatar from "@material-ui/core/Avatar";
 import { truncateNum } from "../../utils";
 import { useAuth } from "../../AuthContext";
@@ -14,19 +15,15 @@ const TopUsersSection = () => {
   const isFetchingTopUsers = useSelector(
     (state) => state.Home.isFetchingTopUsers
   );
-  console.log("isFetchingTopUsers", isFetchingTopUsers);
+
   useEffect(() => {
     if (topUsers.length === 0) fetchTopUsers();
     fetchUserData();
   }, []);
 
-  const topUserId = topUsers && topUsers.length > 0 ? topUsers[0].uid : null;
-  console.log("topUserId", topUserId);
-  console.log(topUsers);
-
-  const renderUser = ({ uid, displayName, role, points, photoURL }) => {
+  const renderUser = ({ uid, displayName, role, points, photoURL }, index) => {
     return (
-      <UserWrapper key={uid} isTopUser={uid === topUserId}>
+      <UserWrapper key={uid} isTopUser={index === 0}>
         <UserBody>
           <Avatar
             className="Avatar"
@@ -52,8 +49,8 @@ const TopUsersSection = () => {
     return isFetchingTopUsers ? (
       <TopUserSkeleton num={5} />
     ) : (
-      topUsers.map((user) => {
-        return renderUser(user);
+      topUsers.map((user, index) => {
+        return renderUser(user, index);
       })
     );
   };
@@ -66,9 +63,11 @@ const TopUsersSection = () => {
 
   return (
     <SectionWrapper>
-      <Title>Top Users</Title>
+      <Link to="/leaderboard">
+        <Title>Top Users</Title>
+      </Link>
       {renderTopUsers()}
-      {currentUser && (
+      {currentUser && !isFetchingTopUsers && (
         <>
           <Divider width="100%" height="1px" />
           {renderCurrentUser()}
