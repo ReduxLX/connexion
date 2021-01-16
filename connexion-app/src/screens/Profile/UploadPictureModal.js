@@ -95,7 +95,7 @@ const PostDetailsModal = () => {
           margin: "auto",
           width: "70%",
           height: "60%",
-          maxHeight: "480px",
+          maxHeight: "400px",
           maxWidth: "600px",
           padding: "30px",
         },

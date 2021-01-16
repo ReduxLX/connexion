@@ -197,6 +197,20 @@ export function AuthProvider({ children }) {
       });
   };
 
+  const updateRole = (role) => {
+    if (!role && !currentUser) {
+      showSnackbar("error", "Failed to update Role");
+    }
+    return userRef
+      .doc(currentUser.uid)
+      .update({ role })
+      .then(() => {
+        console.log("Role updated");
+        return true;
+      })
+      .catch((e) => console.log("Failed to update Role", e));
+  };
+
   // Firestore Methods
   const addPost = (title, body, bodyPlain, university, categories) => {
     if (!currentUser || !title || !body || !bodyPlain || !university) {
@@ -658,6 +672,7 @@ export function AuthProvider({ children }) {
     currentUser,
     updateDisplayName,
     updateProfilePicture,
+    updateRole,
     signup,
     login,
     logout,

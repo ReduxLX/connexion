@@ -9,6 +9,7 @@ const initialState = {
   snackbarMsg: "",
   isModalOpen: false,
   isPictureModalOpen: false,
+  isRoleModalOpen: false,
   isUploadingImage: false,
 };
 

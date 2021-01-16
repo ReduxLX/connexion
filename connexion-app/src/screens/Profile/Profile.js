@@ -7,6 +7,7 @@ import CloudsBG from "../../res/images/CloudsBG.png";
 import * as actApp from "../../store/App/ac-App";
 import ProfileTab from "./ProfileTab";
 import UploadPictureModal from "./UploadPictureModal";
+import EditRoleModal from "./EditRoleModal";
 
 import Avatar from "@material-ui/core/Avatar";
 import { styled as muiStyled } from "@material-ui/styles";
@@ -15,21 +16,25 @@ import { MdLocationOn } from "react-icons/md";
 const Profile = () => {
   const placeholderDescription =
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Volutpat, donec est ultrices suspendisse netus mattis. Vestibulum non eu, gravida porttitor pellentesque dignissim. Phasellus nibh et accumsan felis convallis ut risus suspendisse.";
-  const { currentUser, fetchUserPosts } = useAuth();
+  const { currentUser, fetchUserPosts, fetchUserData } = useAuth();
   const dispatch = useDispatch();
   const { displayName, photoURL } = currentUser;
 
   const userPosts = useSelector((state) => state.Home.userPosts);
   const isUploadingImage = useSelector((state) => state.App.isUploadingImage);
+  const userData = useSelector((state) => state.Home.userData);
+
   console.log("User posts -> ", userPosts);
 
   useEffect(() => {
     if (currentUser) fetchUserPosts();
+    if (Object.keys(userData).length === 0) fetchUserData();
   }, []);
 
   return (
     <PageWrapper>
       <UploadPictureModal />
+      <EditRoleModal />
       <ContentWrapper>
         <ProfileWrapper>
           <ProfileBackground src={CloudsBG} alt="Background" />
@@ -50,7 +55,13 @@ const Profile = () => {
                   <MdLocationOn size="1.1rem" className="LocationIcon" />
                   <p>Florida, Kentucky</p>
                   <p> | Role: </p>
-                  <ProfileHeaderRole>Senior</ProfileHeaderRole>
+                  <ProfileHeaderRole
+                    onClick={() =>
+                      dispatch(actApp.handleState("isRoleModalOpen", true))
+                    }
+                  >
+                    {userData ? userData.role : "Guest"}
+                  </ProfileHeaderRole>
                 </ProfileHeaderDetails>
               </div>
             </ProfileHeader>
