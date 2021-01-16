@@ -1,38 +1,75 @@
 import React from "react";
 import styled from "styled-components";
+import Avatar from "@material-ui/core/Avatar";
+import { styled as muiStyled } from "@material-ui/styles";
+import TeamImg from "../../res/images/team.jpg";
 import { PageWrapper } from "../SharedStyles";
 
-const placeholderText = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vitae tempus, sollicitudin aenean senectus purus nunc. Mi nisi, lectus diam sit arcu. Lacus pellentesque velit feugiat hac convallis. 
+const AboutUsText = `Hello dear viewer, we are a brother-sister team studying at Monash University Malaysia. On the right is myself, Alfons Fernaldy, and on
+                      the left is my sister, Michelle Adeline. This project represents our final submission for the Monash Quickhack Hackathon 2021 which
+                      was about "Connecting the past present and future". We thought of many solutions to this problem but came to a realization that Monash lacked
+                      a truly unified platform where current, past and future students could discuss matters freely. Thus this was how Connexion was born.`;
 
-Cursus at urna sed imperdiet viverra iaculis augue enim. Amet euismod massa, elementum ipsum mattis neque congue nulla. Ultricies molestie massa purus aliquet. Sit lectus viverra ut ut sed consequat. Purus nisl et, lacus nulla duis. At urna accumsan, ullamcorper at sed. Tincidunt augue tristique urna ultrices ut est. Pharetra malesuada scelerisque est aliquet risus sit lorem vestibulum feugiat. Vitae donec vitae mattis faucibus. Id morbi molestie in lacus ut aliquet. Fringilla morbi rutrum aliquet in ultricies. 
-
-Ultricies enim felis curabitur varius integer egestas. At eu, mauris mollis quis tempor viverra duis venenatis.`;
+const HowItWorksText = `In order to connect the past, present and future, our platform needed to cater for the following subcateogries: General, Future Monashians,
+                        Freshmen, Seniors and After Monash. When users create a post, they must choose between 1 to 3 categories which correlate to their topic.
+                        Users are free to come and read posts but must sign up to post topics, comments and rate. In order to encourage interactivity
+                        between participants, we implemented a point system which rewarded points for those that post topics and comments. Each week, top
+                        users would be ranked on a leaderboard visible from the home screen. `;
 
 const About = () => {
   return (
-    <PageWrapper>
-      <AboutSection>
-        <TeamPicture />
-        <div>
-          <SectionTitle section="AboutUs">About Us</SectionTitle>
-          <SectionText section="AboutUs">{placeholderText}</SectionText>
-        </div>
-      </AboutSection>
-      <HowItWorksSection>
-        <div>
-          <SectionTitle>How It Works</SectionTitle>
-          <SectionText>{placeholderText}</SectionText>
-        </div>
-      </HowItWorksSection>
-    </PageWrapper>
+    <>
+      <PageWrapper>
+        <AboutSection>
+          <PhoneTitle section="AboutUs">About Us</PhoneTitle>
+          <TeamImage
+            className="Avatar"
+            variant="rounded"
+            alt="pic"
+            src={TeamImg}
+          />
+          <div>
+            <DesktopTitle section="AboutUs">About Us</DesktopTitle>
+            <div>
+              <SectionText section="AboutUs">{AboutUsText}</SectionText>
+            </div>
+          </div>
+        </AboutSection>
+      </PageWrapper>
+      <HowItWorksWrapper>
+        <PageWrapper>
+          <HowItWorksSection>
+            <SectionTitle>How It Works</SectionTitle>
+            <SectionText>{HowItWorksText}</SectionText>
+          </HowItWorksSection>
+        </PageWrapper>
+      </HowItWorksWrapper>
+    </>
   );
 };
 
 const AboutSection = styled.div`
   display: flex;
-  flex-direction: row;
   margin-top: 2rem;
+  align-items: center;
   text-align: right;
+  & > * {
+    margin-left: 1rem;
+  }
+  @media (max-width: 768px) {
+    text-align: justify;
+    flex-direction: column;
+    justify-content: center;
+  }
+`;
+
+const HowItWorksWrapper = styled.div`
+  background-color: ${({ theme: { colors } }) => colors.main};
+`;
+
+const HowItWorksSection = styled(AboutSection)`
+  flex-direction: column;
+  text-align: left;
 `;
 
 const SectionTitle = styled.p`
@@ -40,32 +77,40 @@ const SectionTitle = styled.p`
   font-size: 38px;
   color: ${({ section, theme: { colors } }) =>
     section === "AboutUs" ? colors.main : "white"};
+  @media (max-width: 768px) {
+    text-align: center;
+  }
+`;
+
+const PhoneTitle = styled(SectionTitle)`
+  @media (min-width: 768px) {
+    display: none;
+  }
+`;
+const DesktopTitle = styled(SectionTitle)`
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const SectionText = styled.p`
   font-family: "Nunito";
-  font-size: 14px;
-  white-space: pre-line;
+  font-size: 18px;
   color: ${({ section, theme: { colors } }) =>
     section === "AboutUs" ? colors.main : "white"};
   margin-top: 1rem;
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
 `;
 
-const TeamPicture = styled.div`
-  border: solid;
-  border-color: ${({ theme: { colors } }) => colors.disabled_light};
-  border-width: 5px;
-  width: 2000px;
-  height: 250px;
-  margin: 2.8rem 5rem 0 13.1rem;
-`;
-
-const HowItWorksSection = styled.div`
-  display: flex;
-  text-align: left;
-  margin: 100px -6rem -6rem -6rem;
-  padding: 100px 6rem 6rem 6rem;
-  background-color: ${({ theme: { colors } }) => colors.main};
-`;
+const TeamImage = muiStyled(Avatar)({
+  width: "350px",
+  height: "250px",
+  "@media(max-width:768px)": {
+    width: "250px",
+    height: "150px",
+  },
+});
 
 export default About;
