@@ -92,8 +92,8 @@ const PostContent = (props) => {
             alt="pic"
             src={photoURL}
             style={{
-              width: "30px",
-              height: "30px",
+              width: "35px",
+              height: "35px",
               border: "solid",
               borderColor: "rgba(0,0,0,0.1)",
               borderWidth: "3px",
