@@ -8,17 +8,20 @@ import Categories from "../../Categories";
 
 const AllCategories = () => {
   const CategoriesList = () => {
-    return Categories.map(({ name, description, image, color }) => {
-      return (
-        <CategoryCard
-          key={name}
-          name={name}
-          description={description}
-          image={image}
-          color={color}
-        />
-      );
-    });
+    return Categories.map(
+      ({ name, description, short_description, image, color }) => {
+        return (
+          <CategoryCard
+            key={name}
+            name={name}
+            description={description}
+            short_description={short_description}
+            image={image}
+            color={color}
+          />
+        );
+      }
+    );
   };
 
   return (
@@ -33,7 +36,7 @@ const AllCategories = () => {
 
 const CategoriesWrapper = styled.div`
   display: flex;
-  flex-direction: row;
+  /* flex-direction: row; */
   margin-bottom: -1rem;
 `;
 

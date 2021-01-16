@@ -11,7 +11,7 @@ import Avatar from "@material-ui/core/Avatar";
 import AvatarGroup from "@material-ui/lab/AvatarGroup";
 
 const CategoryCard = (props) => {
-  const { name, description, image, color } = props;
+  const { name, description, image, color, short_description } = props;
   const history = useHistory();
   const { fetchCategoryPosts } = useAuth();
   const [categoryPosts, setCategoryPosts] = useState([]);
@@ -38,7 +38,7 @@ const CategoryCard = (props) => {
         <>
           <Avatar className="Avatar" alt="LastTopic" src={photoURL} />
           <CategoryDetailsLastTopic>
-            {truncateText(title, 20)}
+            {truncateText(title, 18)}
           </CategoryDetailsLastTopic>
         </>
       );
@@ -65,172 +65,170 @@ const CategoryCard = (props) => {
   };
 
   return (
-    <CategoryWrapper
-      key={name}
-      onClick={() => {
-        history.push(`/categories/${name}`);
-      }}
-    >
-      <CategoryColor color={color}></CategoryColor>
-      <CategoryImage src={image} alt={name} />
-      <CategoryInfo>
-        <CategoryName>{name}</CategoryName>
-        <CategoryDescription>{description}</CategoryDescription>
-      </CategoryInfo>
-      <VerticalDivider />
-      <CategoryDetails>
-        <CategoryDetailsTop>
-          <div>
-            <CategoryDetailsTitle>Topics</CategoryDetailsTitle>
-            <CategoryDetailsTopics>
-              {categoryPosts.length}
-            </CategoryDetailsTopics>
-          </div>
-          <div className="Group">
-            <CategoryDetailsTitle>Latest Activity</CategoryDetailsTitle>
-            <AvatarGroup className="AvatarGroup" max={4}>
-              {renderLatestActivity()}
-            </AvatarGroup>
-          </div>
-        </CategoryDetailsTop>
-        <Divider width="100%" height="1px" margin="0.5rem 0" />
-        <CategoryDetailsBottom>
-          <CategoryDetailsTitle>LastTopic</CategoryDetailsTitle>
-          <div style={{ marginTop: "0.2rem" }}>{renderLatestPost()}</div>
-        </CategoryDetailsBottom>
-      </CategoryDetails>
-    </CategoryWrapper>
+    <CategorySectionWrapper>
+      <CategoryWrapper
+        key={name}
+        onClick={() => {
+          history.push(`/categories/${name}`);
+        }}
+      >
+        <CategoryColor color={color}></CategoryColor>
+        <CategoryImage src={image} alt={name} />
+        {/* <div style={{ display: "flex"}}> */}
+        <CategoryInfo>
+          <CategoryName>{name}</CategoryName>
+          <CategoryDescription className="FullDescription">
+            {description}
+          </CategoryDescription>
+          <CategoryDescription className="ShortDescription">
+            {short_description}
+          </CategoryDescription>
+        </CategoryInfo>
+        {/* </div> */}
+        <VerticalDivider />
+        <CategoryDetails>
+          <CategoryDetailsTop>
+            <div>
+              <CategoryDetailsTitle>Topics</CategoryDetailsTitle>
+              <CategoryDetailsTopics>
+                {categoryPosts.length}
+              </CategoryDetailsTopics>
+            </div>
+            <div className="Group">
+              <CategoryDetailsTitle>Latest Activity</CategoryDetailsTitle>
+              <AvatarGroup className="AvatarGroup" max={4}>
+                {renderLatestActivity()}
+              </AvatarGroup>
+            </div>
+          </CategoryDetailsTop>
+          {/* <Divider width="2rem" height="2px" margin="0.5rem 0" /> */}
+          <Divider width="100%" height="1px" margin="0.5rem 0" />
+          <CategoryDetailsBottom>
+            <CategoryDetailsTitle>LastTopic</CategoryDetailsTitle>
+            <div style={{ marginTop: "0.2rem" }}>{renderLatestPost()}</div>
+          </CategoryDetailsBottom>
+        </CategoryDetails>
+      </CategoryWrapper>
+    </CategorySectionWrapper>
   );
 };
 
+const CategorySectionWrapper = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  @media (max-width: 768px) {
+    justify-content: center;
+  }
+`;
+
 const CategoryWrapper = styled.div`
   display: flex;
-  flex-direction: row;
-  width: 100%;
-  height: 10vw;
+  width: 70vw;
+  /* min-width: 51rem; */
+  max-width: 52rem;
+  margin: 0 2rem 1.5rem 2.2rem;
+  @media (min-width: 1400px) {
+    max-width: 57rem;
+  }
+  @media (max-width: 1000px) {
+    min-width: 40rem;
+  }
+
+  @media (max-width: 768px) {
+    width: 80vw;
+    min-width: 10rem;
+    margin: 0 0 1.5rem 0;
+  }
   align-items: center;
-  margin-right: 2rem;
-  margin-bottom: 1.5rem;
   padding: 0.5rem 0.2rem;
   &:hover {
     cursor: pointer;
   }
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.08);
-  @media (min-width: 1500px) {
-    height: 10vw;
-  }
-  @media (min-width: 1700px) {
-    height: 9vw;
-  }
-  @media (max-width: 1300px) {
-    height: 12vw;
-  }
-  @media (max-width: 1100px) {
-    height: 13vw;
-  }
-  @media (max-width: 900px) {
-    height: 15vw;
-  }
-  @media (max-width: 600px) {
-    height: 20vw;
-  }
-  @media (max-width: 500px) {
-    height: 24vw;
-  }
-  @media (max-width: 450px) {
-    height: 28vw;
-  }
-  @media (max-width: 400px) {
-    height: 35vw;
-  }
-  @media (max-width: 350px) {
-    height: 50vw;
-  }
-  @media (max-width: 290px) {
-    height: 70vw;
-  }
 `;
 
 const CategoryColor = styled.div`
   background-color: ${({ color }) => color};
   height: 100%;
   width: 0.3rem;
-  @media (min-width: 1500px) {
-    width: 0.4rem;
-  }
-  @media (max-width: 468px) {
-    width: 0.6rem;
-  }
-  @media (max-width: 350px) {
-    width: 0.8rem;
-  }
   margin: 0 0.6rem 0 0.2rem;
-  border-radius: 0.3rem;
+  border-radius: 0.15rem;
 `;
 
 const CategoryImage = styled.img`
-  height: 100%;
-  width: height;
-  @media (min-width: 1500px) {
-    height: 80%;
-    width: height;
+  width: 8vw;
+  height: 8vw;
+  max-width: 10rem;
+  max-height: 10rem;
+  @media (max-width: 768px) {
+    min-width: 6rem;
+    min-height: 6rem;
   }
-  @media (max-width: 800px) {
-    height: 80%;
-    width: height;
-  }
-  @media (max-width: 350px) {
-    height: 60%;
-    width: height;
-  }
-  @media (max-width: 290px) {
-    height: 40%;
-    width: height;
+  @media (max-width: 400px) {
+    min-width: 5rem;
+    min-height: 5rem;
   }
 `;
 
 const CategoryInfo = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%;
+  width: 90%;
+  justify-content: space-around;
   padding: 0.5rem 1rem 0.5rem;
-  & > * {
-    text-align: left;
+  text-align: left;
+  .ShortDescription {
+    display: none;
   }
-  justify-content: space-between;
+  @media (max-width: 1100px) {
+    .FullDescription {
+      display: none;
+    }
+    .ShortDescription {
+      display: flex;
+    }
+  }
+  @media (max-width: 768px) {
+    .FullDescription {
+      display: flex;
+    }
+    .ShortDescription {
+      display: none;
+    }
+  }
+  @media (max-width: 500px) {
+    .FullDescription {
+      display: none;
+    }
+    .ShortDescription {
+      display: flex;
+    }
+  }
 `;
 
 const CategoryName = styled.p`
   font-family: "Raleway";
   font-size: 28px;
-  @media (min-width: 1500px) {
-    font-size: 32px;
+  @media (max-width: 768px) {
+    font-size: 20px;
   }
-  @media (max-width: 1000px) {
-    font-size: 24px;
+  @media (max-width: 410px) {
+    font-size: 17px;
   }
-  @media (max-width: 800px) {
-    font-size: 22px;
-  }
-  @media (max-width: 400px) {
-    font-size: 18px;
-  }
-  @media (max-width: 330px) {
-    font-size: 14px;
+  @media (max-width: 360px) {
+    font-size: 15px;
   }
 `;
 
 const CategoryDescription = styled.p`
-  font-family: "NunitoLight";
-  font-size: 15px;
-  @media (min-width: 1500px) {
-    font-size: 17px;
-  }
-  @media (max-width: 1000px) {
-    font-size: 12px;
+  font-family: "Nunito";
+  font-size: 16px;
+  margin-top: 1rem;
+  @media (max-width: 1500px) {
+    font-size: 14px;
   }
   @media (max-width: 768px) {
-    font-family: "Nunito";
+    font-size: 12px;
   }
 `;
 
@@ -248,8 +246,6 @@ const CategoryDetails = styled.div`
   justify-content: center;
   flex-direction: column;
   margin: 0 0.8rem;
-  width: 30rem;
-  height: 100%;
   @media (max-width: 768px) {
     display: none;
   }
@@ -277,7 +273,7 @@ const CategoryDetailsTop = styled.div`
 const CategoryDetailsTitle = styled.p`
   color: ${({ theme: { colors } }) => colors.disabled};
   @media (min-width: 1500px) {
-    font-size: 17px;
+    font-size: 16px;
   }
   @media (max-width: 1000px) {
     font-size: 14px;
@@ -285,44 +281,44 @@ const CategoryDetailsTitle = styled.p`
   @media (max-width: 900px) {
     font-size: 12px;
   }
-  @media (max-width: 620px) {
-    font-size: 10px;
-  }
 `;
 
 const CategoryDetailsTopics = styled.p`
   font-family: "Raleway";
-  font-size: 24px;
+  font-size: 22px;
   @media (max-width: 1000px) {
-    font-size: 20px;
+    font-size: 18px;
   }
 `;
 
 const CategoryDetailsBottom = styled.div`
   text-align: left;
+  width: 200px;
   & > * {
     display: flex;
     flex-direction: row;
     align-items: center;
   }
   .Avatar {
-    width: 25px;
-    height: 25px;
-    @media (min-width: 1500px) {
-      width: 30px;
-      height: 30px;
-    }
-    @media (max-width: 1000px) {
-      width: 20px;
-      height: 20px;
-    }
+    border: solid;
+    border-width: 4px;
+    border-color: rgba(0, 0, 0, 0.08);
+    width: 2vw;
+    height: 2vw;
+    max-width: 3.5vw;
+    max-height: 3.5vw;
   }
 `;
 
 const CategoryDetailsLastTopic = styled.p`
   margin-left: 0.5rem;
+  white-space: nowrap;
+  font-size: 15px;
+  @media (min-width: 1500px) {
+    font-size: 17px;
+  }
   @media (max-width: 1000px) {
-    font-size: 14px;
+    font-size: 13px;
   }
   @media (max-width: 900px) {
     font-size: 12px;

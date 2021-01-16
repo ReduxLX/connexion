@@ -14,6 +14,8 @@ const categories = [
     name: "General",
     description:
       "Want to talk about games or TV shows? Want to tell a funny anecdote on how your day went? Come here to discuss anything that is not scrictly Monash-related.",
+    short_description:
+      "Come here to discuss anything that is not scrictly Monash-related.",
     image: General,
     icon: General_Icon,
     color: "#F85F73",
@@ -22,6 +24,8 @@ const categories = [
     name: "Future Monashians",
     description:
       "Interested in joining Monash? Not sure about the application process? This is the perfect place to interact with your peers and resolve all your questions!",
+    short_description:
+      "This is the perfect place to interact with your peers and resolve all your questions!",
     image: Future_Monashians_3,
     icon: Future_Monashians_Icon,
     color: "#F9ED69",
@@ -30,6 +34,8 @@ const categories = [
     name: "Freshmen",
     description:
       "Being a freshmen is overwhelming; you’re bombarded with information, opportunities, and deadlines. Here you can make friends and get your doubts clarified.",
+    short_description:
+      "Here you can meet new people, make friends and get your doubts clarified.",
     image: Freshmen_3,
     icon: Freshmen_Icon,
     color: "#A8E6CF",
@@ -38,6 +44,8 @@ const categories = [
     name: "Seniors",
     description:
       "Are you well into your years in Monash? Getting anxious thinking about job-hunting after you graduate? Come and vent your frustrations and chat with fellow seniors!",
+    short_description:
+      "Come and vent your frustrations and chat with your fellow seniors!",
     image: Seniors_3,
     icon: Seniors_Icon,
     color: "#3EC1D3",
@@ -46,6 +54,8 @@ const categories = [
     name: "After Monash",
     description:
       "You’ve made it! You’ve graduated and are considered one of Monash’s valuable alumni... what now? Talk to people in similar situations and band together to keep yourselves sane.",
+    short_description:
+      "Talk to people in similar situations and band together to keep yourselves sane.",
     image: After_Monash_3,
     icon: After_Monash_Icon,
     color: "#AA96DA",
