@@ -4,17 +4,18 @@ import Avatar from "@material-ui/core/Avatar";
 import { styled as muiStyled } from "@material-ui/styles";
 import TeamImg from "../../res/images/team.jpg";
 import { PageWrapper } from "../SharedStyles";
+import Theme from "../../Theme";
 
-const AboutUsText = `Hello dear viewer, we are a brother-sister team studying at Monash University Malaysia. On the right is myself, Alfons Fernaldy, and on
-                      the left is my sister, Michelle Adeline. This project represents our final submission for the Monash Quickhack Hackathon 2021 which
-                      was about "Connecting the past present and future". We thought of many solutions to this problem but came to a realization that Monash lacked
-                      a truly unified platform where current, past and future students could discuss matters freely. Thus this was how Connexion was born.`;
+const AboutUsText = `Hello dear viewer, we are a brother-sister team studying at Monash University Malaysia. On the right is myself, Alfons Fernaldy, and on the left is my sister, Michelle Adeline. This project represents our final submission for the Monash Quickhack Hackathon 2021 which was about "Connecting the past present and future". We thought of many solutions to this problem but came to a realization that Monash lacked a truly unified platform where current, past and future students could discuss matters freely. Thus this was how Connexion was born.`;
 
 const HowItWorksText = `In order to connect the past, present and future, our platform needed to cater for the following subcateogries: General, Future Monashians,
                         Freshmen, Seniors and After Monash. When users create a post, they must choose between 1 to 3 categories which correlate to their topic.
                         Users are free to come and read posts but must sign up to post topics, comments and rate. In order to encourage interactivity
                         between participants, we implemented a point system which rewarded points for those that post topics and comments. Each week, top
                         users would be ranked on a leaderboard visible from the home screen. `;
+
+const ContactUsText = `Michelle Adeline: made0008@student.monash.edu
+                       Alfons Fernaldy: afer0029@student.monash.edu`;
 
 const About = () => {
   return (
@@ -44,6 +45,21 @@ const About = () => {
           </HowItWorksSection>
         </PageWrapper>
       </HowItWorksWrapper>
+      <PageWrapper>
+        <ContactUsWrapper>
+          {/* <PhoneTitle section="AboutUs">Contact Us</PhoneTitle> */}
+          <p
+            style={{
+              fontSize: "38px",
+              fontFamily: "RalewayExtraBold",
+              color: Theme.colors.main,
+            }}
+          >
+            Contact Us
+          </p>
+          <SectionText section="AboutUs">{ContactUsText}</SectionText>
+        </ContactUsWrapper>
+      </PageWrapper>
     </>
   );
 };
@@ -96,6 +112,7 @@ const DesktopTitle = styled(SectionTitle)`
 const SectionText = styled.p`
   font-family: "Nunito";
   font-size: 18px;
+  white-space: pre-line;
   color: ${({ section, theme: { colors } }) =>
     section === "AboutUs" ? colors.main : "white"};
   margin-top: 1rem;
@@ -107,10 +124,19 @@ const SectionText = styled.p`
 const TeamImage = muiStyled(Avatar)({
   width: "350px",
   height: "250px",
+  marginRight: "5rem",
+  marginTop: "6rem",
+  border: "solid",
+  borderColor: Theme.colors.disabled,
+  borderWidth: "8px",
   "@media(max-width:768px)": {
     width: "250px",
     height: "150px",
   },
 });
+
+const ContactUsWrapper = styled.div`
+  background-color: white;
+`;
 
 export default About;
