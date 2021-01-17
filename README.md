@@ -1,6 +1,6 @@
 # Connexion
 <p align="center">
-  <img src="connexion-app/src/res/images/connexion_logo.png" alt="Logo" width="250" height="250">
+  <img src="connexion-app/public/Connexion_Logo.png" alt="Logo" width="250" height="250">
 </p>
 
 ## Installation
@@ -34,6 +34,10 @@ However if you are interested in running the web application locally follow thes
 Connexion represents our final submission for the Monash 2021 Quickhack Hackathon with the topic "Connecting the past, present and future".
 We thought of many solutions to this problem but came to a realization that Monash lacked a truly unified platform where current, past and future students could discuss matters freely. Thus this was how Connexion was born.
 
+<p align="center">
+  <img src="connexion-app/public/Desktop.gif" alt="Desktop GIF">
+</p>
+
 On its core, Connexion allows users to view, create and comment on topics based on 5 categories:
   1. General
   2. Future Monashians
@@ -57,6 +61,15 @@ Currently it has the following screens:
 - Leaderboard Page
 - Sign in / Sign up page
 - About page
+
+## Commitment to Responsive design
+One of our main goals when starting this project is accessibility. As such, we had dedicated significant portion of our time in order 
+to make the app responsive. Here is what the app looks like on a mobile phone
+
+<p align="center">
+  <img src="connexion-app/public/Mobile.gif" alt="Mobile GIF">
+</p>
+
 
 ## Future Plans
 
