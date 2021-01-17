@@ -21,6 +21,7 @@ const Profile = () => {
   const { displayName, photoURL } = currentUser;
 
   const userPosts = useSelector((state) => state.Home.userPosts);
+  const bookmarkedPosts = useSelector((state) => state.Home.posts);
   const isUploadingImage = useSelector((state) => state.App.isUploadingImage);
   const userData = useSelector((state) => state.Home.userData);
 
@@ -67,7 +68,10 @@ const Profile = () => {
               {placeholderDescription}
               <strong>Edit</strong>
             </ProfileDescription>
-            <ProfileTab userPosts={userPosts} bookmarkedPosts={userPosts} />
+            <ProfileTab
+              userPosts={userPosts}
+              bookmarkedPosts={bookmarkedPosts}
+            />
           </ProfileContentWrapper>
         </ProfileWrapper>
       </ContentWrapper>

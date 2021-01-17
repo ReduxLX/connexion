@@ -31,7 +31,7 @@ const ProfileTab = (props) => {
   };
 
   const tabLabel1 = `Posts (${userPosts.length} Posts)`;
-  const tabLabel2 = "Bookmarks (23 Bookmarks)";
+  const tabLabel2 = `Bookmarks (${bookmarkedPosts.length} Bookmarks)`;
 
   const renderPosts = (posts) => {
     return posts.map(
