@@ -49,6 +49,7 @@ const PostDetails = (props) => {
     timestamp,
     upvotedUsers,
     downvotedUsers,
+    university,
     views,
   } = post;
 
@@ -162,6 +163,7 @@ const PostDetails = (props) => {
                     </ChipGroup>
                   </PostHeaderDetails>
                 </PostHeader>
+                <PostUniversity>University: {university}</PostUniversity>
                 <QuillText text={body} />
                 <PostFooter>
                   <PostFooterLeft>
@@ -227,6 +229,13 @@ const PostWrapper = styled.div`
 `;
 
 const PostContent = styled.div``;
+
+const PostUniversity = styled.div`
+  text-align: left;
+  color: ${({ theme: { colors } }) => colors.disabled};
+  font-size: 14px;
+  margin-left: 1rem;
+`;
 
 const SkeletonWrapper = styled.div`
   flex-direction: column;

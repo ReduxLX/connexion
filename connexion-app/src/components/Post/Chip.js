@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 
 const Chip = (props) => {
-  const { category = "General" } = props;
+  const { category = "General", variant = "Category" } = props;
   const history = useHistory();
 
   const chipColor = () => {
@@ -15,11 +15,15 @@ const Chip = (props) => {
   };
 
   const redirectCategory = () => {
-    history.push(`/categories/${category}`);
+    if (variant === "Category") history.push(`/categories/${category}`);
   };
 
   return (
-    <ChipWrapper chipColor={chipColor()} onClick={redirectCategory}>
+    <ChipWrapper
+      chipColor={chipColor()}
+      variant={variant}
+      onClick={redirectCategory}
+    >
       {category}
     </ChipWrapper>
   );
@@ -29,9 +33,15 @@ const ChipWrapper = styled.div`
   width: fit-content;
   opacity: 0.5;
   padding: 2px 18px;
-  color: ${(props) => props.chipColor};
-  border: ${(props) => `1px solid ${props.chipColor}`};
-  border-radius: 20px;
+  color: ${({ chipColor, variant }) =>
+    variant === "Category" ? chipColor : "white"};
+  border: ${({ chipColor, variant, theme: { colors } }) =>
+    variant === "Category"
+      ? `1px solid ${chipColor}`
+      : `1px solid ${colors.disabled}`};
+  border-radius: ${({ variant }) => (variant === "Category" ? "20px" : "5px")};
+  background-color: ${({ variant, theme: { colors } }) =>
+    variant === "Category" ? null : colors.disabled};
   transition: 0.2s;
   font-size: 13px;
   font-family: "NunitoSemiBold";

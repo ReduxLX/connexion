@@ -27,6 +27,15 @@ const PostSection = ({ category = "Home" }) => {
     }
   }, [sortPostsBy, category]);
 
+  const labelColor = () => {
+    if (category === "General") return "#F85F73";
+    if (category === "Future Monashians") return "#FFC700";
+    else if (category === "Freshmen") return "#14D3A6";
+    else if (category === "Seniors") return "#3EC1D3";
+    else if (category === "After Monash") return "#AA96DA";
+    else return Theme.colors.disabled;
+  };
+
   const calculateRating = (upvotedArray, downvotedArray) => {
     if (Array.isArray(upvotedArray) && Array.isArray(downvotedArray)) {
       return upvotedArray.length - downvotedArray.length;
@@ -130,7 +139,10 @@ const PostSection = ({ category = "Home" }) => {
 
   return (
     <SectionWrapper>
-      <DropdownWrapper>{renderDropdown()}</DropdownWrapper>
+      <DropdownWrapper labelColor={labelColor()}>
+        {renderDropdown()}
+        {category !== "Home" && <h1>{category}</h1>}
+      </DropdownWrapper>
       <PostWrapper>
         {isFetchingPosts ? renderPostSkeletons(5) : renderPosts()}
       </PostWrapper>
@@ -162,10 +174,19 @@ const PostWrapper = styled.div`
 `;
 
 const DropdownWrapper = styled.div`
+  display: flex;
+  max-width: 720px;
   text-align: left;
   width: 100%;
   margin-bottom: 1.5rem;
   margin-left: 1.5rem;
+  justify-content: space-between;
+  align-items: center;
+  h1 {
+    font-family: "RalewayBold";
+    font-size: 36px;
+    color: ${({ labelColor }) => labelColor};
+  }
 `;
 
 const CustomForm = muiStyled(FormControl)({
