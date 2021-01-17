@@ -80,8 +80,9 @@ const PostContent = (props) => {
         {title.trim()}
       </PostHeader>
       <ChipGroup>
+        <Chip key={0} category={university} variant="university" />
         {categories.map((category, index) => (
-          <Chip key={index} category={category} />
+          <Chip key={index + 1} category={category} />
         ))}
       </ChipGroup>
       <PostBody>{renderBodyTextMemoized}</PostBody>

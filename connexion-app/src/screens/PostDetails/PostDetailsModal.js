@@ -35,7 +35,7 @@ const PostDetailsModal = (props) => {
     // FIXME: After submitting the comment, this function will rerun again
     // after closing the modal due to re-rendering. This can result in double comments submitted
     // For now the solution is to perform a isOpen check before proceeding.
-    if (!isOpen) return;
+    if (!isOpen || !bodyPlainText) return;
     bodyPlainText = bodyPlainText.trim();
     if (bodyPlainText.length <= 0) {
       setCommentError("Your comment cannot be empty");
